@@ -1,0 +1,17 @@
+{
+    "regionId": "dungeon_forge_terrace_a",
+    "biome": "lantern",
+    "kind": "boss_approach",
+    "socketBindings": [
+        { "socketId": "south_to_hub",   "connectedRegionId": "hub_lantern_heights" },
+        { "socketId": "north_to_shaft", "connectedRegionId": "region_hollow_shaft" }
+    ],
+    "authoredZoneOverrides": [],
+    "tiles": [
+        { "x": 1028, "y": 484, "w": 36,  "h": 186, "platform": false },
+        { "x":  986, "y": 456, "w": 154, "h": 14,  "platform": true  },
+        { "x": 1260, "y": 330, "w": 40,  "h": 340, "platform": false },
+        { "x": 1210, "y": 302, "w": 190, "h": 14,  "platform": true  },
+        { "x": 1450, "y": 446, "w": 140, "h": 14,  "platform": true  }
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    "regionId": "region_hollow_shaft",
+    "biome": "hollow",
+    "kind": "shop_save_loop",
+    "socketBindings": [
+        { "socketId": "south_to_forge", "connectedRegionId": "dungeon_forge_terrace_a" }
+    ],
+    "authoredZoneOverrides": [],
+    "tiles": [
+        { "x": 1810, "y": 232, "w": 34,  "h": 438, "platform": false },
+        { "x": 1864, "y": 382, "w": 124, "h": 14,  "platform": true  },
+        { "x": 2058, "y": 286, "w": 34,  "h": 384, "platform": false },
+        { "x": 2102, "y": 318, "w": 128, "h": 14,  "platform": true  },
+        { "x": 2296, "y": 196, "w": 38,  "h": 474, "platform": false },
+        { "x": 2358, "y": 224, "w": 128, "h": 14,  "platform": true  },
+        { "x": 2710, "y": 440, "w": 36,  "h": 230, "platform": false },
+        { "x": 2760, "y": 412, "w": 170, "h": 14,  "platform": true  },
+        { "x": 3012, "y": 362, "w": 34,  "h": 308, "platform": false },
+        { "x": 2962, "y": 334, "w": 176, "h": 14,  "platform": true  },
+        { "x": 3226, "y": 274, "w": 154, "h": 14,  "platform": true  }
+    ]
+}

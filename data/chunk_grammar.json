@@ -1,0 +1,71 @@
+{
+  "schema": "chunk_grammar.v3",
+  "chunk_categories": {
+    "AUTHORED_CRITICAL": {
+      "description": "Finite story route chunk. Debug color: gold.",
+      "can_set_major_story_flags": true,
+      "can_advance_plateau": true
+    },
+    "AUTHORED_MILESTONE": {
+      "description": "Finite authored beat that may not be full critical traversal but changes state.",
+      "can_set_major_story_flags": true,
+      "can_advance_plateau": false
+    },
+    "ADAPTABLE_AUTHORED": {
+      "description": "Authored scene or quest beat that can be placed into suitable plateau-local chunks.",
+      "can_set_major_story_flags": "only listed sets_flags",
+      "can_advance_plateau": false
+    },
+    "ELASTIC_EXPLORE": {
+      "description": "Optional outward exploration chunk.",
+      "can_set_major_story_flags": false,
+      "can_advance_plateau": false
+    },
+    "ELASTIC_LOOP_BACK": {
+      "description": "Optional chunk biased toward returning to known space.",
+      "can_set_major_story_flags": false,
+      "can_advance_plateau": false
+    },
+    "ELASTIC_DEEPEN": {
+      "description": "Lore, memory, dialogue, and side-story texture.",
+      "can_set_major_story_flags": false,
+      "can_advance_plateau": false
+    },
+    "ELASTIC_TRAIN": {
+      "description": "Movement/combat mastery space.",
+      "can_set_major_story_flags": false,
+      "can_advance_plateau": false
+    },
+    "ELASTIC_RECOVER": {
+      "description": "Healing, safe rooms, crafting, social rest.",
+      "can_set_major_story_flags": false,
+      "can_advance_plateau": false
+    },
+    "ELASTIC_PRESSURE": {
+      "description": "Risk, enemies, hazards, traversal pressure.",
+      "can_set_major_story_flags": false,
+      "can_advance_plateau": false
+    },
+    "ELASTIC_STAGNATE": {
+      "description": "Looping or emotionally circular content. Valid in multiple plateaus, not Hollow-only.",
+      "can_set_major_story_flags": false,
+      "can_advance_plateau": false
+    },
+    "ELASTIC_ADVANCE_HINT": {
+      "description": "Nudges toward the next authored milestone without completing it.",
+      "can_set_major_story_flags": false,
+      "can_advance_plateau": false
+    }
+  },
+  "socket_contract": {
+    "north_south": "must be climbable shafts or explicit transition volumes with clear landings",
+    "east_west": "must have clear door lanes and landing platforms",
+    "debug_requirement": "declared sockets must appear in contract text and be validated",
+    "failure_policy": "reject, repair, or replace chunk before runtime stream commit"
+  },
+  "beat_binding": {
+    "chunk_may_reference": "source_beat",
+    "authored_chunks_must_reference": "narrative_beats.json",
+    "elastic_chunks_should_reference": "elastic_chunk_templates.json"
+  }
+}

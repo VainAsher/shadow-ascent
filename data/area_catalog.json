@@ -1,0 +1,479 @@
+{
+  "schema": "area_catalog.v1",
+  "area_families": [
+    {
+      "id": "lantern_village",
+      "display": "Lantern Heights",
+      "plateaus": [
+        "LANTERN_HEIGHTS"
+      ],
+      "mood": "warm home gradually dimming",
+      "terrain_rules": [
+        "gentle slopes",
+        "training platforms",
+        "village streets",
+        "mistwood edges"
+      ],
+      "socket_bias": [
+        "EAST_WEST",
+        "SOFT_VERTICAL"
+      ],
+      "sample_areas": [
+        "area_lantern_heights_balcony",
+        "area_lantern_heights_hub",
+        "area_training_dojo",
+        "area_mistwood_path",
+        "area_closed_market",
+        "area_summit_shrine_gate"
+      ]
+    },
+    {
+      "id": "summit_shrine",
+      "display": "Summit Shrine",
+      "plateaus": [
+        "SUMMIT_SHRINE"
+      ],
+      "mood": "ritual isolation and mask reveal",
+      "terrain_rules": [
+        "narrow corridors",
+        "sealed chambers",
+        "arena focus",
+        "illusion alcoves"
+      ],
+      "socket_bias": [
+        "EAST_WEST",
+        "CONTROLLED_NORTH_SOUTH"
+      ],
+      "sample_areas": [
+        "area_empty_lantern_heights_hub",
+        "area_summit_shrine_arena",
+        "area_summit_shrine_fall"
+      ]
+    },
+    {
+      "id": "hollow_depths",
+      "display": "The Hollow Depths",
+      "plateaus": [
+        "HOLLOW_DEPTHS"
+      ],
+      "mood": "grief, weight, survival, memory echo",
+      "terrain_rules": [
+        "cave corridors",
+        "abyssal drops",
+        "broken lanterns",
+        "dash gaps",
+        "double-jump rises",
+        "glide descents"
+      ],
+      "socket_bias": [
+        "EAST_WEST",
+        "NORTH_SOUTH_SHAFTS",
+        "LOOPBACK"
+      ],
+      "sample_areas": [
+        "area_hollow_depths_camp",
+        "area_weightbound_mines_arena",
+        "area_echo_galleries",
+        "area_shatter_moth_nest",
+        "area_stone_judge_maze",
+        "area_abyssal_gate"
+      ]
+    },
+    {
+      "id": "ember_monastery",
+      "display": "Ember Monastery",
+      "plateaus": [
+        "EMBER_MONASTERY"
+      ],
+      "mood": "warmth, support, training, reforging",
+      "terrain_rules": [
+        "dojo shafts",
+        "grapple ceilings",
+        "safe hearth rooms",
+        "forge side paths",
+        "mentor arenas"
+      ],
+      "socket_bias": [
+        "EAST_WEST",
+        "NORTH_SOUTH_SHAFTS",
+        "HUB_SPOKES"
+      ],
+      "sample_areas": [
+        "area_hearth_hall",
+        "area_roga_dojo",
+        "area_ember_forge",
+        "area_star_ink_garden",
+        "area_lantern_silk_workshop",
+        "area_skyroad_gate"
+      ]
+    },
+    {
+      "id": "winding_skyroad",
+      "display": "The Winding Skyroad",
+      "plateaus": [
+        "WINDING_SKYROAD"
+      ],
+      "mood": "ascent, mastery, high wind, distant stars",
+      "terrain_rules": [
+        "vertical climbs",
+        "cloud bridges",
+        "wind tunnels",
+        "full-kit gauntlets",
+        "star-memory overlooks"
+      ],
+      "socket_bias": [
+        "NORTH_SOUTH_SHAFTS",
+        "DIAGONAL_STITCH",
+        "LOOPBACK_LEDGE"
+      ],
+      "sample_areas": [
+        "area_skyroad_base",
+        "area_cloud_bridges",
+        "area_star_wind_fields",
+        "area_mirror_summit_gate"
+      ]
+    },
+    {
+      "id": "mirror_summit",
+      "display": "Mirror Summit",
+      "plateaus": [
+        "MIRROR_SUMMIT"
+      ],
+      "mood": "self-confrontation and release",
+      "terrain_rules": [
+        "final approach",
+        "ability gauntlet",
+        "mirror arena",
+        "quiet release walk"
+      ],
+      "socket_bias": [
+        "CONTROLLED_CRITICAL",
+        "SHORT_LOOPBACK"
+      ],
+      "sample_areas": [
+        "area_mirror_summit_peak",
+        "area_hollow_reflection_arena",
+        "area_release_walk"
+      ]
+    },
+    {
+      "id": "beacon_cliff",
+      "display": "Beacon Cliff",
+      "plateaus": [
+        "BEACON_CLIFF"
+      ],
+      "mood": "closure, sunrise, future homecoming",
+      "terrain_rules": [
+        "open overlooks",
+        "soft memory walks",
+        "beacon platform",
+        "two-star skyline"
+      ],
+      "socket_bias": [
+        "EAST_WEST",
+        "SOFT_LOOPBACK"
+      ],
+      "sample_areas": [
+        "area_final_npc_overlook",
+        "area_ancient_beacon",
+        "area_twofold_stars"
+      ]
+    }
+  ],
+  "area_instances": [
+    {
+      "id": "area_floating_mountain_range",
+      "family": "global",
+      "source_beat": "beat_title_sequence",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": false
+    },
+    {
+      "id": "area_lantern_heights_balcony",
+      "family": "lantern_village",
+      "source_beat": "beat_opening_lantern_heights",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_lantern_heights_hub",
+      "family": "lantern_village",
+      "source_beat": "beat_meet_villagers",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_mistwood_path",
+      "family": "lantern_village",
+      "source_beat": "beat_mistwood_first_mission",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_lantern_heights_hub_dimming",
+      "family": "lantern_village",
+      "source_beat": "beat_npc_withdrawal",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_empty_lantern_heights_night",
+      "family": "lantern_village",
+      "source_beat": "beat_subtle_isolation_cutscene",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": false
+    },
+    {
+      "id": "area_lantern_heights_last_lantern",
+      "family": "lantern_village",
+      "source_beat": "beat_final_departures",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_summit_shrine_gate",
+      "family": "lantern_village",
+      "source_beat": "beat_summit_shrine_call",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_empty_lantern_heights_hub",
+      "family": "lantern_village",
+      "source_beat": "beat_empty_hub_only_maiden",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_summit_shrine_arena",
+      "family": "summit_shrine",
+      "source_beat": "beat_siren_reveal",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_summit_shrine_fall",
+      "family": "summit_shrine",
+      "source_beat": "beat_yin_yang_taken",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_falling_darkness",
+      "family": "global",
+      "source_beat": "beat_aen_hollowed",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_hollow_depths_camp",
+      "family": "hollow_depths",
+      "source_beat": "beat_hollowing_intro",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_hollow_depths_caves",
+      "family": "hollow_depths",
+      "source_beat": "beat_hollow_depths_weight_dialogue",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_echo_galleries",
+      "family": "hollow_depths",
+      "source_beat": "beat_shadow_echo_fragments",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_weightbound_mines_arena",
+      "family": "hollow_depths",
+      "source_beat": "beat_weightbound_ogre",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_hollow_hub_first_sparks",
+      "family": "hollow_depths",
+      "source_beat": "beat_dash_restored",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_shatter_moth_nest",
+      "family": "hollow_depths",
+      "source_beat": "beat_shatter_moth_queen",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_fractured_contact_high_winds",
+      "family": "global",
+      "source_beat": "beat_fractured_contact_double_jump",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_stone_judge_maze",
+      "family": "hollow_depths",
+      "source_beat": "beat_stone_judge",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_abyssal_gate",
+      "family": "hollow_depths",
+      "source_beat": "beat_final_cutoff_glide",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_old_road_to_ember",
+      "family": "ember_monastery",
+      "source_beat": "beat_ember_transition",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_hearth_hall",
+      "family": "ember_monastery",
+      "source_beat": "beat_hearth_of_brothers",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_hearth_of_brothers_trial",
+      "family": "global",
+      "source_beat": "beat_airdodge_grapple_unlocked",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_roga_dojo",
+      "family": "ember_monastery",
+      "source_beat": "beat_roga_training_wallcling",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_ember_monastery_hub",
+      "family": "ember_monastery",
+      "source_beat": "beat_samson_returns",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_ember_forge",
+      "family": "ember_monastery",
+      "source_beat": "beat_marcel_returns",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_star_ink_garden",
+      "family": "ember_monastery",
+      "source_beat": "beat_sophia_skyroad_map",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_lantern_silk_workshop",
+      "family": "lantern_village",
+      "source_beat": "beat_hazel_beacon_lantern_setup",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_skyroad_gate",
+      "family": "ember_monastery",
+      "source_beat": "beat_skyroad_opened",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_skyroad_base",
+      "family": "winding_skyroad",
+      "source_beat": "beat_skyroad_ascent",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_star_wind_fields",
+      "family": "winding_skyroad",
+      "source_beat": "beat_yin_yang_as_stars",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_any_hollow_to_skyroad",
+      "family": "hollow_depths",
+      "source_beat": "beat_veil_illusions_acts_2_to_4",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_mirror_summit_gate",
+      "family": "summit_shrine",
+      "source_beat": "beat_mirror_gate_opened",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_mirror_summit_peak",
+      "family": "summit_shrine",
+      "source_beat": "beat_hollow_reflection_intro",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_hollow_reflection_arena",
+      "family": "hollow_depths",
+      "source_beat": "beat_final_fight",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_release_walk",
+      "family": "mirror_summit",
+      "source_beat": "beat_i_release_you",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_beacon_cliff_approach",
+      "family": "beacon_cliff",
+      "source_beat": "beat_beacon_walk",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_final_npc_overlook",
+      "family": "beacon_cliff",
+      "source_beat": "beat_final_npc_reactions",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_ancient_beacon",
+      "family": "beacon_cliff",
+      "source_beat": "beat_beacon_lit",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_twofold_stars",
+      "family": "beacon_cliff",
+      "source_beat": "beat_two_stars_ending",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_sunrise_end_card",
+      "family": "beacon_cliff",
+      "source_beat": "beat_ending_complete",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": false
+    }
+  ]
+}

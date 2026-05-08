@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:developers.openai.com)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\asher\\\\tester\\\\shadow_ascent_integrated_complete_prototype_package\\\\shadow_ascent_clean_start\" -Recurse -Directory)",
+      "Bash(Select-Object -First 20)",
+      "Bash(./gradlew :client:compileJava runRegressionTests)",
+      "PowerShell(head -25)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\asher\\\\tester\\\\shadow_ascent_integrated_complete_prototype_package\\\\shadow_ascent_clean_start\\\\java\" -Recurse -Include \"*.java\")",
+      "Bash(Measure-Object -Property Length -Sum)",
+      "Bash(Select-Object Count, Sum)"
+    ]
+  }
+}

@@ -1,0 +1,1181 @@
+{
+  "schema": "dialogue.v3",
+  "debug_note": "Dialogue is referenced by narrative beats and elastic contracts. Elastic dialogue cannot advance major story flags unless its contract explicitly allows it.",
+  "lines": [
+    {
+      "id": "dlg_opening_aen_vo",
+      "speaker": "AEN",
+      "text": "In the world born of lanternlight, every soul carries a spark. Mine was twofold… Yin and Yang… my guiding spirits.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_opening_lantern_heights",
+      "tags": [
+        "vo",
+        "origin"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_tai_begin_path",
+      "speaker": "INSTRUCTOR_TAI",
+      "text": "Today you begin your true path, Aen. A ninja of the Lantern Clan must forge his own legacy.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_opening_lantern_heights",
+      "tags": [
+        "mentor"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_rilu_intro",
+      "speaker": "MERCHANT_RILU",
+      "text": "Fresh steel! Fresh cloth! You'll need both if you're taking on missions.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_meet_villagers",
+      "tags": [
+        "merchant"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_jenro_intro",
+      "speaker": "SMITH_JENRO",
+      "text": "Bring me what you find out there. I'll forge you the tools you deserve.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_meet_villagers",
+      "tags": [
+        "smith"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_samson_intro",
+      "speaker": "SAMSON",
+      "text": "Aen! You're finally ranked. Knew you had the spark.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_meet_villagers",
+      "tags": [
+        "friend",
+        "samson"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_samson_maiden_warning",
+      "speaker": "SAMSON",
+      "text": "If you run missions with that Maiden, watch your back. Her smile is… sharp.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_meet_villagers",
+      "tags": [
+        "warning",
+        "samson"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_samson_yin_yang_cats",
+      "speaker": "SAMSON",
+      "text": "Yin and Yang like you more than the lantern cats do. That's talent.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_meet_villagers",
+      "tags": [
+        "warmth"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_sophia_intro",
+      "speaker": "SOPHIA",
+      "text": "I've charted most of the Heights. But some paths only reveal themselves to those who walk with honest intention.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_meet_villagers",
+      "tags": [
+        "map",
+        "wisdom"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_sophia_outsider_warning",
+      "speaker": "SOPHIA",
+      "text": "Be careful with outsiders, Aen. Not all who glow are warm.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_meet_villagers",
+      "tags": [
+        "warning"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_marcel_intro",
+      "speaker": "MARCEL",
+      "text": "If you scrape that blade again, I'll replace it myself. Come here.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_meet_villagers",
+      "tags": [
+        "smith",
+        "friend"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_marcel_praise_warning",
+      "speaker": "MARCEL",
+      "text": "Anyone who praises you too quickly usually wants something.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_meet_villagers",
+      "tags": [
+        "warning"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_hazel_intro",
+      "speaker": "HAZEL",
+      "text": "Your spirits glow bright today. Are you excited… or nervous?",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_meet_villagers",
+      "tags": [
+        "gentle"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_hazel_star_thread",
+      "speaker": "HAZEL",
+      "text": "If you need new lantern silk, I've been experimenting with star-thread.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_meet_villagers",
+      "tags": [
+        "lantern_silk"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_veil_first_appearance",
+      "speaker": "VEIL_MAIDEN",
+      "text": "Aen… the prodigy of Lantern Heights. I have watched your training. You shine brighter than the rest.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_veil_maiden_request",
+      "tags": [
+        "praise",
+        "predatory"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_veil_first_mission",
+      "speaker": "VEIL_MAIDEN",
+      "text": "Deep in these woods, a corrupted beast stirs. The others are too cautious. But you… you are different.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_mistwood_first_mission",
+      "tags": [
+        "mission",
+        "praise"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_yang_maiden_warning",
+      "speaker": "YANG",
+      "text": "Aen, something feels strange with her…",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_mistwood_first_mission",
+      "tags": [
+        "spirit_warning"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_yin_maiden_warning",
+      "speaker": "YIN",
+      "text": "She clouds even our light.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_mistwood_first_mission",
+      "tags": [
+        "spirit_warning"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_aen_defends_maiden",
+      "speaker": "AEN",
+      "text": "She trusts me with important tasks. That must mean something.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_mistwood_first_mission",
+      "tags": [
+        "denial"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_rilu_distance",
+      "speaker": "MERCHANT_RILU",
+      "text": "Sorry Aen… I just… need some distance. Things feel off around here.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_npc_withdrawal",
+      "tags": [
+        "withdrawal"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_aen_distance_question",
+      "speaker": "AEN",
+      "text": "Distance? From what?",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_npc_withdrawal",
+      "tags": [
+        "confusion"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_samson_fading_presence",
+      "speaker": "SAMSON",
+      "text": "Hey… you look tired. You been doing only her missions again? Don't forget who you were before you met her, Aen.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_act0_isolation_dialogue",
+      "tags": [
+        "warning"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_sophia_rare_appearance",
+      "speaker": "SOPHIA",
+      "text": "The village feels off… like something is dimming the lanterns. If I'm not around next time, just know — I wish you well.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_act0_isolation_dialogue",
+      "tags": [
+        "warning",
+        "departure"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_marcel_warning",
+      "speaker": "MARCEL",
+      "text": "Listen. Jenro closed his forge early. Everyone's uneasy. Be careful. …Don't let her talk you into abandoning the rest of us.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_act0_isolation_dialogue",
+      "tags": [
+        "warning"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_hazel_warning",
+      "speaker": "HAZEL",
+      "text": "Aen… the way she watches you… it chills my lantern flame. Don't disappear on us, okay?",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_act0_isolation_dialogue",
+      "tags": [
+        "warning",
+        "gentle"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_aen_vo_isolation",
+      "speaker": "AEN",
+      "text": "Everyone was drifting away. And the more alone I became… the more she praised me.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_subtle_isolation_cutscene",
+      "tags": [
+        "vo",
+        "isolation"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_veil_only_need_me",
+      "speaker": "VEIL_MAIDEN",
+      "text": "Look around. They never believed in you. But I do. Because you outshined them. You only need me now.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_subtle_isolation_cutscene",
+      "tags": [
+        "manipulation"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_samson_last_departure",
+      "speaker": "SAMSON",
+      "text": "You're my brother, Aen. But if you keep following her… I can't follow you.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_final_departures",
+      "tags": [
+        "departure"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_sophia_last_departure",
+      "speaker": "SOPHIA",
+      "text": "She whispers poison. And you're breathing it in.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_final_departures",
+      "tags": [
+        "departure"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_marcel_last_departure",
+      "speaker": "MARCEL",
+      "text": "She's shutting us out. All of us. You need to see what's happening!",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_final_departures",
+      "tags": [
+        "departure"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_hazel_last_departure",
+      "speaker": "HAZEL",
+      "text": "Aen… I wish you knew how much you mattered. Even without her.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": "beat_final_departures",
+      "tags": [
+        "departure",
+        "gentle"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_veil_outshined_them",
+      "speaker": "VEIL_MAIDEN",
+      "text": "They never believed in you. You outshined them. You only need me now.",
+      "plateau": "SUMMIT_SHRINE",
+      "beat_ref": "beat_empty_hub_only_maiden",
+      "tags": [
+        "false_praise"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_siren_reveal_gave_everything",
+      "speaker": "SIREN_OF_MASKS",
+      "text": "You gave me everything. Your trust. Your focus. Your isolation. Now… give me the rest.",
+      "plateau": "SUMMIT_SHRINE",
+      "beat_ref": "beat_siren_reveal",
+      "tags": [
+        "reveal"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_aen_what_are_you",
+      "speaker": "AEN",
+      "text": "W-What are you?!",
+      "plateau": "SUMMIT_SHRINE",
+      "beat_ref": "beat_siren_reveal",
+      "tags": [
+        "fear"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_siren_cracks_lonely_heart",
+      "speaker": "SIREN_OF_MASKS",
+      "text": "I am what grows in the cracks of a lonely heart.",
+      "plateau": "SUMMIT_SHRINE",
+      "beat_ref": "beat_siren_reveal",
+      "tags": [
+        "antagonist"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_siren_spirits_balance",
+      "speaker": "SIREN_OF_MASKS",
+      "text": "Your spirits… your balance… your children of soul.",
+      "plateau": "SUMMIT_SHRINE",
+      "beat_ref": "beat_yin_yang_taken",
+      "tags": [
+        "theft"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_aen_no",
+      "speaker": "AEN",
+      "text": "NO!",
+      "plateau": "SUMMIT_SHRINE",
+      "beat_ref": "beat_yin_yang_taken",
+      "tags": [
+        "loss"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_siren_you_are_hollow",
+      "speaker": "SIREN_OF_MASKS",
+      "text": "You are hollow now.",
+      "plateau": "SUMMIT_SHRINE",
+      "beat_ref": "beat_yin_yang_taken",
+      "tags": [
+        "hollowing"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_hermit_awaken_hollow_one",
+      "speaker": "SHADE_HERMIT",
+      "text": "Awaken, Hollow One.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_hollowing_intro",
+      "tags": [
+        "awakening"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_aen_spirits_taken",
+      "speaker": "AEN",
+      "text": "My… spirits… they were taken…",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_hollowing_intro",
+      "tags": [
+        "loss"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_hermit_walk_dark",
+      "speaker": "SHADE_HERMIT",
+      "text": "Then you must walk the dark until you find yourself again.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_hollowing_intro",
+      "tags": [
+        "mentor"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_aen_body_heavy",
+      "speaker": "AEN",
+      "text": "My body… it feels heavy.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_hollow_depths_weight_dialogue",
+      "tags": [
+        "depression"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_hermit_depression_weight",
+      "speaker": "SHADE_HERMIT",
+      "text": "Depression is weight without shape. You must push through it.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_hollow_depths_weight_dialogue",
+      "tags": [
+        "metaphor"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_echo_samson_alone",
+      "speaker": "SAMSON_ECHO",
+      "text": "You weren't alone… why did you walk away? I couldn't reach you.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_shadow_echo_fragments",
+      "tags": [
+        "echo",
+        "samson"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_echo_sophia_help",
+      "speaker": "SOPHIA_ECHO",
+      "text": "I wanted to help… but she turned your eyes from me.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_shadow_echo_fragments",
+      "tags": [
+        "echo",
+        "sophia"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_echo_marcel_broke",
+      "speaker": "MARCEL_ECHO",
+      "text": "You pushed so hard… until you broke.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_shadow_echo_fragments",
+      "tags": [
+        "echo",
+        "marcel"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_echo_hazel_worth_saving",
+      "speaker": "HAZEL_ECHO",
+      "text": "You never stopped being worth saving.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_shadow_echo_fragments",
+      "tags": [
+        "echo",
+        "hazel"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_hermit_weightbound_warning",
+      "speaker": "SHADE_HERMIT",
+      "text": "This one feeds on weariness. The longer the fight, the stronger it grows. You must be decisive.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_weightbound_ogre",
+      "tags": [
+        "boss_intro"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_smith_monk_still_fight",
+      "speaker": "SMITH_MONK",
+      "text": "You still fight. Good. Let me rebuild what was lost.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_dash_restored",
+      "tags": [
+        "unlock"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_hermit_shatter_moth_warning",
+      "speaker": "SHADE_HERMIT",
+      "text": "She does not fight you directly. She makes you doubt what you see. Trust your own eyes.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_shatter_moth_queen",
+      "tags": [
+        "boss_intro"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_aen_fractured_contact_vo",
+      "speaker": "AEN",
+      "text": "I could feel their light… once. But every time I reached… the world broke beneath me.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_fractured_contact_double_jump",
+      "tags": [
+        "vo",
+        "unlock"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_stone_judge_seek_justice",
+      "speaker": "STONE_JUDGE",
+      "text": "You seek justice? You shall earn nothing.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_stone_judge",
+      "tags": [
+        "boss_intro"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_aen_seek_spirits",
+      "speaker": "AEN",
+      "text": "I seek only my spirits back.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_stone_judge",
+      "tags": [
+        "resolve"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_stone_judge_suffer",
+      "speaker": "STONE_JUDGE",
+      "text": "Then you shall suffer.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_stone_judge",
+      "tags": [
+        "boss_intro"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_aen_yin_yang_please",
+      "speaker": "AEN",
+      "text": "Yin! Yang! Please—!",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_final_cutoff_glide",
+      "tags": [
+        "loss"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_hermit_path_closes",
+      "speaker": "SHADE_HERMIT",
+      "text": "When a path closes… another must open.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": "beat_final_cutoff_glide",
+      "tags": [
+        "unlock"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_kai_not_alone",
+      "speaker": "BROTHER_KAI",
+      "text": "You are not alone, Hollow One.",
+      "plateau": "EMBER_MONASTERY",
+      "beat_ref": "beat_hearth_of_brothers",
+      "tags": [
+        "support"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_len_walk_together",
+      "speaker": "BROTHER_LEN",
+      "text": "We walk together now.",
+      "plateau": "EMBER_MONASTERY",
+      "beat_ref": "beat_hearth_of_brothers",
+      "tags": [
+        "support"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_aen_why_help",
+      "speaker": "AEN",
+      "text": "Why help me?",
+      "plateau": "EMBER_MONASTERY",
+      "beat_ref": "beat_hearth_of_brothers",
+      "tags": [
+        "vulnerability"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_kai_someone_helped_us",
+      "speaker": "BROTHER_KAI",
+      "text": "Because someone once helped us. Sit. Speak. Heal.",
+      "plateau": "EMBER_MONASTERY",
+      "beat_ref": "beat_hearth_of_brothers",
+      "tags": [
+        "support"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_roga_strength_pain",
+      "speaker": "MENTOR_ROGA",
+      "text": "Strength is not the absence of pain. It is mastery over it.",
+      "plateau": "EMBER_MONASTERY",
+      "beat_ref": "beat_roga_training_wallcling",
+      "tags": [
+        "mentor"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_samson_returns",
+      "speaker": "SAMSON",
+      "text": "You fell far, brother. But I'm here now. And I'm not leaving again.",
+      "plateau": "EMBER_MONASTERY",
+      "beat_ref": "beat_samson_returns",
+      "tags": [
+        "return"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_marcel_returns",
+      "speaker": "MARCEL",
+      "text": "Knew you weren't finished. Let me reinforce your armor. No more breaking. If the world hit you this hard, hit it back twice.",
+      "plateau": "EMBER_MONASTERY",
+      "beat_ref": "beat_marcel_returns",
+      "tags": [
+        "return",
+        "forge"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_sophia_returns",
+      "speaker": "SOPHIA",
+      "text": "I heard your lantern shone again… so I came. You've changed, Aen. The good kind of change.",
+      "plateau": "EMBER_MONASTERY",
+      "beat_ref": "beat_sophia_skyroad_map",
+      "tags": [
+        "return",
+        "map"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_hazel_monastery",
+      "speaker": "HAZEL",
+      "text": "You grew… so much. When you light that beacon, I’ll be right behind you.",
+      "plateau": "EMBER_MONASTERY",
+      "beat_ref": "beat_hazel_beacon_lantern_setup",
+      "tags": [
+        "support",
+        "beacon"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_hermit_spirits_beyond_reach",
+      "speaker": "SHADE_HERMIT",
+      "text": "Your spirits are beyond reach. But your path is not.",
+      "plateau": "WINDING_SKYROAD",
+      "beat_ref": "beat_skyroad_ascent",
+      "tags": [
+        "ascent"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_aen_i_will_climb",
+      "speaker": "AEN",
+      "text": "I will climb. For them. For myself.",
+      "plateau": "WINDING_SKYROAD",
+      "beat_ref": "beat_skyroad_ascent",
+      "tags": [
+        "resolve"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_veil_whisper_nothing",
+      "speaker": "VEIL_ILLUSION",
+      "text": "You were nothing without me.",
+      "plateau": "WINDING_SKYROAD",
+      "beat_ref": "beat_veil_illusions_acts_2_to_4",
+      "tags": [
+        "whisper"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_veil_whisper_abandoned",
+      "speaker": "VEIL_ILLUSION",
+      "text": "They abandoned you long before I did.",
+      "plateau": "WINDING_SKYROAD",
+      "beat_ref": "beat_veil_illusions_acts_2_to_4",
+      "tags": [
+        "whisper"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_veil_whisper_keep_climbing",
+      "speaker": "VEIL_ILLUSION",
+      "text": "Why keep climbing? They won't come back.",
+      "plateau": "WINDING_SKYROAD",
+      "beat_ref": "beat_veil_illusions_acts_2_to_4",
+      "tags": [
+        "whisper"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_veil_whisper_fall_again",
+      "speaker": "VEIL_ILLUSION",
+      "text": "Stop fighting. Come fall again.",
+      "plateau": "WINDING_SKYROAD",
+      "beat_ref": "beat_veil_illusions_acts_2_to_4",
+      "tags": [
+        "whisper"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_reflection_i_am",
+      "speaker": "HOLLOW_REFLECTION",
+      "text": "I am what you would have become. Broken. Bitter. Lost.",
+      "plateau": "MIRROR_SUMMIT",
+      "beat_ref": "beat_hollow_reflection_intro",
+      "tags": [
+        "final_boss"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_aen_leave_behind",
+      "speaker": "AEN",
+      "text": "No. You are what I leave behind.",
+      "plateau": "MIRROR_SUMMIT",
+      "beat_ref": "beat_hollow_reflection_intro",
+      "tags": [
+        "release"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_aen_i_release_you",
+      "speaker": "AEN",
+      "text": "I release you.",
+      "plateau": "MIRROR_SUMMIT",
+      "beat_ref": "beat_i_release_you",
+      "tags": [
+        "victory"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_final_samson",
+      "speaker": "SAMSON",
+      "text": "Go. Light the sky. Give Yin and Yang something to find.",
+      "plateau": "BEACON_CLIFF",
+      "beat_ref": "beat_final_npc_reactions",
+      "tags": [
+        "final_words"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_final_sophia",
+      "speaker": "SOPHIA",
+      "text": "This ascent… it's your story written in the clouds.",
+      "plateau": "BEACON_CLIFF",
+      "beat_ref": "beat_final_npc_reactions",
+      "tags": [
+        "final_words"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_final_marcel",
+      "speaker": "MARCEL",
+      "text": "Show the world the man you became.",
+      "plateau": "BEACON_CLIFF",
+      "beat_ref": "beat_final_npc_reactions",
+      "tags": [
+        "final_words"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_final_hazel",
+      "speaker": "HAZEL",
+      "text": "I'm proud of you, Aen.",
+      "plateau": "BEACON_CLIFF",
+      "beat_ref": "beat_final_npc_reactions",
+      "tags": [
+        "final_words"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_aen_when_you_seek_me",
+      "speaker": "AEN",
+      "text": "When you seek me… I will be here.",
+      "plateau": "BEACON_CLIFF",
+      "beat_ref": "beat_beacon_lit",
+      "tags": [
+        "ending"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "dlg_narrator_yin_yang_return_home",
+      "speaker": "NARRATOR",
+      "text": "Yin and Yang do not return to those who beg for them. They return to those who become a home for them. The Hollowed Ninja is no more. You are whole.",
+      "plateau": "BEACON_CLIFF",
+      "beat_ref": "beat_two_stars_ending",
+      "tags": [
+        "ending"
+      ],
+      "line_role": "authored",
+      "conditions": []
+    },
+    {
+      "id": "bark_lh_explore_01",
+      "speaker": "AEN",
+      "text": "The Heights still feel like home… for now.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": [
+        "elastic",
+        "EXPLORE"
+      ],
+      "tags": [],
+      "line_role": "elastic_bark",
+      "conditions": []
+    },
+    {
+      "id": "bark_lh_train_01",
+      "speaker": "INSTRUCTOR_TAI",
+      "text": "Again. A clean step is worth more than a fast one.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": [
+        "elastic",
+        "TRAIN"
+      ],
+      "tags": [],
+      "line_role": "elastic_bark",
+      "conditions": []
+    },
+    {
+      "id": "bark_lh_deepen_01",
+      "speaker": "OLD_MAN_RIKU",
+      "text": "Lantern stories sound brighter before the dark arrives.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": [
+        "elastic",
+        "DEEPEN"
+      ],
+      "tags": [],
+      "line_role": "elastic_bark",
+      "conditions": []
+    },
+    {
+      "id": "bark_ss_pressure_01",
+      "speaker": "VEIL_MAIDEN",
+      "text": "Do not look back, Aen. They already chose to leave you.",
+      "plateau": "SUMMIT_SHRINE",
+      "beat_ref": [
+        "elastic",
+        "PRESSURE"
+      ],
+      "tags": [],
+      "line_role": "elastic_bark",
+      "conditions": []
+    },
+    {
+      "id": "bark_ss_stagnate_01",
+      "speaker": "AEN",
+      "text": "Every corridor feels like it has already happened.",
+      "plateau": "SUMMIT_SHRINE",
+      "beat_ref": [
+        "elastic",
+        "STAGNATE"
+      ],
+      "tags": [],
+      "line_role": "elastic_bark",
+      "conditions": []
+    },
+    {
+      "id": "bark_hd_stagnate_01",
+      "speaker": "SHADE_HERMIT",
+      "text": "The Depths will make circles for as long as you ask them to.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": [
+        "elastic",
+        "STAGNATE"
+      ],
+      "tags": [],
+      "line_role": "elastic_bark",
+      "conditions": []
+    },
+    {
+      "id": "bark_hd_recover_01",
+      "speaker": "LISTENING_ELDER",
+      "text": "Sit. Breathe. Survival is also progress.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": [
+        "elastic",
+        "RECOVER"
+      ],
+      "tags": [],
+      "line_role": "elastic_bark",
+      "conditions": []
+    },
+    {
+      "id": "bark_hd_pressure_01",
+      "speaker": "AEN",
+      "text": "The dark is moving faster than I am.",
+      "plateau": "HOLLOW_DEPTHS",
+      "beat_ref": [
+        "elastic",
+        "PRESSURE"
+      ],
+      "tags": [],
+      "line_role": "elastic_bark",
+      "conditions": []
+    },
+    {
+      "id": "bark_em_train_01",
+      "speaker": "MENTOR_ROGA",
+      "text": "Pain is information. Listen, then move.",
+      "plateau": "EMBER_MONASTERY",
+      "beat_ref": [
+        "elastic",
+        "TRAIN"
+      ],
+      "tags": [],
+      "line_role": "elastic_bark",
+      "conditions": []
+    },
+    {
+      "id": "bark_em_recover_01",
+      "speaker": "BROTHER_LEN",
+      "text": "The fire is not a reward. It is where you begin again.",
+      "plateau": "EMBER_MONASTERY",
+      "beat_ref": [
+        "elastic",
+        "RECOVER"
+      ],
+      "tags": [],
+      "line_role": "elastic_bark",
+      "conditions": []
+    },
+    {
+      "id": "bark_em_deepen_01",
+      "speaker": "HAZEL",
+      "text": "Some thread only glows after it has been torn.",
+      "plateau": "EMBER_MONASTERY",
+      "beat_ref": [
+        "elastic",
+        "DEEPEN"
+      ],
+      "tags": [],
+      "line_role": "elastic_bark",
+      "conditions": []
+    },
+    {
+      "id": "bark_sr_pressure_01",
+      "speaker": "AEN",
+      "text": "The wind is not blocking me. It is testing my shape.",
+      "plateau": "WINDING_SKYROAD",
+      "beat_ref": [
+        "elastic",
+        "PRESSURE"
+      ],
+      "tags": [],
+      "line_role": "elastic_bark",
+      "conditions": []
+    },
+    {
+      "id": "bark_sr_train_01",
+      "speaker": "SOPHIA",
+      "text": "Cloud routes look impossible until you draw them from above.",
+      "plateau": "WINDING_SKYROAD",
+      "beat_ref": [
+        "elastic",
+        "TRAIN"
+      ],
+      "tags": [],
+      "line_role": "elastic_bark",
+      "conditions": []
+    },
+    {
+      "id": "bark_ms_deepen_01",
+      "speaker": "HOLLOW_REFLECTION",
+      "text": "I know every quiet place you hid your anger.",
+      "plateau": "MIRROR_SUMMIT",
+      "beat_ref": [
+        "elastic",
+        "DEEPEN"
+      ],
+      "tags": [],
+      "line_role": "elastic_bark",
+      "conditions": []
+    },
+    {
+      "id": "bark_bc_recover_01",
+      "speaker": "HAZEL",
+      "text": "The stars are quiet. That does not mean they are gone.",
+      "plateau": "BEACON_CLIFF",
+      "beat_ref": [
+        "elastic",
+        "RECOVER"
+      ],
+      "tags": [],
+      "line_role": "elastic_bark",
+      "conditions": []
+    },
+    {
+      "id": "bark_bc_deepen_01",
+      "speaker": "AEN",
+      "text": "Home is not behind me. It is what I become.",
+      "plateau": "BEACON_CLIFF",
+      "beat_ref": [
+        "elastic",
+        "DEEPEN"
+      ],
+      "tags": [],
+      "line_role": "elastic_bark",
+      "conditions": []
+    }
+  ]
+}

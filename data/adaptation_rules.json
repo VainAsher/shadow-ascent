@@ -1,0 +1,153 @@
+{
+  "schema": "adaptation_rules.v1",
+  "selection_order": [
+    "campaign_truth",
+    "story_state",
+    "required_flags",
+    "ability_profile",
+    "socket_request",
+    "recent_history",
+    "pacing_need",
+    "template_weight",
+    "validation"
+  ],
+  "rules": [
+    {
+      "id": "rule_no_spirit_reunion_before_ending",
+      "priority": 1000,
+      "if": {
+        "flags_any": [
+          "yin_yang_taken"
+        ]
+      },
+      "then": {
+        "disallow_npcs": [
+          "YIN",
+          "YANG"
+        ],
+        "allow_only_symbols": [
+          "YIN_STAR",
+          "YANG_STAR",
+          "YIN_MEMORY",
+          "YANG_MEMORY"
+        ]
+      }
+    },
+    {
+      "id": "rule_elastic_cannot_advance_story",
+      "priority": 900,
+      "if": {
+        "chunk_category_prefix": "ELASTIC_"
+      },
+      "then": {
+        "forbid_setting_flags_from": "critical_flags",
+        "allow_setting_flags_prefixes": [
+          "elastic_",
+          "side_quest_",
+          "lore_"
+        ]
+      }
+    },
+    {
+      "id": "rule_socket_accessibility",
+      "priority": 850,
+      "if": {
+        "declares_sockets": true
+      },
+      "then": {
+        "must_validate": [
+          "reachable_from_spawn",
+          "reachable_to_exit",
+          "north_south_shaft_clearance",
+          "landing_platforms",
+          "no_solid_covering_socket"
+        ]
+      }
+    },
+    {
+      "id": "rule_plateau_locked_content",
+      "priority": 800,
+      "if": {
+        "story_state_bound": true
+      },
+      "then": {
+        "candidate_must_match_current_plateau": true,
+        "candidate_tags_must_not_intersect": "blocked_chunk_tags"
+      }
+    },
+    {
+      "id": "rule_advance_hint_after_long_loops",
+      "priority": 300,
+      "if": {
+        "same_plateau_chunks_since_critical": 12
+      },
+      "then": {
+        "increase_kind_weights": {
+          "ADVANCE_HINT": 0.2,
+          "LOOP_BACK": 0.1
+        },
+        "decrease_kind_weights": {
+          "STAGNATE": 0.1
+        }
+      }
+    },
+    {
+      "id": "rule_recover_after_pressure",
+      "priority": 250,
+      "if": {
+        "recent_kinds_contains_at_least": {
+          "PRESSURE": 3
+        }
+      },
+      "then": {
+        "increase_kind_weights": {
+          "RECOVER": 0.25,
+          "LOOP_BACK": 0.1
+        }
+      }
+    },
+    {
+      "id": "rule_train_after_unlock",
+      "priority": 240,
+      "if": {
+        "new_ability_unlocked_within_chunks": 4
+      },
+      "then": {
+        "increase_kind_weights": {
+          "TRAIN": 0.3
+        },
+        "require_templates_with_tags_any": [
+          "dash",
+          "double_jump",
+          "glide",
+          "grapple",
+          "wall_cling"
+        ]
+      }
+    },
+    {
+      "id": "rule_lore_does_not_repeat",
+      "priority": 100,
+      "if": {
+        "recent_dialogue_repetition": true
+      },
+      "then": {
+        "suppress_recent_dialogue_ids": true,
+        "prefer_unseen_lore": true
+      }
+    }
+  ],
+  "debug_fields_required": [
+    "plateau",
+    "chunk_category",
+    "kind",
+    "route_order_if_critical",
+    "source_beat",
+    "required_flags",
+    "sets_flags",
+    "socket_profile",
+    "validation_status",
+    "why_selected",
+    "why_rejected"
+  ]
+}

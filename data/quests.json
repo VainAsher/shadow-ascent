@@ -1,0 +1,461 @@
+{
+  "schema": "quest_chains.v4",
+  "principle": "Side quest chains are authored anchors that may spawn elastic objectives in plateau-compatible areas without changing main-story truth.",
+  "critical_flags": [
+    "title_seen",
+    "opening_seen",
+    "aen_introduced",
+    "yin_yang_present",
+    "village_bonds",
+    "veil_request_accepted",
+    "mistwood_beast_defeated",
+    "npc_withdrawal_started",
+    "warnings_heard",
+    "hub_dimming_seen",
+    "hub_emptied",
+    "entered_summit",
+    "empty_hub_only_maiden",
+    "mask_truth_seen",
+    "siren_fight_started",
+    "yin_yang_taken",
+    "hollowed",
+    "act2_unlocked",
+    "awoke_in_depths",
+    "hollow_weight_understood",
+    "weightbound_ogre_defeated",
+    "dash_restored",
+    "shatter_moth_defeated",
+    "double_jump_restored",
+    "stone_judge_defeated",
+    "glide_restored",
+    "aen_listened_to_depths",
+    "old_road_opened",
+    "entered_ember_monastery",
+    "hearth_joined",
+    "air_dodge_restored",
+    "grapple_restored",
+    "wall_cling_mastered",
+    "samson_returned",
+    "marcel_returned",
+    "skyroad_map_acquired",
+    "beacon_lantern_prepared",
+    "skyroad_opened",
+    "ascent_begun",
+    "stars_accepted",
+    "mirror_gate_opened",
+    "mirror_approached",
+    "reflection_fight_started",
+    "reflection_released",
+    "release_accepted",
+    "beacon_cliff_unlocked",
+    "final_words_heard",
+    "beacon_lit",
+    "ending_complete"
+  ],
+  "chains": [
+    {
+      "id": "quest_samson_spear_at_your_back",
+      "npc": "SAMSON",
+      "title": "The Spear at Your Back",
+      "steps": [
+        {
+          "id": "samson_q1_unfinished_sparring_match",
+          "act": "ACT_0",
+          "plateau": "LANTERN_HEIGHTS",
+          "hook": "Samson challenges Aen to a friendly duel.",
+          "objective": "Enter a small dojo room and defeat Samson's training ghost in a timed combat challenge.",
+          "area_pool": [
+            "area_training_dojo",
+            "elastic_lh_training_loop"
+          ],
+          "reward": "small_permanent_hp_or_poise_buff",
+          "reward_effects": [
+            {
+              "type": "PASSIVE_BUFF",
+              "magnitude": 1,
+              "payload": {
+                "id": "samson_q1_duelist_resolve_buff",
+                "buff_family": "hp_or_poise"
+              }
+            }
+          ],
+          "story_beat": "Samson believes in Aen without flattery.",
+          "sets_flags": [
+            "samson_q1_complete"
+          ]
+        },
+        {
+          "id": "samson_q2_echoes_in_the_dark",
+          "act": "ACT_2",
+          "plateau": "HOLLOW_DEPTHS",
+          "required_flags": [
+            "weightbound_ogre_defeated"
+          ],
+          "hook": "Aen hears Samson's echo more clearly.",
+          "objective": "Follow echo waypoints through optional rooms and defeat a Guilt Wraith.",
+          "area_pool": [
+            "area_echo_galleries",
+            "elastic_hd_samson_echo"
+          ],
+          "enemy": "GUILT_WRAITH",
+          "wraith_dialogue": [
+            "You abandoned me.",
+            "You chose her over us."
+          ],
+          "reward": "samson_charm_low_health_bonus",
+          "reward_effects": [
+            {
+              "type": "CHARM_UNLOCK",
+              "magnitude": 1,
+              "payload": {
+                "id": "samson_brother_echo_charm",
+                "charm_key": "samson_low_health_bonus"
+              }
+            }
+          ],
+          "story_beat": "Aen acknowledges the drift; memory becomes strength, not shame.",
+          "sets_flags": [
+            "samson_q2_complete"
+          ]
+        },
+        {
+          "id": "samson_q3_brother_returns",
+          "act": "ACT_3",
+          "plateau": "EMBER_MONASTERY",
+          "required_flags": [
+            "hearth_joined"
+          ],
+          "hook": "Full reunion cutscene.",
+          "objective": "Optional AI co-op trial — Samson fights beside you.",
+          "area_pool": [
+            "area_ember_monastery_hub",
+            "elastic_em_samson_ai_trial"
+          ],
+          "reward": "samson_at_your_back_group_combat_bonus",
+          "reward_effects": [
+            {
+              "type": "PASSIVE_BUFF",
+              "magnitude": 1,
+              "payload": {
+                "id": "samson_group_combat_aura",
+                "buff_family": "group_combat_bonus"
+              }
+            }
+          ],
+          "sets_flags": [
+            "samson_returned",
+            "samson_q3_complete"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quest_sophia_ink_that_remembers",
+      "npc": "SOPHIA",
+      "title": "The Ink That Remembers",
+      "steps": [
+        {
+          "id": "sophia_q1_lantern_cartography",
+          "act": "ACT_0",
+          "plateau": "LANTERN_HEIGHTS",
+          "hook": "Sophia asks Aen to collect fragments of old maps in early missions.",
+          "objective": "Find 3–5 Map Shards in early missions.",
+          "area_pool": [
+            "area_lantern_heights_hub",
+            "area_mistwood_path",
+            "elastic_lh_lore_walk"
+          ],
+          "reward": "minimap_upgrade",
+          "reward_effects": [
+            {
+              "type": "MAP_UPGRADE",
+              "magnitude": 1,
+              "payload": {
+                "id": "sophia_cartography_tier_1",
+                "map_layer": "shard_radar"
+              }
+            }
+          ],
+          "sets_flags": [
+            "sophia_q1_complete"
+          ]
+        },
+        {
+          "id": "sophia_q2_slander_and_silence",
+          "act": "ACT_0_TO_ACT_1",
+          "plateau": "LANTERN_HEIGHTS",
+          "required_flags": [
+            "npc_withdrawal_started"
+          ],
+          "hook": "Sophia begins to disappear; whispers spread.",
+          "objective": "Read 2–3 overheard rumours from minor NPCs.",
+          "area_pool": [
+            "area_closed_market",
+            "elastic_lh_warning_echo"
+          ],
+          "reward": "letter_from_sophia",
+          "reward_effects": [
+            {
+              "type": "ITEM_UNLOCK",
+              "magnitude": 1,
+              "payload": {
+                "id": "sophia_letter_archive_item",
+                "item_key": "letter_from_sophia"
+              }
+            }
+          ],
+          "story_beat": "Sophia chose survival, not abandonment.",
+          "sets_flags": [
+            "sophia_q2_complete"
+          ]
+        },
+        {
+          "id": "sophia_q3_map_to_skyroad",
+          "act": "ACT_3_TO_ACT_4",
+          "plateau": "EMBER_MONASTERY",
+          "required_flags": [
+            "wall_cling_mastered"
+          ],
+          "hook": "Sophia returns briefly as a traveller.",
+          "objective": "Fetch Star Ink from a rare location.",
+          "area_pool": [
+            "area_star_ink_garden",
+            "elastic_em_star_ink_route"
+          ],
+          "reward": "skyroad_map_route_clarity_and_secret_shortcut",
+          "reward_effects": [
+            {
+              "type": "MAP_UPGRADE",
+              "magnitude": 1,
+              "payload": {
+                "id": "skyroad_route_overlay_upgrade",
+                "map_layer": "secret_shortcut"
+              }
+            }
+          ],
+          "sets_flags": [
+            "skyroad_map_acquired",
+            "sophia_q3_complete"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quest_marcel_iron_voice",
+      "npc": "MARCEL",
+      "title": "The Iron Voice",
+      "steps": [
+        {
+          "id": "marcel_q1_guard_the_forge",
+          "act": "ACT_0",
+          "plateau": "LANTERN_HEIGHTS",
+          "hook": "Marcel asks Aen to guard the forge while he and Jenro gather materials.",
+          "objective": "Defend the forge from enemy waves.",
+          "area_pool": [
+            "area_training_dojo",
+            "area_lantern_forge"
+          ],
+          "reward": "early_weapon_enhancement_plus_one_damage_tier",
+          "reward_effects": [
+            {
+              "type": "WEAPON_UPGRADE",
+              "magnitude": 1,
+              "payload": {
+                "id": "marcel_forge_tier_1",
+                "upgrade_path": "damage_tier"
+              }
+            }
+          ],
+          "sets_flags": [
+            "marcel_q1_complete"
+          ]
+        },
+        {
+          "id": "marcel_q2_broken_steel_unbroken_will",
+          "act": "ACT_2",
+          "plateau": "HOLLOW_DEPTHS",
+          "hook": "Aen finds a broken hammer with Marcel's sigil.",
+          "objective": "Retrieve lost fragments from a dangerous side path.",
+          "area_pool": [
+            "area_hollow_depths_caves",
+            "elastic_hd_marcel_echo"
+          ],
+          "reward": "marcel_hammer_charm_heavy_stagger",
+          "reward_effects": [
+            {
+              "type": "CHARM_UNLOCK",
+              "magnitude": 1,
+              "payload": {
+                "id": "marcel_hammer_stagger_charm",
+                "charm_key": "heavy_stagger"
+              }
+            }
+          ],
+          "sets_flags": [
+            "marcel_q2_complete"
+          ]
+        },
+        {
+          "id": "marcel_q3_reforging_the_self",
+          "act": "ACT_3",
+          "plateau": "EMBER_MONASTERY",
+          "required_flags": [
+            "hearth_joined"
+          ],
+          "hook": "Marcel appears as a smith helping the Monastery.",
+          "objective": "Collect rare ore from a tough side-level.",
+          "area_pool": [
+            "area_ember_forge",
+            "elastic_em_rare_ore_route"
+          ],
+          "reward": "ember_forged_final_weapon_form",
+          "reward_effects": [
+            {
+              "type": "WEAPON_UPGRADE",
+              "magnitude": 1,
+              "payload": {
+                "id": "marcel_ember_weapon_form",
+                "upgrade_path": "final_form"
+              }
+            }
+          ],
+          "sets_flags": [
+            "marcel_returned",
+            "marcel_q3_complete"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quest_hazel_lantern_weaver",
+      "npc": "HAZEL",
+      "title": "The Lantern Weaver",
+      "steps": [
+        {
+          "id": "hazel_q1_gentle_glow",
+          "act": "ACT_0",
+          "plateau": "LANTERN_HEIGHTS",
+          "hook": "Hazel offers to weave protective lantern cloth.",
+          "objective": "Gather soft materials from low-threat creatures/plants.",
+          "area_pool": [
+            "area_lantern_heights_hub",
+            "elastic_lh_social_errand"
+          ],
+          "reward": "slightly_increased_healing_from_items_and_shrines",
+          "reward_effects": [
+            {
+              "type": "PASSIVE_BUFF",
+              "magnitude": 1,
+              "payload": {
+                "id": "hazel_healing_weave_buff",
+                "buff_family": "healing_amplifier"
+              }
+            }
+          ],
+          "sets_flags": [
+            "hazel_q1_complete"
+          ]
+        },
+        {
+          "id": "hazel_q2_shreds_in_the_dark",
+          "act": "ACT_2",
+          "plateau": "HOLLOW_DEPTHS",
+          "hook": "A torn piece of Hazel's cloth appears in a dark level.",
+          "objective": "Retrieve it from a dangerous zone.",
+          "area_pool": [
+            "area_hollow_depths_caves",
+            "elastic_hd_hazel_echo"
+          ],
+          "reward": "lantern_skin_cosmetic_plus_light_radius",
+          "reward_effects": [
+            {
+              "type": "COSMETIC_UNLOCK",
+              "magnitude": 1,
+              "payload": {
+                "id": "hazel_nightweave_lantern_skin",
+                "cosmetic_slot": "lantern_skin"
+              }
+            },
+            {
+              "type": "PASSIVE_BUFF",
+              "magnitude": 1,
+              "payload": {
+                "id": "hazel_lantern_light_radius_buff",
+                "buff_family": "light_radius"
+              }
+            }
+          ],
+          "sets_flags": [
+            "hazel_q2_complete"
+          ]
+        },
+        {
+          "id": "hazel_q3_lantern_for_tomorrow",
+          "act": "ACT_3_TO_ACT_4",
+          "plateau": "EMBER_MONASTERY",
+          "required_flags": [
+            "hearth_joined"
+          ],
+          "hook": "Hazel finishes a special lantern in the Monastery hub.",
+          "objective": "Bring one final rare material from a high-skill challenge.",
+          "area_pool": [
+            "area_lantern_silk_workshop",
+            "elastic_em_lantern_silk_route"
+          ],
+          "reward": "beacon_lantern_final_act_buff_and_cutscene_item",
+          "reward_effects": [
+            {
+              "type": "PASSIVE_BUFF",
+              "magnitude": 1,
+              "payload": {
+                "id": "hazel_beacon_lantern_final_buff",
+                "buff_family": "final_act_support"
+              }
+            },
+            {
+              "type": "ITEM_UNLOCK",
+              "magnitude": 1,
+              "payload": {
+                "id": "hazel_beacon_lantern_cutscene_item",
+                "item_key": "beacon_lantern"
+              }
+            }
+          ],
+          "sets_flags": [
+            "beacon_lantern_prepared",
+            "hazel_q3_complete"
+          ]
+        }
+      ]
+    }
+  ],
+  "optional_npcs": [
+    {
+      "id": "old_man_riku",
+      "display": "Old Man Riku — The Storykeeper",
+      "function": "Tells lore and unlocks tablets when brought relics.",
+      "eligible_plateaus": [
+        "LANTERN_HEIGHTS",
+        "EMBER_MONASTERY",
+        "BEACON_CLIFF"
+      ]
+    },
+    {
+      "id": "lantern_kid",
+      "display": "Lantern Kid",
+      "function": "Appears early in Lantern Heights and later as a hopeful echo in the Monastery.",
+      "eligible_plateaus": [
+        "LANTERN_HEIGHTS",
+        "EMBER_MONASTERY"
+      ]
+    },
+    {
+      "id": "brother_ash",
+      "display": "Brother Ash — Silent Monk",
+      "function": "Silent reward-giver using gestures after achievements.",
+      "eligible_plateaus": [
+        "EMBER_MONASTERY"
+      ]
+    }
+  ]
+}

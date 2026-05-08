@@ -1,0 +1,18 @@
+# Gradle
+.gradle/
+.gradle-user-home/
+build/
+
+# IDE
+/.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Java
+*.class
+
+# Runtime logs
+logs/

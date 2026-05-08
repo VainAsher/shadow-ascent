@@ -1,0 +1,22 @@
+{
+  "id": "lantern_region_hub",
+  "biome": "lantern",
+  "kind": "region_hub",
+  "footprint": { "gridW": 4, "gridH": 2 },
+  "nodeKinds": ["entry_gate", "transition_hall", "upper_terrace", "exit_arch"],
+  "edgeRules": [
+    { "from": "entry_gate",     "to": "transition_hall" },
+    { "from": "transition_hall","to": "upper_terrace" },
+    { "from": "upper_terrace",  "to": "exit_arch" }
+  ],
+  "requiredSockets": ["west_low_walk", "east_low_walk", "north_mid_climb"],
+  "mutableZones": [
+    { "x": 16, "y": 24, "w": 64, "h": 16, "role": "ambient_population" },
+    { "x": 80, "y": 48, "w": 32, "h": 12, "role": "hazard_layer" }
+  ],
+  "anchors": [
+    { "id": "gate_anchor",    "kind": "transition", "localBounds": {"x": 4,   "y": 48, "w": 6,  "h": 12} },
+    { "id": "terrace_anchor", "kind": "platform",   "localBounds": {"x": 88,  "y": 32, "w": 24, "h": 4}  },
+    { "id": "save_point",     "kind": "save_point", "localBounds": {"x": 48,  "y": 56, "w": 4,  "h": 6}  }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "narrative_data_schema.v1",
+  "files": {
+    "plateaus.json": "Elastic plateau definitions and rules by story state.",
+    "narrative_beats.json": "Authored, adaptable, transition, and elastic pool beats converted from the script.",
+    "area_catalog.json": "Area families and area instances used by beat and chunk contracts.",
+    "elastic_chunk_templates.json": "Reusable side-content templates for each plateau.",
+    "dialogue.json": "Dialogue lines and barks referenced by beats/templates.",
+    "quests.json": "Side quest chains and flags.",
+    "lore_tables.json": "Lore tablets and secret fragments.",
+    "npc_registry.json": "NPC role availability by plateau.",
+    "adaptation_rules.json": "Rules for selecting, rejecting, and validating content.",
+    "story_flags.json": "Critical and side-quest flags.",
+    "critical_path_debug.json": "Developer overlay/route visualization config."
+  },
+  "core_object_shapes": {
+    "Beat": {
+      "id": "string",
+      "plateau": "string",
+      "beat_type": "AUTHORED_CRITICAL|AUTHORED_MILESTONE|ADAPTABLE_AUTHORED|TRANSITION|ELASTIC_*_POOL",
+      "area_id": "string",
+      "required_flags": "string[]",
+      "sets_flags": "string[]",
+      "dialogue_refs": "string[]",
+      "elastic_variants": "template_id[]"
+    },
+    "ElasticChunkTemplate": {
+      "id": "string",
+      "plateau": "string",
+      "kind": "EXPLORE|LOOP_BACK|DEEPEN|TRAIN|RECOVER|PRESSURE|STAGNATE|ADVANCE_HINT",
+      "tags": "string[]",
+      "socket_profile": "Socket[]",
+      "validation_rules": "string[]"
+    },
+    "QuestRewardEffect": {
+      "type": "MAP_UPGRADE|CHARM_UNLOCK|PASSIVE_BUFF|WEAPON_UPGRADE|COSMETIC_UNLOCK|ITEM_UNLOCK|UNKNOWN_REWARD",
+      "magnitude": "int>=1",
+      "payload": "object<string,string> (optional)"
+    },
+    "QuestStep": {
+      "id": "string",
+      "act": "ACT_*",
+      "plateau": "string",
+      "objective": "string",
+      "required_flags": "string[] (optional)",
+      "sets_flags": "string[]",
+      "reward": "legacy string token (optional, compatibility only)",
+      "reward_effects": "QuestRewardEffect[] (authoritative)"
+    }
+  }
+}

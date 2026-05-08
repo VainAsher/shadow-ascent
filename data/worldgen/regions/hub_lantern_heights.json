@@ -1,0 +1,16 @@
+{
+    "regionId": "hub_lantern_heights",
+    "biome": "lantern",
+    "kind": "hub_home",
+    "socketBindings": [
+        { "socketId": "north_to_forge", "connectedRegionId": "dungeon_forge_terrace_a" }
+    ],
+    "authoredZoneOverrides": [],
+    "tiles": [
+        { "x": 240, "y": 500, "w": 40,  "h": 170, "platform": false },
+        { "x": 184, "y": 468, "w": 196, "h": 14,  "platform": true  },
+        { "x": 432, "y": 558, "w": 108, "h": 112, "platform": false },
+        { "x": 640, "y": 402, "w": 40,  "h": 268, "platform": false },
+        { "x": 596, "y": 378, "w": 186, "h": 14,  "platform": true  }
+    ]
+}

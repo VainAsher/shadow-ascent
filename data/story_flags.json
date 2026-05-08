@@ -1,0 +1,395 @@
+{
+  "schema": "story_flags.v1",
+  "flags": [
+    {
+      "id": "title_seen",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "opening_seen",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "aen_introduced",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "yin_yang_present",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "village_bonds",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "veil_request_accepted",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "mistwood_beast_defeated",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "npc_withdrawal_started",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "warnings_heard",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "hub_dimming_seen",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "hub_emptied",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "entered_summit",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "empty_hub_only_maiden",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "mask_truth_seen",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "siren_fight_started",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "yin_yang_taken",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "hollowed",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "act2_unlocked",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "awoke_in_depths",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "hollow_weight_understood",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "weightbound_ogre_defeated",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "dash_restored",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "shatter_moth_defeated",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "double_jump_restored",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "stone_judge_defeated",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "glide_restored",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "aen_listened_to_depths",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "old_road_opened",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "entered_ember_monastery",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "hearth_joined",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "air_dodge_restored",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "grapple_restored",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "wall_cling_mastered",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "samson_returned",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "marcel_returned",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "skyroad_map_acquired",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "beacon_lantern_prepared",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "skyroad_opened",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "ascent_begun",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "stars_accepted",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "mirror_gate_opened",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "mirror_approached",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "reflection_fight_started",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "reflection_released",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "release_accepted",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "beacon_cliff_unlocked",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "final_words_heard",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "beacon_lit",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "ending_complete",
+      "type": "critical",
+      "source": "narrative_beats",
+      "debug_color": "gold"
+    },
+    {
+      "id": "samson_q1_complete",
+      "type": "side_quest",
+      "source": "quest_samson_spear_at_your_back",
+      "debug_color": "purple"
+    },
+    {
+      "id": "samson_q2_complete",
+      "type": "side_quest",
+      "source": "quest_samson_spear_at_your_back",
+      "debug_color": "purple"
+    },
+    {
+      "id": "samson_returned",
+      "type": "side_quest",
+      "source": "quest_samson_spear_at_your_back",
+      "debug_color": "purple"
+    },
+    {
+      "id": "samson_q3_complete",
+      "type": "side_quest",
+      "source": "quest_samson_spear_at_your_back",
+      "debug_color": "purple"
+    },
+    {
+      "id": "sophia_q1_complete",
+      "type": "side_quest",
+      "source": "quest_sophia_ink_that_remembers",
+      "debug_color": "purple"
+    },
+    {
+      "id": "sophia_q2_complete",
+      "type": "side_quest",
+      "source": "quest_sophia_ink_that_remembers",
+      "debug_color": "purple"
+    },
+    {
+      "id": "skyroad_map_acquired",
+      "type": "side_quest",
+      "source": "quest_sophia_ink_that_remembers",
+      "debug_color": "purple"
+    },
+    {
+      "id": "sophia_q3_complete",
+      "type": "side_quest",
+      "source": "quest_sophia_ink_that_remembers",
+      "debug_color": "purple"
+    },
+    {
+      "id": "marcel_q1_complete",
+      "type": "side_quest",
+      "source": "quest_marcel_iron_voice",
+      "debug_color": "purple"
+    },
+    {
+      "id": "marcel_q2_complete",
+      "type": "side_quest",
+      "source": "quest_marcel_iron_voice",
+      "debug_color": "purple"
+    },
+    {
+      "id": "marcel_returned",
+      "type": "side_quest",
+      "source": "quest_marcel_iron_voice",
+      "debug_color": "purple"
+    },
+    {
+      "id": "marcel_q3_complete",
+      "type": "side_quest",
+      "source": "quest_marcel_iron_voice",
+      "debug_color": "purple"
+    },
+    {
+      "id": "hazel_q1_complete",
+      "type": "side_quest",
+      "source": "quest_hazel_lantern_weaver",
+      "debug_color": "purple"
+    },
+    {
+      "id": "hazel_q2_complete",
+      "type": "side_quest",
+      "source": "quest_hazel_lantern_weaver",
+      "debug_color": "purple"
+    },
+    {
+      "id": "beacon_lantern_prepared",
+      "type": "side_quest",
+      "source": "quest_hazel_lantern_weaver",
+      "debug_color": "purple"
+    },
+    {
+      "id": "hazel_q3_complete",
+      "type": "side_quest",
+      "source": "quest_hazel_lantern_weaver",
+      "debug_color": "purple"
+    }
+  ]
+}

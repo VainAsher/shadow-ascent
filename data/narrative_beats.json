@@ -1,0 +1,1483 @@
+{
+  "schema": "narrative_beats.v1",
+  "source": "Full Game Script pasted by owner; converted into authored and adaptable generation beats.",
+  "beats": [
+    {
+      "id": "beat_title_sequence",
+      "plateau": "GLOBAL",
+      "route_order": 0,
+      "title": "Title Sequence",
+      "beat_type": "CINEMATIC",
+      "area_id": "area_floating_mountain_range",
+      "required_flags": [],
+      "sets_flags": [
+        "title_seen"
+      ],
+      "unlocks": [],
+      "npcs": [],
+      "tags": [
+        "title",
+        "lantern_chimes",
+        "dawn"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": "Floating mountain range under dawn light; lanterns drift like fireflies.",
+      "dialogue_refs": [],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_opening_lantern_heights",
+      "plateau": "LANTERN_HEIGHTS",
+      "route_order": 10,
+      "title": "Opening: Lantern Heights",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_lantern_heights_balcony",
+      "required_flags": [],
+      "sets_flags": [
+        "opening_seen",
+        "aen_introduced",
+        "yin_yang_present"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "AEN",
+        "YIN",
+        "YANG",
+        "INSTRUCTOR_TAI"
+      ],
+      "tags": [
+        "opening",
+        "home",
+        "twofold_light"
+      ],
+      "objective_prompt": "Explore Lantern Heights. Meet the villagers.",
+      "cinematic_intent": "Slow village pan; Aen overlooks the world; Tai begins the true path.",
+      "dialogue_refs": [
+        "dlg_opening_aen_vo",
+        "dlg_tai_begin_path"
+      ],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_meet_villagers",
+      "plateau": "LANTERN_HEIGHTS",
+      "route_order": 20,
+      "title": "Meet the Villagers",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_lantern_heights_hub",
+      "required_flags": [
+        "opening_seen"
+      ],
+      "sets_flags": [
+        "village_bonds"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "MERCHANT_RILU",
+        "SMITH_JENRO",
+        "SAMSON",
+        "SOPHIA",
+        "MARCEL",
+        "HAZEL"
+      ],
+      "tags": [
+        "social",
+        "home",
+        "bonding"
+      ],
+      "objective_prompt": "Speak to Rilu, Jenro, Samson, Sophia, Marcel, and Hazel.",
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_rilu_intro",
+        "dlg_jenro_intro",
+        "dlg_samson_intro",
+        "dlg_sophia_intro",
+        "dlg_marcel_intro",
+        "dlg_hazel_intro"
+      ],
+      "elastic_variants": [
+        "elastic_lh_social_errand",
+        "elastic_lh_training_loop",
+        "elastic_lh_lore_walk"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "beat_veil_maiden_request",
+      "plateau": "LANTERN_HEIGHTS",
+      "route_order": 30,
+      "title": "Veil Maiden's Request",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_lantern_heights_hub",
+      "required_flags": [
+        "village_bonds"
+      ],
+      "sets_flags": [
+        "veil_request_accepted"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "VEIL_MAIDEN",
+        "AEN"
+      ],
+      "tags": [
+        "foreshadow",
+        "praise",
+        "outsider"
+      ],
+      "objective_prompt": "Accept Veil Maiden's Request.",
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_veil_first_appearance"
+      ],
+      "elastic_variants": [],
+      "constraints": [
+        "Veil praise must feel flattering but subtly predatory."
+      ]
+    },
+    {
+      "id": "beat_mistwood_first_mission",
+      "plateau": "LANTERN_HEIGHTS",
+      "route_order": 40,
+      "title": "Mistwood First Mission",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_mistwood_path",
+      "required_flags": [
+        "veil_request_accepted"
+      ],
+      "sets_flags": [
+        "mistwood_beast_defeated"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "VEIL_MAIDEN",
+        "YIN",
+        "YANG",
+        "AEN"
+      ],
+      "tags": [
+        "mistwood",
+        "early_combat",
+        "warning"
+      ],
+      "objective_prompt": "Defeat the corrupted beast in Mistwood.",
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_veil_first_mission",
+        "dlg_yang_maiden_warning",
+        "dlg_yin_maiden_warning",
+        "dlg_aen_defends_maiden"
+      ],
+      "elastic_variants": [
+        "elastic_mistwood_resource_path",
+        "elastic_mistwood_lantern_cat_path"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "beat_npc_withdrawal",
+      "plateau": "LANTERN_HEIGHTS",
+      "route_order": 50,
+      "title": "NPC Withdrawal",
+      "beat_type": "AUTHORED_MILESTONE",
+      "area_id": "area_lantern_heights_hub_dimming",
+      "required_flags": [
+        "mistwood_beast_defeated"
+      ],
+      "sets_flags": [
+        "npc_withdrawal_started"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "MERCHANT_RILU",
+        "VEIL_MAIDEN",
+        "AEN"
+      ],
+      "tags": [
+        "isolation",
+        "dimming",
+        "shops_close"
+      ],
+      "objective_prompt": "Return to Lantern Heights.",
+      "cinematic_intent": "Few NPCs remain; shops close early; Maiden smiles behind Aen.",
+      "dialogue_refs": [
+        "dlg_rilu_distance",
+        "dlg_aen_distance_question"
+      ],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_act0_isolation_dialogue",
+      "plateau": "LANTERN_HEIGHTS",
+      "route_order": 60,
+      "title": "Act 0 Isolation Dialogues",
+      "beat_type": "ADAPTABLE_AUTHORED",
+      "area_id": "area_lantern_heights_hub_dimming",
+      "required_flags": [
+        "npc_withdrawal_started"
+      ],
+      "sets_flags": [
+        "warnings_heard"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "SAMSON",
+        "SOPHIA",
+        "MARCEL",
+        "HAZEL"
+      ],
+      "tags": [
+        "warning",
+        "subtle_isolation"
+      ],
+      "objective_prompt": "Listen to the remaining villagers.",
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_samson_fading_presence",
+        "dlg_sophia_rare_appearance",
+        "dlg_marcel_warning",
+        "dlg_hazel_warning"
+      ],
+      "elastic_variants": [
+        "elastic_lh_warning_echo",
+        "elastic_lh_closed_stalls_loop"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "beat_subtle_isolation_cutscene",
+      "plateau": "LANTERN_HEIGHTS",
+      "route_order": 70,
+      "title": "Subtle Isolation",
+      "beat_type": "CINEMATIC",
+      "area_id": "area_empty_lantern_heights_night",
+      "required_flags": [
+        "warnings_heard"
+      ],
+      "sets_flags": [
+        "hub_dimming_seen"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "AEN",
+        "VEIL_MAIDEN"
+      ],
+      "tags": [
+        "night",
+        "empty_hub",
+        "praise"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_aen_vo_isolation",
+        "dlg_veil_only_need_me"
+      ],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_final_departures",
+      "plateau": "LANTERN_HEIGHTS",
+      "route_order": 80,
+      "title": "Final NPC Departures",
+      "beat_type": "AUTHORED_MILESTONE",
+      "area_id": "area_lantern_heights_last_lantern",
+      "required_flags": [
+        "hub_dimming_seen"
+      ],
+      "sets_flags": [
+        "hub_emptied"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "SAMSON",
+        "SOPHIA",
+        "MARCEL",
+        "HAZEL",
+        "AEN"
+      ],
+      "tags": [
+        "last_warnings",
+        "empty_hub"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_samson_last_departure",
+        "dlg_sophia_last_departure",
+        "dlg_marcel_last_departure",
+        "dlg_hazel_last_departure"
+      ],
+      "elastic_variants": [],
+      "constraints": [
+        "After this beat, Lantern Heights hub must only allow Veil Maiden as present major NPC until collapse completes."
+      ]
+    },
+    {
+      "id": "beat_summit_shrine_call",
+      "plateau": "LANTERN_HEIGHTS",
+      "route_order": 90,
+      "title": "Summit Shrine Call",
+      "beat_type": "TRANSITION",
+      "area_id": "area_summit_shrine_gate",
+      "required_flags": [
+        "hub_emptied"
+      ],
+      "sets_flags": [
+        "entered_summit"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "VEIL_MAIDEN",
+        "AEN"
+      ],
+      "tags": [
+        "transition",
+        "shrine",
+        "point_of_no_return"
+      ],
+      "objective_prompt": "Follow the Veil Maiden to Summit Shrine.",
+      "cinematic_intent": null,
+      "dialogue_refs": [],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_empty_hub_only_maiden",
+      "plateau": "SUMMIT_SHRINE",
+      "route_order": 100,
+      "title": "Just Aen and the Veil Maiden",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_empty_lantern_heights_hub",
+      "required_flags": [
+        "entered_summit"
+      ],
+      "sets_flags": [
+        "empty_hub_only_maiden"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "VEIL_MAIDEN",
+        "AEN"
+      ],
+      "tags": [
+        "isolation",
+        "false_belief"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_veil_outshined_them"
+      ],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_siren_reveal",
+      "plateau": "SUMMIT_SHRINE",
+      "route_order": 110,
+      "title": "Siren of Masks Reveal",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_summit_shrine_arena",
+      "required_flags": [
+        "empty_hub_only_maiden"
+      ],
+      "sets_flags": [
+        "mask_truth_seen"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "SIREN_OF_MASKS",
+        "AEN",
+        "YIN",
+        "YANG"
+      ],
+      "tags": [
+        "boss_intro",
+        "reveal",
+        "masks"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": "Maiden shimmer distorts into a demon draped in screaming visages.",
+      "dialogue_refs": [
+        "dlg_siren_reveal_gave_everything",
+        "dlg_aen_what_are_you",
+        "dlg_siren_cracks_lonely_heart"
+      ],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_siren_boss_scripted",
+      "plateau": "SUMMIT_SHRINE",
+      "route_order": 120,
+      "title": "First Boss: Siren of Masks",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_summit_shrine_arena",
+      "required_flags": [
+        "mask_truth_seen"
+      ],
+      "sets_flags": [
+        "siren_fight_started"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "SIREN_OF_MASKS",
+        "AEN",
+        "YIN",
+        "YANG"
+      ],
+      "tags": [
+        "boss",
+        "illusion",
+        "scripted_loss"
+      ],
+      "objective_prompt": "Survive the Siren of Masks.",
+      "cinematic_intent": null,
+      "dialogue_refs": [],
+      "elastic_variants": [],
+      "constraints": [
+        "The player must lose by design. Do not allow victory state to kill or finalize the Siren here."
+      ]
+    },
+    {
+      "id": "beat_yin_yang_taken",
+      "plateau": "SUMMIT_SHRINE",
+      "route_order": 130,
+      "title": "Scripted Defeat: Yin and Yang Taken",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_summit_shrine_fall",
+      "required_flags": [
+        "siren_fight_started"
+      ],
+      "sets_flags": [
+        "yin_yang_taken",
+        "hollowed"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "SIREN_OF_MASKS",
+        "AEN",
+        "YIN",
+        "YANG"
+      ],
+      "tags": [
+        "scripted_defeat",
+        "hollowing"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_siren_spirits_balance",
+        "dlg_aen_no",
+        "dlg_siren_you_are_hollow"
+      ],
+      "elastic_variants": [],
+      "constraints": [
+        "Yin and Yang roles become LOST/ABSENT/STARS after this beat."
+      ]
+    },
+    {
+      "id": "beat_aen_hollowed",
+      "plateau": "SUMMIT_SHRINE",
+      "route_order": 140,
+      "title": "Aen Becomes The Hollowed One",
+      "beat_type": "TRANSITION",
+      "area_id": "area_falling_darkness",
+      "required_flags": [
+        "yin_yang_taken"
+      ],
+      "sets_flags": [
+        "act2_unlocked"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "AEN"
+      ],
+      "tags": [
+        "fall",
+        "sprite_dim",
+        "idle_animation_change"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": "Aen sprite dims; shoulders slump; idle animation loses energy.",
+      "dialogue_refs": [],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_hollowing_intro",
+      "plateau": "HOLLOW_DEPTHS",
+      "route_order": 200,
+      "title": "The Hollowing: Act 2 Intro",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_hollow_depths_camp",
+      "required_flags": [
+        "act2_unlocked"
+      ],
+      "sets_flags": [
+        "awoke_in_depths"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "SHADE_HERMIT",
+        "AEN"
+      ],
+      "tags": [
+        "hollow_depths",
+        "awakening",
+        "survival"
+      ],
+      "objective_prompt": "Survive the Hollow Depths.",
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_hermit_awaken_hollow_one",
+        "dlg_aen_spirits_taken",
+        "dlg_hermit_walk_dark"
+      ],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_hollow_depths_weight_dialogue",
+      "plateau": "HOLLOW_DEPTHS",
+      "route_order": 210,
+      "title": "Hollow Depths In-Level Weight Dialogue",
+      "beat_type": "ADAPTABLE_AUTHORED",
+      "area_id": "area_hollow_depths_caves",
+      "required_flags": [
+        "awoke_in_depths"
+      ],
+      "sets_flags": [
+        "hollow_weight_understood"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "SHADE_HERMIT",
+        "AEN"
+      ],
+      "tags": [
+        "depression",
+        "weight",
+        "movement_feel"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_aen_body_heavy",
+        "dlg_hermit_depression_weight"
+      ],
+      "elastic_variants": [
+        "elastic_hd_stagnation_circle",
+        "elastic_hd_broken_lantern_route"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "beat_shadow_echo_fragments",
+      "plateau": "HOLLOW_DEPTHS",
+      "route_order": 220,
+      "title": "Shadow Echo Memory Fragments",
+      "beat_type": "ELASTIC_DEEPEN_POOL",
+      "area_id": "area_echo_galleries",
+      "required_flags": [
+        "awoke_in_depths"
+      ],
+      "sets_flags": [
+        "echoes_encountered"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "SAMSON_ECHO",
+        "SOPHIA_ECHO",
+        "MARCEL_ECHO",
+        "HAZEL_ECHO"
+      ],
+      "tags": [
+        "echo",
+        "memory",
+        "not_condemnation"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_echo_samson_alone",
+        "dlg_echo_sophia_help",
+        "dlg_echo_marcel_broke",
+        "dlg_echo_hazel_worth_saving"
+      ],
+      "elastic_variants": [
+        "elastic_hd_samson_echo",
+        "elastic_hd_sophia_echo",
+        "elastic_hd_marcel_echo",
+        "elastic_hd_hazel_echo"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "beat_weightbound_ogre",
+      "plateau": "HOLLOW_DEPTHS",
+      "route_order": 230,
+      "title": "Weightbound Ogre",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_weightbound_mines_arena",
+      "required_flags": [
+        "hollow_weight_understood"
+      ],
+      "sets_flags": [
+        "weightbound_ogre_defeated"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "SHADE_HERMIT",
+        "WEIGHTBOUND_OGRE"
+      ],
+      "tags": [
+        "boss",
+        "exhaustion",
+        "sleep_deprivation"
+      ],
+      "objective_prompt": "Defeat the Weightbound Ogre decisively.",
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_hermit_weightbound_warning"
+      ],
+      "elastic_variants": [],
+      "constraints": [
+        "Long fight may increase boss pressure; intended metaphor is exhaustion."
+      ]
+    },
+    {
+      "id": "beat_dash_restored",
+      "plateau": "HOLLOW_DEPTHS",
+      "route_order": 240,
+      "title": "First Sparks: Dash Restored",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_hollow_hub_first_sparks",
+      "required_flags": [
+        "weightbound_ogre_defeated"
+      ],
+      "sets_flags": [
+        "dash_restored"
+      ],
+      "unlocks": [
+        "DASH"
+      ],
+      "npcs": [
+        "SMITH_MONK",
+        "AEN"
+      ],
+      "tags": [
+        "first_sparks",
+        "movement_return",
+        "support"
+      ],
+      "objective_prompt": "Test the restored Dash.",
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_smith_monk_still_fight"
+      ],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_shatter_moth_queen",
+      "plateau": "HOLLOW_DEPTHS",
+      "route_order": 250,
+      "title": "Shatter Moth Queen",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_shatter_moth_nest",
+      "required_flags": [
+        "dash_restored"
+      ],
+      "sets_flags": [
+        "shatter_moth_defeated"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "SHADE_HERMIT",
+        "SHATTER_MOTH_QUEEN"
+      ],
+      "tags": [
+        "boss",
+        "gaslighting",
+        "false_floor"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_hermit_shatter_moth_warning"
+      ],
+      "elastic_variants": [],
+      "constraints": [
+        "Fight should make player doubt arena truth but never break accessibility rules."
+      ]
+    },
+    {
+      "id": "beat_fractured_contact_double_jump",
+      "plateau": "HOLLOW_DEPTHS",
+      "route_order": 260,
+      "title": "Fractured Contact: Double Jump Restored",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_fractured_contact_high_winds",
+      "required_flags": [
+        "shatter_moth_defeated"
+      ],
+      "sets_flags": [
+        "double_jump_restored"
+      ],
+      "unlocks": [
+        "DOUBLE_JUMP"
+      ],
+      "npcs": [
+        "AEN"
+      ],
+      "tags": [
+        "collapsing_platforms",
+        "reach",
+        "contact"
+      ],
+      "objective_prompt": "Use Double Jump to cross collapsing platforms.",
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_aen_fractured_contact_vo"
+      ],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_stone_judge",
+      "plateau": "HOLLOW_DEPTHS",
+      "route_order": 270,
+      "title": "Stone Judge",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_stone_judge_maze",
+      "required_flags": [
+        "double_jump_restored"
+      ],
+      "sets_flags": [
+        "stone_judge_defeated"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "STONE_JUDGE",
+        "AEN"
+      ],
+      "tags": [
+        "boss",
+        "indifferent_system",
+        "outmanoeuvre"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_stone_judge_seek_justice",
+        "dlg_aen_seek_spirits",
+        "dlg_stone_judge_suffer"
+      ],
+      "elastic_variants": [],
+      "constraints": [
+        "Stone Judge cannot be damaged from front; route must provide flanking sockets or vertical paths."
+      ]
+    },
+    {
+      "id": "beat_final_cutoff_glide",
+      "plateau": "HOLLOW_DEPTHS",
+      "route_order": 280,
+      "title": "Final Cutoff: Glide Restored",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_abyssal_gate",
+      "required_flags": [
+        "stone_judge_defeated"
+      ],
+      "sets_flags": [
+        "glide_restored",
+        "aen_listened_to_depths",
+        "old_road_opened"
+      ],
+      "unlocks": [
+        "GLIDE"
+      ],
+      "npcs": [
+        "SHADE_HERMIT",
+        "AEN",
+        "YIN_MEMORY",
+        "YANG_MEMORY"
+      ],
+      "tags": [
+        "closed_gate",
+        "path_closes",
+        "new_path"
+      ],
+      "objective_prompt": "Glide through the new descent route.",
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_aen_yin_yang_please",
+        "dlg_hermit_path_closes"
+      ],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_ember_transition",
+      "plateau": "HOLLOW_DEPTHS",
+      "route_order": 290,
+      "title": "Transition to Ember Monastery",
+      "beat_type": "TRANSITION",
+      "area_id": "area_old_road_to_ember",
+      "required_flags": [
+        "old_road_opened",
+        "glide_restored"
+      ],
+      "sets_flags": [
+        "entered_ember_monastery"
+      ],
+      "unlocks": [],
+      "npcs": [],
+      "tags": [
+        "gate",
+        "transition",
+        "warm_light"
+      ],
+      "objective_prompt": "Follow the Old Road toward the Ember Monastery.",
+      "cinematic_intent": null,
+      "dialogue_refs": [],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_hearth_of_brothers",
+      "plateau": "EMBER_MONASTERY",
+      "route_order": 300,
+      "title": "Hearth of Brothers",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_hearth_hall",
+      "required_flags": [
+        "entered_ember_monastery"
+      ],
+      "sets_flags": [
+        "hearth_joined"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "BROTHER_KAI",
+        "BROTHER_LEN",
+        "AEN"
+      ],
+      "tags": [
+        "support",
+        "warm_lights",
+        "sit_speak_heal"
+      ],
+      "objective_prompt": "Sit with the Hearth Brothers.",
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_kai_not_alone",
+        "dlg_len_walk_together",
+        "dlg_aen_why_help",
+        "dlg_kai_someone_helped_us"
+      ],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_airdodge_grapple_unlocked",
+      "plateau": "EMBER_MONASTERY",
+      "route_order": 310,
+      "title": "Support Returns as Reach",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_hearth_of_brothers_trial",
+      "required_flags": [
+        "hearth_joined"
+      ],
+      "sets_flags": [
+        "air_dodge_restored",
+        "grapple_restored"
+      ],
+      "unlocks": [
+        "AIR_DODGE",
+        "GRAPPLE"
+      ],
+      "npcs": [
+        "BROTHER_KAI",
+        "BROTHER_LEN"
+      ],
+      "tags": [
+        "mechanical_reach",
+        "support",
+        "trial"
+      ],
+      "objective_prompt": "Complete the AirDodge and GrappleHook trial.",
+      "cinematic_intent": null,
+      "dialogue_refs": [],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_roga_training_wallcling",
+      "plateau": "EMBER_MONASTERY",
+      "route_order": 320,
+      "title": "Mentor Roga's Dojo",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_roga_dojo",
+      "required_flags": [
+        "grapple_restored"
+      ],
+      "sets_flags": [
+        "wall_cling_mastered"
+      ],
+      "unlocks": [
+        "WALL_CLING"
+      ],
+      "npcs": [
+        "MENTOR_ROGA",
+        "AEN"
+      ],
+      "tags": [
+        "training",
+        "pain_mastery",
+        "wall_cling"
+      ],
+      "objective_prompt": "Master WallCling in Roga’s dojo.",
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_roga_strength_pain"
+      ],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_samson_returns",
+      "plateau": "EMBER_MONASTERY",
+      "route_order": 330,
+      "title": "Samson Returns",
+      "beat_type": "ADAPTABLE_AUTHORED",
+      "area_id": "area_ember_monastery_hub",
+      "required_flags": [
+        "hearth_joined"
+      ],
+      "sets_flags": [
+        "samson_returned"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "SAMSON",
+        "AEN"
+      ],
+      "tags": [
+        "return",
+        "brotherhood",
+        "combat_mentor"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_samson_returns"
+      ],
+      "elastic_variants": [
+        "elastic_em_samson_ai_trial"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "beat_marcel_returns",
+      "plateau": "EMBER_MONASTERY",
+      "route_order": 340,
+      "title": "Marcel Returns",
+      "beat_type": "ADAPTABLE_AUTHORED",
+      "area_id": "area_ember_forge",
+      "required_flags": [
+        "hearth_joined"
+      ],
+      "sets_flags": [
+        "marcel_returned"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "MARCEL"
+      ],
+      "tags": [
+        "smith",
+        "armor",
+        "forge"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_marcel_returns"
+      ],
+      "elastic_variants": [
+        "elastic_em_rare_ore_route"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "beat_sophia_skyroad_map",
+      "plateau": "EMBER_MONASTERY",
+      "route_order": 350,
+      "title": "Sophia: Map to the Skyroad",
+      "beat_type": "ADAPTABLE_AUTHORED",
+      "area_id": "area_star_ink_garden",
+      "required_flags": [
+        "wall_cling_mastered"
+      ],
+      "sets_flags": [
+        "skyroad_map_acquired"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "SOPHIA"
+      ],
+      "tags": [
+        "map",
+        "skyroad",
+        "star_ink"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_sophia_returns"
+      ],
+      "elastic_variants": [
+        "elastic_em_star_ink_route"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "beat_hazel_beacon_lantern_setup",
+      "plateau": "EMBER_MONASTERY",
+      "route_order": 360,
+      "title": "Hazel: Lantern for Tomorrow",
+      "beat_type": "ADAPTABLE_AUTHORED",
+      "area_id": "area_lantern_silk_workshop",
+      "required_flags": [
+        "hearth_joined"
+      ],
+      "sets_flags": [
+        "beacon_lantern_prepared"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "HAZEL"
+      ],
+      "tags": [
+        "lantern",
+        "future",
+        "soft_glow"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_hazel_monastery"
+      ],
+      "elastic_variants": [
+        "elastic_em_lantern_silk_route"
+      ],
+      "constraints": []
+    },
+    {
+      "id": "beat_skyroad_opened",
+      "plateau": "EMBER_MONASTERY",
+      "route_order": 370,
+      "title": "Skyroad Gate Opens",
+      "beat_type": "TRANSITION",
+      "area_id": "area_skyroad_gate",
+      "required_flags": [
+        "wall_cling_mastered",
+        "skyroad_map_acquired"
+      ],
+      "sets_flags": [
+        "skyroad_opened"
+      ],
+      "unlocks": [],
+      "npcs": [],
+      "tags": [
+        "gate",
+        "ascent_ready"
+      ],
+      "objective_prompt": "Open the Skyroad Gate.",
+      "cinematic_intent": null,
+      "dialogue_refs": [],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_skyroad_ascent",
+      "plateau": "WINDING_SKYROAD",
+      "route_order": 400,
+      "title": "Skyroad Ascent",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_skyroad_base",
+      "required_flags": [
+        "skyroad_opened"
+      ],
+      "sets_flags": [
+        "ascent_begun"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "SHADE_HERMIT",
+        "AEN"
+      ],
+      "tags": [
+        "vertical_ascent",
+        "climb",
+        "for_self"
+      ],
+      "objective_prompt": "Begin the Skyroad ascent.",
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_hermit_spirits_beyond_reach",
+        "dlg_aen_i_will_climb"
+      ],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_yin_yang_as_stars",
+      "plateau": "WINDING_SKYROAD",
+      "route_order": 410,
+      "title": "Yin and Yang as Distant Stars",
+      "beat_type": "ADAPTABLE_AUTHORED",
+      "area_id": "area_star_wind_fields",
+      "required_flags": [
+        "ascent_begun"
+      ],
+      "sets_flags": [
+        "stars_accepted"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "YIN_STAR",
+        "YANG_STAR",
+        "AEN"
+      ],
+      "tags": [
+        "stars",
+        "background_motif",
+        "acceptance"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [],
+      "elastic_variants": [
+        "elastic_sr_star_memory_route",
+        "elastic_sr_veil_whisper_route"
+      ],
+      "constraints": [
+        "Yin and Yang are distant stars/background motifs, not restored companions."
+      ]
+    },
+    {
+      "id": "beat_veil_illusions_acts_2_to_4",
+      "plateau": "WINDING_SKYROAD",
+      "route_order": 420,
+      "title": "Veil Maiden Illusory Whispers",
+      "beat_type": "ELASTIC_PRESSURE_POOL",
+      "area_id": "area_any_hollow_to_skyroad",
+      "required_flags": [
+        "hollowed"
+      ],
+      "sets_flags": [],
+      "unlocks": [],
+      "npcs": [
+        "VEIL_ILLUSION"
+      ],
+      "tags": [
+        "illusion",
+        "whisper",
+        "shatter_when_hit"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_veil_whisper_nothing",
+        "dlg_veil_whisper_abandoned",
+        "dlg_veil_whisper_keep_climbing",
+        "dlg_veil_whisper_fall_again"
+      ],
+      "elastic_variants": [],
+      "constraints": [
+        "Illusions must shatter when hit and cannot replace the final boss."
+      ]
+    },
+    {
+      "id": "beat_mirror_gate_opened",
+      "plateau": "WINDING_SKYROAD",
+      "route_order": 430,
+      "title": "Mirror Gate Opened",
+      "beat_type": "TRANSITION",
+      "area_id": "area_mirror_summit_gate",
+      "required_flags": [
+        "stars_accepted"
+      ],
+      "sets_flags": [
+        "mirror_gate_opened"
+      ],
+      "unlocks": [],
+      "npcs": [],
+      "tags": [
+        "gate",
+        "final_approach"
+      ],
+      "objective_prompt": "Enter the Mirror Summit.",
+      "cinematic_intent": null,
+      "dialogue_refs": [],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_hollow_reflection_intro",
+      "plateau": "MIRROR_SUMMIT",
+      "route_order": 500,
+      "title": "Final Boss: Hollow Reflection",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_mirror_summit_peak",
+      "required_flags": [
+        "mirror_gate_opened"
+      ],
+      "sets_flags": [
+        "mirror_approached"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "HOLLOW_REFLECTION",
+        "AEN"
+      ],
+      "tags": [
+        "final_boss",
+        "dark_mirror",
+        "self_confrontation"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": "A dark mirror of Aen forms at the summit of the world.",
+      "dialogue_refs": [
+        "dlg_reflection_i_am",
+        "dlg_aen_leave_behind"
+      ],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_final_fight",
+      "plateau": "MIRROR_SUMMIT",
+      "route_order": 510,
+      "title": "Final Fight: Community Ability Gauntlet",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_hollow_reflection_arena",
+      "required_flags": [
+        "mirror_approached"
+      ],
+      "sets_flags": [
+        "reflection_fight_started"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "HOLLOW_REFLECTION"
+      ],
+      "tags": [
+        "boss",
+        "all_abilities",
+        "community_help"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [],
+      "elastic_variants": [],
+      "constraints": [
+        "Every community-earned ability must be required or meaningfully invoked."
+      ]
+    },
+    {
+      "id": "beat_i_release_you",
+      "plateau": "MIRROR_SUMMIT",
+      "route_order": 520,
+      "title": "Victory: I Release You",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_release_walk",
+      "required_flags": [
+        "reflection_fight_started"
+      ],
+      "sets_flags": [
+        "reflection_released",
+        "release_accepted"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "AEN"
+      ],
+      "tags": [
+        "release",
+        "victory"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_aen_i_release_you"
+      ],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_beacon_walk",
+      "plateau": "MIRROR_SUMMIT",
+      "route_order": 530,
+      "title": "Walk to the Beacon",
+      "beat_type": "TRANSITION",
+      "area_id": "area_beacon_cliff_approach",
+      "required_flags": [
+        "release_accepted"
+      ],
+      "sets_flags": [
+        "beacon_cliff_unlocked"
+      ],
+      "unlocks": [],
+      "npcs": [],
+      "tags": [
+        "walk",
+        "quiet_after_boss"
+      ],
+      "objective_prompt": "Walk to the Beacon.",
+      "cinematic_intent": null,
+      "dialogue_refs": [],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_final_npc_reactions",
+      "plateau": "BEACON_CLIFF",
+      "route_order": 600,
+      "title": "Final NPC Reactions",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_final_npc_overlook",
+      "required_flags": [
+        "beacon_cliff_unlocked"
+      ],
+      "sets_flags": [
+        "final_words_heard"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "SAMSON",
+        "SOPHIA",
+        "MARCEL",
+        "HAZEL"
+      ],
+      "tags": [
+        "final_words",
+        "support",
+        "closure"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_final_samson",
+        "dlg_final_sophia",
+        "dlg_final_marcel",
+        "dlg_final_hazel"
+      ],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_beacon_lit",
+      "plateau": "BEACON_CLIFF",
+      "route_order": 610,
+      "title": "Ending: Beacon of Return",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_ancient_beacon",
+      "required_flags": [
+        "final_words_heard"
+      ],
+      "sets_flags": [
+        "beacon_lit"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "AEN"
+      ],
+      "tags": [
+        "beacon",
+        "gold_flare",
+        "ending"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": "Aen lights the ancient Beacon; a golden flare illuminates the world.",
+      "dialogue_refs": [
+        "dlg_aen_when_you_seek_me"
+      ],
+      "elastic_variants": [],
+      "constraints": []
+    },
+    {
+      "id": "beat_two_stars_ending",
+      "plateau": "BEACON_CLIFF",
+      "route_order": 620,
+      "title": "Two Stars Ending",
+      "beat_type": "AUTHORED_CRITICAL",
+      "area_id": "area_twofold_stars",
+      "required_flags": [
+        "beacon_lit"
+      ],
+      "sets_flags": [
+        "ending_complete"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "YIN_STAR",
+        "YANG_STAR",
+        "AEN"
+      ],
+      "tags": [
+        "two_stars",
+        "not_reunion",
+        "wholeness"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": null,
+      "dialogue_refs": [
+        "dlg_narrator_yin_yang_return_home"
+      ],
+      "elastic_variants": [],
+      "constraints": [
+        "Yin and Yang do not descend. They shine brighter."
+      ]
+    },
+    {
+      "id": "beat_ending_complete",
+      "plateau": "BEACON_CLIFF",
+      "route_order": 630,
+      "title": "End: Sunrise",
+      "beat_type": "CINEMATIC",
+      "area_id": "area_sunrise_end_card",
+      "required_flags": [
+        "ending_complete"
+      ],
+      "sets_flags": [
+        "credits_unlocked"
+      ],
+      "unlocks": [],
+      "npcs": [
+        "AEN",
+        "YIN_STAR",
+        "YANG_STAR"
+      ],
+      "tags": [
+        "sunrise",
+        "end_card",
+        "credits"
+      ],
+      "objective_prompt": null,
+      "cinematic_intent": "Fade to sunrise after the Beacon of Return. End.",
+      "dialogue_refs": [],
+      "elastic_variants": [],
+      "constraints": [
+        "Do not imply immediate literal reunion with Yin and Yang."
+      ]
+    }
+  ]
+}

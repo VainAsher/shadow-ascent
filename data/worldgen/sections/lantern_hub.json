@@ -1,0 +1,22 @@
+{
+  "id": "lantern_hub",
+  "biome": "lantern",
+  "kind": "hub",
+  "footprint": { "gridW": 3, "gridH": 2 },
+  "nodeKinds": ["hub_plaza", "services_row", "mission_alcove"],
+  "edgeRules": [
+    { "from": "hub_plaza",    "to": "services_row" },
+    { "from": "services_row", "to": "mission_alcove" }
+  ],
+  "requiredSockets": ["west_low_walk", "east_low_walk"],
+  "mutableZones": [
+    { "x": 12, "y": 32, "w": 80, "h": 20, "role": "ambient_population" },
+    { "x": 10, "y": 80, "w": 90, "h": 16, "role": "safe_detail" }
+  ],
+  "anchors": [
+    { "id": "hub_npc_a",     "kind": "npc",         "localBounds": {"x": 24, "y": 88, "w": 4, "h": 8}  },
+    { "id": "hub_npc_b",     "kind": "npc",         "localBounds": {"x": 64, "y": 88, "w": 4, "h": 8}  },
+    { "id": "mission_board", "kind": "service",     "localBounds": {"x": 88, "y": 40, "w": 8, "h": 10} },
+    { "id": "save_point",    "kind": "save_point",  "localBounds": {"x": 16, "y": 40, "w": 4, "h": 6}  }
+  ]
+}

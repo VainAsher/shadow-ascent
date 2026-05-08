@@ -1,0 +1,41 @@
+{
+  "schema": "world_state.v1",
+  "current_season": "EMBER_FALL",
+  "current_weather": "CLEAR",
+  "global_pressures": {
+    "corruption_pressure": 0.34,
+    "prosperity_pressure": 0.46,
+    "route_risk": 0.29,
+    "faction_tension": 0.31
+  },
+  "regions": [
+    {
+      "id": "region_lantern_heights",
+      "plateau": "LANTERN_HEIGHTS",
+      "weather_profile": "MIST_LANTERN_BREEZE",
+      "corruption_pressure": 0.18,
+      "prosperity_pressure": 0.63,
+      "route_risk": 0.22,
+      "faction_tension": 0.27
+    },
+    {
+      "id": "region_hollow_depths",
+      "plateau": "HOLLOW_DEPTHS",
+      "weather_profile": "ASH_DRIFT",
+      "corruption_pressure": 0.72,
+      "prosperity_pressure": 0.26,
+      "route_risk": 0.71,
+      "faction_tension": 0.52
+    },
+    {
+      "id": "region_ember_monastery",
+      "plateau": "EMBER_MONASTERY",
+      "weather_profile": "EMBER_WIND",
+      "corruption_pressure": 0.31,
+      "prosperity_pressure": 0.57,
+      "route_risk": 0.41,
+      "faction_tension": 0.35
+    }
+  ]
+}
+

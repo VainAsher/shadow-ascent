@@ -1,0 +1,51 @@
+{
+  "schema": "faction_state.v1",
+  "factions": [
+    {
+      "id": "faction_ember_hearth_order",
+      "display_name": "Ember Hearth Order",
+      "territory_plateaus": [
+        "EMBER_MONASTERY",
+        "LANTERN_HEIGHTS"
+      ],
+      "influence": 0.67,
+      "tension": 0.24,
+      "prosperity_effect": 0.58,
+      "event_hooks": [
+        "hearth_supply_drive",
+        "hearth_training_convoy"
+      ]
+    },
+    {
+      "id": "faction_veil_covenant",
+      "display_name": "Veil Covenant",
+      "territory_plateaus": [
+        "SUMMIT_SHRINE",
+        "HOLLOW_DEPTHS"
+      ],
+      "influence": 0.61,
+      "tension": 0.73,
+      "prosperity_effect": 0.18,
+      "event_hooks": [
+        "veil_mask_recruitment",
+        "veil_illusion_raid"
+      ]
+    },
+    {
+      "id": "faction_old_road_freeholds",
+      "display_name": "Old Road Freeholds",
+      "territory_plateaus": [
+        "HOLLOW_DEPTHS",
+        "WINDING_SKYROAD"
+      ],
+      "influence": 0.43,
+      "tension": 0.38,
+      "prosperity_effect": 0.44,
+      "event_hooks": [
+        "freehold_caravan_rebuild",
+        "freehold_pilgrim_escort"
+      ]
+    }
+  ]
+}
+

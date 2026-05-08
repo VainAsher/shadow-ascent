@@ -1,0 +1,13 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "github.copilot.chat.codeGeneration.instructions": [
+        "This is a Java Gradle multi-module project: core (simulation/physics/ECS/world), client (playable entry point), server (scaffold).",
+        "Data contracts in data/ are canonical. Never hardcode narrative IDs, flag keys, plateau IDs, quest IDs, or area names.",
+        "ECS components extend Component. Follow existing patterns in core.ecs.components (TransformComponent, HealthComponent, AIComponent).",
+        "All progression logic must respect story_flags.json, plateaus.json, and narrative_beats.json as source of truth.",
+        "core must not import from client or server. Input and rendering belong in client only.",
+        "Regression tests go in RegressionTest.java following the existing labelled-section pattern with pass/fail counters.",
+        "Save files use SAVE_V2 envelope format. Migration logic lives in SaveMigrationMatrix.java.",
+        "Gradle task names follow verb+noun pattern: runRegressionTests, runWorldgenDiagnostics, runDataContractDiagnostics."
+    ]
+}

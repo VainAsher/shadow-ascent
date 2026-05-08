@@ -1,0 +1,477 @@
+{
+  "schema": "elastic_plateau_registry.v3",
+  "principle": "Every major narrative stage is an elastic plateau. Authored beats advance the campaign; elastic beats let players wander, train, recover, loop, deepen, or stagnate without invalidating narrative truth.",
+  "global_constraints": [
+    "Yin and Yang may appear as present companions only before the scripted loss.",
+    "After SCRIPTED_DEFEAT, Yin and Yang may appear only as absent, echo, memory, background motif, star, or final symbolic light until future sequel content explicitly changes this rule.",
+    "The Siren of Masks is an early antagonist and cannot become the final boss.",
+    "The Hollow Reflection is the final release boss.",
+    "Elastic content cannot set major story flags unless its contract category is AUTHORED_CRITICAL or AUTHORED_MILESTONE.",
+    "Every generated socket is a traversal contract: terrain, collision, camera, spawn, and validation must prove access."
+  ],
+  "plateaus": [
+    {
+      "id": "LANTERN_HEIGHTS",
+      "act": "ACT_0",
+      "story_state": "A0_HOME_AND_FORESHADOWING",
+      "phase": "HOPE_TO_ISOLATION",
+      "light": "WARM_TO_DIMMING",
+      "region_family": "lantern_village",
+      "primary_emotional_modes": [
+        "hope",
+        "belonging",
+        "warning",
+        "subtle_isolation"
+      ],
+      "elastic_generation_enabled": true,
+      "elastic_kinds": [
+        "EXPLORE",
+        "DEEPEN",
+        "TRAIN",
+        "RECOVER",
+        "LOOP_BACK",
+        "ADVANCE_HINT"
+      ],
+      "allowed_chunk_tags": [
+        "village",
+        "social",
+        "training",
+        "foreshadow",
+        "merchant",
+        "forge",
+        "lantern_silk",
+        "mistwood_edge",
+        "gentle_combat",
+        "bonding"
+      ],
+      "blocked_chunk_tags": [
+        "hollow_depths_only",
+        "ember_recovery",
+        "skyroad_ascent",
+        "final_boss",
+        "beacon_ending"
+      ],
+      "allowed_npcs": [
+        "INSTRUCTOR_TAI",
+        "MERCHANT_RILU",
+        "SMITH_JENRO",
+        "SAMSON",
+        "SOPHIA",
+        "MARCEL",
+        "HAZEL",
+        "VEIL_MAIDEN",
+        "YIN",
+        "YANG",
+        "OLD_MAN_RIKU",
+        "LANTERN_KID"
+      ],
+      "critical_route": [
+        "beat_opening_lantern_heights",
+        "beat_meet_villagers",
+        "beat_veil_maiden_request",
+        "beat_mistwood_first_mission",
+        "beat_npc_withdrawal",
+        "beat_final_departures",
+        "beat_summit_shrine_call"
+      ],
+      "pacing_bias": {
+        "EXPLORE": 0.25,
+        "DEEPEN": 0.2,
+        "TRAIN": 0.2,
+        "RECOVER": 0.2,
+        "LOOP_BACK": 0.1,
+        "ADVANCE_HINT": 0.05
+      }
+    },
+    {
+      "id": "SUMMIT_SHRINE",
+      "act": "ACT_1",
+      "story_state": "A1_COLLAPSE_AND_SCRIPTED_LOSS",
+      "phase": "COLLAPSE",
+      "light": "HOLLOW",
+      "region_family": "summit_shrine",
+      "primary_emotional_modes": [
+        "isolation",
+        "false_praise",
+        "reveal",
+        "helplessness"
+      ],
+      "elastic_generation_enabled": true,
+      "elastic_scope": "narrow_scripted_plateau",
+      "elastic_kinds": [
+        "DEEPEN",
+        "PRESSURE",
+        "STAGNATE",
+        "LOOP_BACK"
+      ],
+      "allowed_chunk_tags": [
+        "empty_hub",
+        "mask_corridor",
+        "illusion",
+        "siren_foreshadow",
+        "scripted_loss",
+        "sealed_shrine"
+      ],
+      "blocked_chunk_tags": [
+        "free_roam_village_bonds",
+        "hollow_survival",
+        "ember_recovery",
+        "skyroad_ascent",
+        "beacon_ending"
+      ],
+      "allowed_npcs": [
+        "VEIL_MAIDEN",
+        "YIN",
+        "YANG"
+      ],
+      "critical_route": [
+        "beat_empty_hub_only_maiden",
+        "beat_siren_reveal",
+        "beat_siren_boss_scripted",
+        "beat_yin_yang_taken",
+        "beat_aen_hollowed"
+      ],
+      "pacing_bias": {
+        "DEEPEN": 0.25,
+        "PRESSURE": 0.45,
+        "STAGNATE": 0.2,
+        "LOOP_BACK": 0.1
+      }
+    },
+    {
+      "id": "HOLLOW_DEPTHS",
+      "act": "ACT_2",
+      "story_state": "A2_SURVIVE_GRIEF_AND_REBUILD_MOVEMENT",
+      "phase": "DEPRESSION_TO_SURVIVAL",
+      "light": "HOLLOW",
+      "region_family": "hollow_depths",
+      "primary_emotional_modes": [
+        "grief",
+        "weight",
+        "survival",
+        "memory",
+        "stagnation",
+        "first_sparks"
+      ],
+      "elastic_generation_enabled": true,
+      "elastic_kinds": [
+        "EXPLORE",
+        "DEEPEN",
+        "PRESSURE",
+        "STAGNATE",
+        "LOOP_BACK",
+        "RECOVER",
+        "ADVANCE_HINT"
+      ],
+      "allowed_chunk_tags": [
+        "caves",
+        "echo",
+        "survival",
+        "broken_lantern",
+        "shade_hermit",
+        "dash_trial",
+        "double_jump_trial",
+        "glide_descent",
+        "guilt_wraith",
+        "resource",
+        "return_tunnel"
+      ],
+      "blocked_chunk_tags": [
+        "home_social_normal",
+        "siren_reveal_fresh",
+        "ember_recovery_full",
+        "skyroad_mastery",
+        "beacon_ending"
+      ],
+      "allowed_npcs": [
+        "SHADE_HERMIT",
+        "SMITH_MONK",
+        "LISTENING_ELDER",
+        "ADVOCATE",
+        "SAMSON_ECHO",
+        "SOPHIA_ECHO",
+        "MARCEL_ECHO",
+        "HAZEL_ECHO",
+        "VEIL_ILLUSION"
+      ],
+      "critical_route": [
+        "beat_hollowing_intro",
+        "beat_weightbound_ogre",
+        "beat_dash_restored",
+        "beat_shatter_moth_queen",
+        "beat_fractured_contact_double_jump",
+        "beat_stone_judge",
+        "beat_final_cutoff_glide",
+        "beat_ember_transition"
+      ],
+      "pacing_bias": {
+        "EXPLORE": 0.16,
+        "DEEPEN": 0.18,
+        "PRESSURE": 0.22,
+        "STAGNATE": 0.16,
+        "LOOP_BACK": 0.13,
+        "RECOVER": 0.1,
+        "ADVANCE_HINT": 0.05
+      }
+    },
+    {
+      "id": "EMBER_MONASTERY",
+      "act": "ACT_3",
+      "story_state": "A3_SUPPORT_AND_REBUILDING",
+      "phase": "REBUILDING",
+      "light": "EMBER",
+      "region_family": "ember_monastery",
+      "primary_emotional_modes": [
+        "support",
+        "training",
+        "recovery",
+        "crafting",
+        "community_return"
+      ],
+      "elastic_generation_enabled": true,
+      "elastic_kinds": [
+        "TRAIN",
+        "RECOVER",
+        "DEEPEN",
+        "EXPLORE",
+        "LOOP_BACK",
+        "ADVANCE_HINT"
+      ],
+      "allowed_chunk_tags": [
+        "monastery",
+        "hearth",
+        "brothers",
+        "training",
+        "combat_mentor",
+        "crafting",
+        "rare_ore",
+        "star_ink",
+        "lantern_silk",
+        "support_npc",
+        "dojo",
+        "grapple_trial",
+        "wall_cling_trial"
+      ],
+      "blocked_chunk_tags": [
+        "siren_scripted_loss",
+        "hollow_stagnation_only",
+        "final_reflection_boss",
+        "beacon_ending"
+      ],
+      "allowed_npcs": [
+        "BROTHER_KAI",
+        "BROTHER_LEN",
+        "BROTHER_ASH",
+        "HEARTH_BROTHER",
+        "MENTOR_ROGA",
+        "SAMSON",
+        "MARCEL",
+        "SOPHIA",
+        "HAZEL",
+        "OLD_MAN_RIKU",
+        "SILENT_MONK"
+      ],
+      "critical_route": [
+        "beat_hearth_of_brothers",
+        "beat_airdodge_grapple_unlocked",
+        "beat_roga_training_wallcling",
+        "beat_samson_returns",
+        "beat_marcel_returns",
+        "beat_sophia_skyroad_map",
+        "beat_hazel_beacon_lantern_setup",
+        "beat_skyroad_opened"
+      ],
+      "pacing_bias": {
+        "TRAIN": 0.3,
+        "RECOVER": 0.2,
+        "DEEPEN": 0.18,
+        "EXPLORE": 0.14,
+        "LOOP_BACK": 0.12,
+        "ADVANCE_HINT": 0.06
+      }
+    },
+    {
+      "id": "WINDING_SKYROAD",
+      "act": "ACT_4",
+      "story_state": "A4_ASCENT_AND_ACCEPTANCE",
+      "phase": "ASCENT",
+      "light": "ASCENDANT",
+      "region_family": "winding_skyroad",
+      "primary_emotional_modes": [
+        "mastery",
+        "risk",
+        "acceptance",
+        "star_memory",
+        "verticality"
+      ],
+      "elastic_generation_enabled": true,
+      "elastic_kinds": [
+        "TRAIN",
+        "PRESSURE",
+        "DEEPEN",
+        "EXPLORE",
+        "LOOP_BACK",
+        "ADVANCE_HINT",
+        "RECOVER"
+      ],
+      "allowed_chunk_tags": [
+        "ascent",
+        "cloud_bridge",
+        "star_wind",
+        "full_kit_gauntlet",
+        "veil_illusion",
+        "yin_yang_stars",
+        "high_skill",
+        "route_clarity",
+        "final_preparation"
+      ],
+      "blocked_chunk_tags": [
+        "village_intro",
+        "siren_scripted_loss",
+        "hollow_first_sparks",
+        "ember_training_basic",
+        "beacon_ending"
+      ],
+      "allowed_npcs": [
+        "SAMSON",
+        "SOPHIA",
+        "MARCEL",
+        "HAZEL",
+        "SHADE_HERMIT",
+        "VEIL_ILLUSION",
+        "YIN_STAR",
+        "YANG_STAR"
+      ],
+      "critical_route": [
+        "beat_skyroad_ascent",
+        "beat_yin_yang_as_stars",
+        "beat_mirror_gate_opened"
+      ],
+      "pacing_bias": {
+        "TRAIN": 0.22,
+        "PRESSURE": 0.28,
+        "DEEPEN": 0.16,
+        "EXPLORE": 0.14,
+        "LOOP_BACK": 0.1,
+        "ADVANCE_HINT": 0.06,
+        "RECOVER": 0.04
+      }
+    },
+    {
+      "id": "MIRROR_SUMMIT",
+      "act": "ACT_4_FINAL",
+      "story_state": "A4_FINAL_RELEASE",
+      "phase": "RELEASE",
+      "light": "ASCENDANT_TO_BEACON",
+      "region_family": "mirror_summit",
+      "primary_emotional_modes": [
+        "reflection",
+        "release",
+        "finality",
+        "self_confrontation"
+      ],
+      "elastic_generation_enabled": true,
+      "elastic_scope": "short_final_preparation_plateau",
+      "elastic_kinds": [
+        "DEEPEN",
+        "PRESSURE",
+        "RECOVER",
+        "LOOP_BACK",
+        "TRAIN"
+      ],
+      "allowed_chunk_tags": [
+        "reflection",
+        "dark_mirror",
+        "final_boss_approach",
+        "community_ability_check",
+        "release_room",
+        "last_rest"
+      ],
+      "blocked_chunk_tags": [
+        "siren_final_boss",
+        "early_village_errand",
+        "hollow_first_survival",
+        "long_open_world_farm"
+      ],
+      "allowed_npcs": [
+        "AEN_REFLECTION",
+        "SAMSON",
+        "SOPHIA",
+        "MARCEL",
+        "HAZEL",
+        "YIN_STAR",
+        "YANG_STAR"
+      ],
+      "critical_route": [
+        "beat_hollow_reflection_intro",
+        "beat_final_fight",
+        "beat_i_release_you",
+        "beat_beacon_walk"
+      ],
+      "pacing_bias": {
+        "DEEPEN": 0.25,
+        "PRESSURE": 0.35,
+        "RECOVER": 0.15,
+        "LOOP_BACK": 0.1,
+        "TRAIN": 0.15
+      }
+    },
+    {
+      "id": "BEACON_CLIFF",
+      "act": "FINAL",
+      "story_state": "AF_BEACON_OF_RETURN",
+      "phase": "WHOLENESS",
+      "light": "BEACON",
+      "region_family": "beacon_cliff",
+      "primary_emotional_modes": [
+        "closure",
+        "homecoming_future",
+        "wholeness",
+        "sunrise"
+      ],
+      "elastic_generation_enabled": true,
+      "elastic_kinds": [
+        "DEEPEN",
+        "RECOVER",
+        "EXPLORE",
+        "LOOP_BACK"
+      ],
+      "allowed_chunk_tags": [
+        "beacon",
+        "closure",
+        "final_words",
+        "two_stars",
+        "sunrise",
+        "memory_walk",
+        "future_home",
+        "epilogue"
+      ],
+      "blocked_chunk_tags": [
+        "siren_combat",
+        "hollow_stagnation",
+        "new_major_villain",
+        "spirit_reunion_literal"
+      ],
+      "allowed_npcs": [
+        "SAMSON",
+        "SOPHIA",
+        "MARCEL",
+        "HAZEL",
+        "YIN_STAR",
+        "YANG_STAR"
+      ],
+      "critical_route": [
+        "beat_final_npc_reactions",
+        "beat_beacon_lit",
+        "beat_two_stars_ending",
+        "beat_ending_complete"
+      ],
+      "pacing_bias": {
+        "DEEPEN": 0.35,
+        "RECOVER": 0.35,
+        "EXPLORE": 0.2,
+        "LOOP_BACK": 0.1
+      }
+    }
+  ]
+}

@@ -1,0 +1,445 @@
+{
+  "schema": "npc_registry.v1",
+  "npcs": [
+    {
+      "id": "AEN",
+      "display_name": "Aen",
+      "allowed_roles": [
+        "player",
+        "speaker"
+      ],
+      "eligible_plateaus": [
+        "GLOBAL"
+      ],
+      "notes": "Playable protagonist.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "YIN",
+      "display_name": "Yin",
+      "allowed_roles": [
+        "spirit_present_pre_loss"
+      ],
+      "eligible_plateaus": [
+        "LANTERN_HEIGHTS",
+        "SUMMIT_SHRINE"
+      ],
+      "notes": "After loss, use YIN_STAR or YIN_MEMORY.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "YANG",
+      "display_name": "Yang",
+      "allowed_roles": [
+        "spirit_present_pre_loss"
+      ],
+      "eligible_plateaus": [
+        "LANTERN_HEIGHTS",
+        "SUMMIT_SHRINE"
+      ],
+      "notes": "After loss, use YANG_STAR or YANG_MEMORY.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "YIN_STAR",
+      "display_name": "Yin as Star",
+      "allowed_roles": [
+        "background_motif",
+        "symbol"
+      ],
+      "eligible_plateaus": [
+        "WINDING_SKYROAD",
+        "BEACON_CLIFF"
+      ],
+      "notes": "Not restored companion.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "YIN_MEMORY",
+      "display_name": "Yin Memory",
+      "allowed_roles": [
+        "memory_fragment",
+        "symbolic_presence"
+      ],
+      "eligible_plateaus": [
+        "HOLLOW_DEPTHS"
+      ],
+      "notes": "Echo-like memory presence before star motif phase.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "YANG_STAR",
+      "display_name": "Yang as Star",
+      "allowed_roles": [
+        "background_motif",
+        "symbol"
+      ],
+      "eligible_plateaus": [
+        "WINDING_SKYROAD",
+        "BEACON_CLIFF"
+      ],
+      "notes": "Not restored companion.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "YANG_MEMORY",
+      "display_name": "Yang Memory",
+      "allowed_roles": [
+        "memory_fragment",
+        "symbolic_presence"
+      ],
+      "eligible_plateaus": [
+        "HOLLOW_DEPTHS"
+      ],
+      "notes": "Echo-like memory presence before star motif phase.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "VEIL_MAIDEN",
+      "display_name": "Veil Maiden",
+      "allowed_roles": [
+        "antagonist_mask",
+        "manipulator"
+      ],
+      "eligible_plateaus": [
+        "LANTERN_HEIGHTS",
+        "SUMMIT_SHRINE"
+      ],
+      "notes": "False warmth before reveal.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "VEIL_ILLUSION",
+      "display_name": "Veil Illusion",
+      "allowed_roles": [
+        "illusion",
+        "pressure_echo"
+      ],
+      "eligible_plateaus": [
+        "HOLLOW_DEPTHS",
+        "EMBER_MONASTERY",
+        "WINDING_SKYROAD"
+      ],
+      "notes": "Shattering whisper apparition used as pressure motif.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "INSTRUCTOR_TAI",
+      "display_name": "Instructor Tai",
+      "allowed_roles": [
+        "mentor",
+        "trainer"
+      ],
+      "eligible_plateaus": [
+        "LANTERN_HEIGHTS"
+      ],
+      "notes": "Early act combat and path mentor.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "SIREN_OF_MASKS",
+      "display_name": "Siren of Masks",
+      "allowed_roles": [
+        "early_boss",
+        "antagonist"
+      ],
+      "eligible_plateaus": [
+        "SUMMIT_SHRINE"
+      ],
+      "notes": "Not final boss.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "SHADE_HERMIT",
+      "display_name": "Shade Hermit",
+      "allowed_roles": [
+        "mentor",
+        "guide"
+      ],
+      "eligible_plateaus": [
+        "HOLLOW_DEPTHS",
+        "WINDING_SKYROAD"
+      ],
+      "notes": "Speaks in spare allegorical guidance.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "SMITH_MONK",
+      "display_name": "Smith Monk",
+      "allowed_roles": [
+        "support",
+        "unlock_source"
+      ],
+      "eligible_plateaus": [
+        "HOLLOW_DEPTHS"
+      ],
+      "notes": "Dash restoration.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "MERCHANT_RILU",
+      "display_name": "Merchant Rilu",
+      "allowed_roles": [
+        "merchant",
+        "social_anchor"
+      ],
+      "eligible_plateaus": [
+        "LANTERN_HEIGHTS"
+      ],
+      "notes": "Village merchant and early social bond node.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "SMITH_JENRO",
+      "display_name": "Smith Jenro",
+      "allowed_roles": [
+        "smith",
+        "social_anchor"
+      ],
+      "eligible_plateaus": [
+        "LANTERN_HEIGHTS"
+      ],
+      "notes": "Village smith and early social bond node.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "SAMSON",
+      "display_name": "Samson",
+      "allowed_roles": [
+        "friend",
+        "combat_mentor"
+      ],
+      "eligible_plateaus": [
+        "LANTERN_HEIGHTS",
+        "EMBER_MONASTERY",
+        "BEACON_CLIFF"
+      ],
+      "notes": "Brotherhood line.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "SAMSON_ECHO",
+      "display_name": "Samson Echo",
+      "allowed_roles": [
+        "memory_echo"
+      ],
+      "eligible_plateaus": [
+        "HOLLOW_DEPTHS"
+      ],
+      "notes": "Mourns; does not condemn.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "SOPHIA",
+      "display_name": "Sophia",
+      "allowed_roles": [
+        "cartographer",
+        "support"
+      ],
+      "eligible_plateaus": [
+        "LANTERN_HEIGHTS",
+        "EMBER_MONASTERY",
+        "BEACON_CLIFF"
+      ],
+      "notes": "Maps and route clarity.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "SOPHIA_ECHO",
+      "display_name": "Sophia Echo",
+      "allowed_roles": [
+        "memory_echo"
+      ],
+      "eligible_plateaus": [
+        "HOLLOW_DEPTHS"
+      ],
+      "notes": "",
+      "dialogue_tags": []
+    },
+    {
+      "id": "MARCEL",
+      "display_name": "Marcel",
+      "allowed_roles": [
+        "smith",
+        "support"
+      ],
+      "eligible_plateaus": [
+        "LANTERN_HEIGHTS",
+        "EMBER_MONASTERY",
+        "BEACON_CLIFF"
+      ],
+      "notes": "",
+      "dialogue_tags": []
+    },
+    {
+      "id": "MARCEL_ECHO",
+      "display_name": "Marcel Echo",
+      "allowed_roles": [
+        "memory_echo"
+      ],
+      "eligible_plateaus": [
+        "HOLLOW_DEPTHS"
+      ],
+      "notes": "",
+      "dialogue_tags": []
+    },
+    {
+      "id": "HAZEL",
+      "display_name": "Hazel",
+      "allowed_roles": [
+        "lantern_weaver",
+        "support"
+      ],
+      "eligible_plateaus": [
+        "LANTERN_HEIGHTS",
+        "EMBER_MONASTERY",
+        "BEACON_CLIFF"
+      ],
+      "notes": "",
+      "dialogue_tags": []
+    },
+    {
+      "id": "HAZEL_ECHO",
+      "display_name": "Hazel Echo",
+      "allowed_roles": [
+        "memory_echo"
+      ],
+      "eligible_plateaus": [
+        "HOLLOW_DEPTHS"
+      ],
+      "notes": "",
+      "dialogue_tags": []
+    },
+    {
+      "id": "BROTHER_KAI",
+      "display_name": "Brother Kai",
+      "allowed_roles": [
+        "hearth_brother"
+      ],
+      "eligible_plateaus": [
+        "EMBER_MONASTERY"
+      ],
+      "faction_id": "faction_ember_hearth_order",
+      "notes": "",
+      "dialogue_tags": []
+    },
+    {
+      "id": "BROTHER_LEN",
+      "display_name": "Brother Len",
+      "allowed_roles": [
+        "hearth_brother"
+      ],
+      "eligible_plateaus": [
+        "EMBER_MONASTERY"
+      ],
+      "faction_id": "faction_ember_hearth_order",
+      "notes": "",
+      "dialogue_tags": []
+    },
+    {
+      "id": "BROTHER_ASH",
+      "display_name": "Brother Ash",
+      "allowed_roles": [
+        "silent_monk",
+        "reward_giver"
+      ],
+      "eligible_plateaus": [
+        "EMBER_MONASTERY"
+      ],
+      "faction_id": "faction_ember_hearth_order",
+      "notes": "",
+      "dialogue_tags": []
+    },
+    {
+      "id": "MENTOR_ROGA",
+      "display_name": "Mentor Roga",
+      "allowed_roles": [
+        "movement_mentor"
+      ],
+      "eligible_plateaus": [
+        "EMBER_MONASTERY"
+      ],
+      "notes": "WallCling training.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "HOLLOW_REFLECTION",
+      "display_name": "Hollow Reflection",
+      "allowed_roles": [
+        "final_boss"
+      ],
+      "eligible_plateaus": [
+        "MIRROR_SUMMIT"
+      ],
+      "notes": "Final release boss.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "WEIGHTBOUND_OGRE",
+      "display_name": "Weightbound Ogre",
+      "allowed_roles": [
+        "boss",
+        "act_pressure"
+      ],
+      "eligible_plateaus": [
+        "HOLLOW_DEPTHS"
+      ],
+      "notes": "Exhaustion-themed major encounter.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "SHATTER_MOTH_QUEEN",
+      "display_name": "Shatter Moth Queen",
+      "allowed_roles": [
+        "boss",
+        "illusion_pressure"
+      ],
+      "eligible_plateaus": [
+        "HOLLOW_DEPTHS"
+      ],
+      "notes": "Gaslighting-themed major encounter.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "STONE_JUDGE",
+      "display_name": "Stone Judge",
+      "allowed_roles": [
+        "boss",
+        "trial_guardian"
+      ],
+      "eligible_plateaus": [
+        "HOLLOW_DEPTHS"
+      ],
+      "notes": "Indifferent-system confrontation encounter.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "OLD_MAN_RIKU",
+      "display_name": "Old Man Riku",
+      "allowed_roles": [
+        "storykeeper"
+      ],
+      "eligible_plateaus": [
+        "LANTERN_HEIGHTS",
+        "EMBER_MONASTERY",
+        "BEACON_CLIFF"
+      ],
+      "notes": "Lore tablet unlocks.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "LANTERN_KID",
+      "display_name": "Lantern Kid",
+      "allowed_roles": [
+        "minor_npc",
+        "hopeful_echo"
+      ],
+      "eligible_plateaus": [
+        "LANTERN_HEIGHTS",
+        "EMBER_MONASTERY"
+      ],
+      "notes": "Early and hopeful echo.",
+      "dialogue_tags": []
+    }
+  ]
+}
