@@ -182,7 +182,11 @@ public final class GameSimulator {
                 if (!p.physics.gravityFrozen) {
                     p.physics.vy += PhysicsConstants.GRAVITY;
                 }
+                float prevX = p.physics.x;
                 p.physics.x += p.physics.vx;
+                if (collisionWorld != null) {
+                    collisionWorld.resolveX(p.physics, prevX);
+                }
                 float prevY = p.physics.y;
                 p.physics.y += p.physics.vy;
                 if (collisionWorld != null) {

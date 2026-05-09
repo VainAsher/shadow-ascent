@@ -26,6 +26,42 @@ public final class CollisionWorld {
     }
 
     /**
+     * Resolves horizontal collision after X integration has been applied.
+     * Mutates p.x, p.vx, p.onWall, and p.wallDir.
+     * Platforms are skipped — they only block vertical movement.
+     *
+     * @param p     entity physics — x,y is top-left; vx already applied
+     * @param prevX entity top-left X BEFORE this tick's X integration
+     */
+    public void resolveX(PhysicsState p, float prevX) {
+        p.onWall  = false;
+        p.wallDir = 0;
+        float entityRight = p.x + p.width;
+        float prevRight   = prevX + p.width;
+        float grace       = Math.max(1f, Math.abs(p.vx) + 1f);
+
+        for (TileRect tile : tiles) {
+            if (tile.isPlatform()) continue;
+            if (!tile.overlaps(p.x, p.y, p.width, p.height)) continue;
+
+            float overlapRight = entityRight - tile.x();
+            float overlapLeft  = tile.right() - p.x;
+
+            if (p.vx > 0f && prevRight <= tile.x() + grace && overlapRight > 0f) {
+                p.x       = tile.x() - p.width;
+                p.vx      = 0f;
+                p.onWall  = true;
+                p.wallDir = 1;
+            } else if (p.vx < 0f && prevX >= tile.right() - grace && overlapLeft > 0f) {
+                p.x       = tile.right();
+                p.vx      = 0f;
+                p.onWall  = true;
+                p.wallDir = -1;
+            }
+        }
+    }
+
+    /**
      * Resolves vertical collision after gravity and Y integration have been applied.
      * Mutates p.y, p.vy, and p.onGround.
      *

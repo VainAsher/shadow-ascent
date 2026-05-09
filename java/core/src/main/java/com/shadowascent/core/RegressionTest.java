@@ -3,7 +3,9 @@ package com.shadowascent.core;
 import com.shadowascent.core.data.BeatDefinition;
 import com.shadowascent.core.data.GameDataContracts;
 import com.shadowascent.core.data.QuestRewardEffectType;
+import com.shadowascent.core.physics.CollisionWorld;
 import com.shadowascent.core.physics.PhysicsConstants;
+import com.shadowascent.core.physics.PhysicsState;
 import com.shadowascent.core.physics.PlayableControllerModel;
 import com.shadowascent.core.physics.SpatialHash;
 import com.shadowascent.core.physics.TileRect;
@@ -121,6 +123,7 @@ public class RegressionTest {
         allPassed &= testCoopPlayerCollisionSeparation();
         allPassed &= testEchoCombatIntegration();
         allPassed &= testFactionInfluencedNpcSchedule();
+        allPassed &= testCollisionWorldXResolution();
 
         System.out.println("\n=== Test Results ===");
         if (allPassed) {
@@ -4131,6 +4134,76 @@ public class RegressionTest {
                             + r.actionPressCounts().get("jump")
                             + " attack=" + r.actionPressCounts().get("attack")
                             + " dash=" + r.actionPressCounts().get("dash"));
+                    allOk = false;
+                }
+            }
+
+            System.out.println(allOk ? "[PASS] PASSED" : "[FAIL] FAILED");
+            return allOk;
+        } catch (Exception e) {
+            System.out.println("[FAIL] FAILED: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // ── P2 CollisionWorld X-axis resolution ───────────────────────────────────
+
+    private static boolean testCollisionWorldXResolution() {
+        System.out.println("\n--- Testing CollisionWorld X-axis wall resolution ---");
+        boolean allOk = true;
+        try {
+            // Wall tile at x=200, y=0, w=20, h=400
+            CollisionWorld world = new CollisionWorld();
+            world.addTile(new TileRect(200f, 0f, 20f, 400f, false));
+
+            // Sub-test 1: moving right, hit left face of wall
+            {
+                PhysicsState p = new PhysicsState(170f, 100f, 24, 40);
+                p.vx = 10f;
+                float prevX = p.x;
+                p.x += p.vx;   // x = 180 → entity right = 204, overlapping wall at 200
+                world.resolveX(p, prevX);
+                boolean stopped  = p.x == 200f - 24f;   // pushed to wall left face
+                boolean vxZero   = p.vx == 0f;
+                boolean onWall   = p.onWall && p.wallDir == 1;
+                if (!stopped || !vxZero || !onWall) {
+                    System.out.println("  FAIL sub1 (right wall): x=" + p.x
+                            + " vx=" + p.vx + " onWall=" + p.onWall + " wallDir=" + p.wallDir);
+                    allOk = false;
+                }
+            }
+
+            // Sub-test 2: moving left, hit right face of wall
+            {
+                // prevX=235 → after vx=-20 → x=215, entity penetrates tile (tile.right=220)
+                PhysicsState p = new PhysicsState(235f, 100f, 24, 40);
+                p.vx = -20f;
+                float prevX = p.x;
+                p.x += p.vx;   // x=215, right=239, tile x=200 right=220 → overlaps
+                world.resolveX(p, prevX);
+                boolean stopped  = p.x == 220f;         // pushed to tile right face
+                boolean vxZero   = p.vx == 0f;
+                boolean onWall   = p.onWall && p.wallDir == -1;
+                if (!stopped || !vxZero || !onWall) {
+                    System.out.println("  FAIL sub2 (left wall): x=" + p.x
+                            + " vx=" + p.vx + " onWall=" + p.onWall + " wallDir=" + p.wallDir);
+                    allOk = false;
+                }
+            }
+
+            // Sub-test 3: platform tiles do not block X movement
+            {
+                CollisionWorld platformWorld = new CollisionWorld();
+                platformWorld.addTile(new TileRect(200f, 0f, 20f, 400f, true)); // one-way
+                PhysicsState p = new PhysicsState(170f, 100f, 24, 40);
+                p.vx = 10f;
+                float prevX = p.x;
+                p.x += p.vx;
+                platformWorld.resolveX(p, prevX);
+                boolean passedThrough = p.vx == 10f && !p.onWall;
+                if (!passedThrough) {
+                    System.out.println("  FAIL sub3 (platform no X block): vx=" + p.vx
+                            + " onWall=" + p.onWall);
                     allOk = false;
                 }
             }
