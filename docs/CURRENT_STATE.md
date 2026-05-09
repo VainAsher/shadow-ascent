@@ -171,10 +171,18 @@ Canonical runtime and execution snapshot for the clean-start repository.
 - Faction tension mutation floor (2026-05-09):
   - `WorldSimulationTick.maxFactionTensionForPlateau()` computes max faction tension for a plateau from `faction_state` contracts,
   - tension computed as `Math.max(region.factionTension(), maxContractTension) + noise`; `faction_veil_covenant` (tension=0.73) now floors HOLLOW_DEPTHS ≥ 0.65 → `MutationOverlay.compute()` fires `FACTION_CONFLICT`.
-- LibGDX production client scaffold (2026-05-09):
+- LibGDX P1 production client scaffold (2026-05-09):
   - libgdx 1.12.1 deps added to `:client` in `build.gradle.kts`; `runGame` Gradle task targeting `DesktopLauncher`,
   - `DesktopLauncher.java` (1280×720, 60fps LWJGL3 config) + `ShadowAscentGame.java` (Game, creates `HubScreen` on `create()`) + `HubScreen.java` (GL clear per frame, all lifecycle stubs),
-  - `.gitattributes` added enforcing `eol=lf` on `gradlew`; GitHub Actions CI passing (all 53 regression sections + diagnostics).
+  - `GameInputProcessor` (LibGDX `InputAdapter`): WASD/arrows (move), SPACE (jump), SHIFT/C (dash), F (attack), E (interact), I (inventory) wired to `InputCommand` each frame,
+  - `.gitattributes` added enforcing `eol=lf` on `gradlew`; GitHub Actions CI passing.
+- LibGDX P2 tile rendering + collision + camera (2026-05-09):
+  - `StubWorldRenderer.render()` accepts `List<TileRect>`; draws solid tiles (grey) and one-way platforms (green) before entity rects; `ShadowAscentGame` passes `worldTiles` each frame,
+  - `ShadowAscentGame.create()` builds stub geometry (solid floor y=360 w=3500px + one-way platform at y=240); creates `CollisionWorld` and injects into `GameSimulator` via `setCollisionWorld()`; player spawns at y=280 and lands via AABB resolution,
+  - Y-axis fix: `OrthographicCamera.setToOrtho(true, w, h)` in `show()` and `resize()` — Y-down matches simulation coordinate convention; gravity, floor, and jump direction all render correctly,
+  - `CollisionWorld.resolveX(PhysicsState p, float prevX)`: solid tiles block horizontal movement; sets `onWall`/`wallDir`; platforms skipped (one-way vertical only); wired into `GameSimulator.tickPlayers()` before `resolveY`,
+  - Camera world-bounds clamping: `HubScreen.show()` derives `worldRight`/`worldBottom` from `game.worldTiles` extents; camera position clamped after each lerp so visible area never extends past tile geometry,
+  - Regression: 54/54 pass (new section: `testCollisionWorldXResolution` — right-wall, left-wall, platform pass-through).
 - M4 SUMMIT_SHRINE content authoring (2026-05-09):
   - 5 critical narrative beats in `narrative_beats.json` (`beat_empty_hub_only_maiden` → `beat_aen_hollowed`, route_order 100–140),
   - NPC registry entries (YIN, YANG, VEIL_MAIDEN, SIREN_OF_MASKS with role/eligibility); SIREN_OF_MASKS encounter block (scripted_loss, force-loss at tick 510, 4-event timeline),
@@ -213,12 +221,22 @@ Canonical runtime and execution snapshot for the clean-start repository.
 - ~~**Echo / enemy / player collision**~~ — resolved 2026-05-08. `SimEcho` AABB-tests live enemies on `attackedThisTick`; emits `ECHO_COMBAT_HIT` / `ENEMY_DAMAGED`; `echoKillCount` tracked; `EchoPuzzleSolution.ofKills()` evaluates echo kills; 51/51 pass.
 - ~~**Co-op collision model**~~ — resolved 2026-05-08. `tickCoopCollisions()` added to `GameSimulator`; pairwise AABB separation with MSA push; `PLAYER_COLLISION` event; dead players excluded; 51/51 pass.
 - ~~**PlaytestClient decomposition**~~ — resolved 2026-05-09. `InputHandler` (key bindings + 16 queue flags), `RoomGeometry` (boundary constants + region resolver), `SaveLoad` (persistence I/O + `LoadResult` record) all extracted; `PlaytestClient` delegates fully to all three.
-- **Stub physics floor (P2)**: `GameSimulator.tickPlayers()` uses `p.spawnY` as the floor clamp — deliberate stub. P2 replaces with `core.physics.CollisionWorld` AABB resolution. Both clients must share the same `CollisionWorld` instance.
-- **LibGDX world geometry**: `StubWorldRenderer` draws entity rectangles only; `RegionInstance.staticTiles()` are not yet threaded through to the LibGDX render path.
+- ~~**Stub physics floor (P2)**~~ — resolved 2026-05-09. `CollisionWorld` injected into `GameSimulator`; `resolveX` + `resolveY` called each tick; spawnY stub is the fallback only when `collisionWorld == null` (regression tests unaffected).
+- ~~**LibGDX world geometry**~~ — resolved 2026-05-09. `StubWorldRenderer` accepts `List<TileRect>`; solid floor and platform drawn as coloured rects; `ShadowAscentGame` builds and passes stub tile geometry.
+- **P3 asset pipeline**: no `TexturePacker` Gradle task; no `TextureAtlas` loaded; `StubWorldRenderer` still uses `ShapeRenderer` rectangles. Next: `packSprites` task + placeholder PNG sprites + `SpriteWorldRenderer`.
 
 ## Verification Evidence
 
-Latest gate (2026-05-09) — M4 SUMMIT_SHRINE + HOLLOW_DEPTHS contract authoring; PlaytestClient decomposition (InputHandler, RoomGeometry, SaveLoad); stub gravity (spawnY floor); OrthographicCamera follow; LibGDX P1 scaffold; Node.js 24 CI opt-in:
+Latest gate (2026-05-09) — LibGDX P2: CollisionWorld.resolveX, camera bounds clamping, Y-axis orientation fix; 54/54 regression sections:
+
+```text
+.\gradlew.bat :core:compileJava :client:compileJava runRegressionTests
+BUILD SUCCESSFUL in 44s
+runRegressionTests: All sections PASS (54 sections)
+  new section: testCollisionWorldXResolution (right-wall, left-wall, platform pass-through)
+```
+
+Previous gate (2026-05-09) — M4 SUMMIT_SHRINE + HOLLOW_DEPTHS contract authoring; PlaytestClient decomposition (InputHandler, RoomGeometry, SaveLoad); LibGDX P1 scaffold + tile rendering:
 
 ```text
 .\gradlew.bat runDataContractDiagnostics runWorldgenDiagnostics
@@ -260,5 +278,6 @@ Historical gate evidence is in `docs/handover/CODEX_*.md` files (one per deliver
 3a. ~~**Mutation visibility evidence (M6)**~~ — resolved 2026-05-08. HUD overlay line (amber when active), `MUTATION_OVERLAY_SAVE`/`LOAD` evidence lines, `refreshOverlayHud()` wired at init/transition/load.
 4. ~~**Echo puzzle evaluation (M6)**~~ — resolved 2026-05-08. `EchoPuzzleSolution` + `EchoPuzzleEvaluator` wired; first authored echo puzzle room (summit_echo_room_1, minKills=1) in PlaytestClient Room 4; PUZZLE_PASSED/PUZZLE_FAILED emitted.
 5. ~~**Co-op collision model (M6)**~~ — resolved 2026-05-08. `tickCoopCollisions()` in `GameSimulator`; pairwise AABB separation with MSA push; `PLAYER_COLLISION` event; dead players excluded.
-6. **P2: `core.physics.CollisionWorld`** — extract tile collision from PlaytestClient into `core.physics`; replace stub `spawnY` floor in `GameSimulator.tickPlayers()` with real AABB resolution; wire both clients to share the same instance.
-7. **LibGDX world geometry rendering** — thread `RegionInstance.staticTiles()` through `HubScreen` into `StubWorldRenderer`; render as colored quads under entity rectangles.
+6. ~~**P2: `core.physics.CollisionWorld`**~~ — closed 2026-05-09. `resolveX` + `resolveY` both wired; `GameSimulator.tickPlayers()` uses real AABB resolution; spawnY stub is fallback only when no `CollisionWorld` injected.
+7. ~~**LibGDX world geometry rendering**~~ — closed 2026-05-09. `StubWorldRenderer` renders tile geometry; `ShadowAscentGame` builds and passes stub tile list; camera bounds derived from tile extents.
+8. **P3 asset pipeline** — set up `packSprites` Gradle task; create placeholder PNG sprites for each entity type; load `TextureAtlas` in `ShadowAscentGame.create()`; create `SpriteWorldRenderer` to replace `StubWorldRenderer`.

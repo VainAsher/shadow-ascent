@@ -188,4 +188,6 @@ Delivered in this lane (2026-05-08):
 - ~~M6 remaining: echo puzzle evaluation logic.~~ Resolved 2026-05-09. `EchoPuzzleSolution` + `EchoPuzzleEvaluator` in `core.simulation`; first authored puzzle room in PlaytestClient Room 4.
 - ~~M6 remaining: mutation visibility evidence.~~ Resolved 2026-05-08. `overlayStatusLine` in HUD; `MUTATION_OVERLAY_SAVE`/`LOAD` evidence lines; `refreshOverlayHud()` wired.
 - ~~M6 remaining: co-op collision model.~~ Resolved 2026-05-08. `tickCoopCollisions()` pairwise AABB separation; `PLAYER_COLLISION` event; 51/51 pass.
-- **P1 LibGDX bootstrap**: `DesktopLauncher` + `ShadowAscentGame` + `HubScreen` + `runGame` task created (2026-05-09). Next: `StubWorldRenderer` + `GameInputProcessor` + `GameSimulator` wiring (see production stack plan P1).
+- ~~**P1 LibGDX bootstrap**~~ — complete 2026-05-09. `DesktopLauncher` + `ShadowAscentGame` + `HubScreen` + `runGame` task; `GameInputProcessor` (full key bindings); `StubWorldRenderer` (tile + entity rects); `GameSimulator` wired with stub geometry + `CollisionWorld` injection.
+- ~~**P2 collision + camera**~~ — complete 2026-05-09. `CollisionWorld.resolveX` + `resolveY` wired in `GameSimulator.tickPlayers()`; Y-axis camera orientation fixed (`setToOrtho(true)`); camera world-bounds clamping from tile extents; 54/54 regression pass.
+- **P3 asset pipeline**: `TexturePacker` Gradle task + placeholder PNG sprites + `TextureAtlas` loading + `SpriteWorldRenderer` replacing `StubWorldRenderer`.
