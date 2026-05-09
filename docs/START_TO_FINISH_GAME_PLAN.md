@@ -2,7 +2,7 @@
 doc_type: plan
 status: living
 owner: core-team
-last_updated: 2026-05-07
+last_updated: 2026-05-09
 version_anchor: 0.0.1
 ---
 # Shadow Ascent Start-to-Finish Game Plan
@@ -15,11 +15,15 @@ Shadow Ascent is a full narrative Metroidvania campaign, not a one-slice prototy
 
 North-star trajectory: after campaign spine hardening, extend into a systemic open-world narrative RPG architecture through explicit staged milestones rather than direct scope jump.
 
-## Current Baseline (Truth)
+## Current Baseline (Truth, as of 2026-05-09)
 
-- Clean-start scaffold is operational.
-- Data contracts are now loaded and validated at runtime.
-- Mission/gameplay progression is contract-backed and playable for Act I QA routing; manual movement-feel sign-off and later-act scale work remain.
+- Clean-start scaffold operational; GitHub repo live at VainAsher/shadow-ascent; CI green (53/53 regression sections).
+- Data contracts loaded and validated at runtime; FAIL_FAST mode active on CI.
+- Act I QA route complete: donor-physics parity signed off (2026-05-07), four-room traversal topology, combat encounter, echo puzzle room, faction tension mutation.
+- SAVE_V3 envelope active with SHA-256 checksum; V0/V1/V2 migration chain implemented.
+- LibGDX P1 production client bootstrap done: `DesktopLauncher` + `ShadowAscentGame` + `HubScreen` + `StubWorldRenderer` + `GameInputProcessor` wired; OrthographicCamera follow and stub gravity integrated.
+- M5 world simulation foundation complete: world/faction/settlement contracts, deterministic tick/event runtime, WorldSimulationTick.
+- M6 regional streaming foundation done: RegionManifest/RegionLoader/MutationOverlay, three authored region fragments, SAVE_V3 overlay persistence.
 - Donor repos remain reference sources, not direct release candidates.
 
 ## Vision Anchors
@@ -62,13 +66,13 @@ North-star trajectory: after campaign spine hardening, extend into a systemic op
 
 ## Milestone Intent
 
-- M0: scaffold and baseline docs (completed).
-- M1: objective-driven Act I QA route (active).
-- M2: contract-backed campaign spine (active).
-- M3: save/version stability and release evidence (queued).
-- M4: campaign coverage expansion and polish (queued).
-- M5: systemic world simulation foundation (active).
-- M6: open-world runtime expansion (queued).
+- M0: scaffold and baseline docs — **complete**.
+- M1: objective-driven Act I QA route — **complete** (2026-05-07).
+- M2: contract-backed campaign spine — **complete** (2026-05-07).
+- M3: save/version stability and release evidence — **active** (SAVE_V3 + checksum done; full exit criteria TBD).
+- M4: campaign coverage expansion and polish — **queued** (SUMMIT_SHRINE narrative decisions provided; authoring next).
+- M5: systemic world simulation foundation — **complete** (2026-05-07).
+- M6: open-world runtime expansion — **active** (streaming foundation done; open-world runtime design TBD).
 
 Reference matrix: `docs/NORTH_STAR_EXECUTION_MATRIX.md`.
 

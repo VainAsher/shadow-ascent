@@ -429,6 +429,260 @@
       ]
     }
   ],
+  "hollow_depths_chains": [
+    {
+      "id": "quest_hd_hermit_circles_of_survival",
+      "npc": "SHADE_HERMIT",
+      "title": "Circles of Survival",
+      "steps": [
+        {
+          "id": "hd_hermit_q1_listen_to_the_weight",
+          "act": "ACT_2",
+          "plateau": "HOLLOW_DEPTHS",
+          "required_flags": [
+            "awoke_in_depths"
+          ],
+          "hook": "The hermit asks Aen to stop running from the weight and trace where it gathers.",
+          "objective": "Walk the echo-dark passages and read the pressure signs the Depths leave behind.",
+          "area_pool": [
+            "area_hollow_depths_camp",
+            "area_hollow_depths_caves"
+          ],
+          "reward_effects": [
+            {
+              "type": "ITEM_UNLOCK",
+              "magnitude": 1,
+              "payload": {
+                "id": "hd_hermit_q1_depth_marks_item",
+                "item_key": "depth_marks"
+              }
+            }
+          ],
+          "story_beat": "The hermit teaches that naming the weight is the first act of survival.",
+          "sets_flags": [
+            "hd_hermit_q1_complete"
+          ]
+        },
+        {
+          "id": "hd_hermit_q2_find_the_return_tunnel",
+          "act": "ACT_2",
+          "plateau": "HOLLOW_DEPTHS",
+          "required_flags": [
+            "hollow_weight_understood"
+          ],
+          "hook": "The hermit sends Aen toward a tunnel that only matters if they still intend to keep moving.",
+          "objective": "Reach the return path marker and come back with proof the road is still open.",
+          "area_pool": [
+            "area_hollow_depths_caves",
+            "area_abyssal_gate"
+          ],
+          "reward_effects": [
+            {
+              "type": "MAP_UPGRADE",
+              "magnitude": 1,
+              "payload": {
+                "id": "hd_hermit_return_tunnel_overlay",
+                "map_layer": "return_tunnel_hint"
+              }
+            }
+          ],
+          "story_beat": "The Depths do not promise rescue, only the next place to stand.",
+          "sets_flags": [
+            "hd_hermit_q2_complete"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quest_hd_smithmonk_coals_of_motion",
+      "npc": "SMITH_MONK",
+      "title": "Coals of Motion",
+      "steps": [
+        {
+          "id": "hd_smithmonk_q1_ash_for_the_forge",
+          "act": "ACT_2",
+          "plateau": "HOLLOW_DEPTHS",
+          "required_flags": [
+            "weightbound_ogre_defeated"
+          ],
+          "hook": "The monk needs a live ember-ash compound before he can restore anything useful.",
+          "objective": "Retrieve forge ash from a dangerous chamber and carry it back intact.",
+          "area_pool": [
+            "area_weightbound_mines_arena",
+            "area_hollow_hub_first_sparks"
+          ],
+          "reward_effects": [
+            {
+              "type": "RESOURCE_BUNDLE",
+              "magnitude": 1,
+              "payload": {
+                "id": "hd_smithmonk_q1_ember_ash_bundle",
+                "resource_key": "ember_ash"
+              }
+            }
+          ],
+          "story_beat": "Motion returns through work, not comfort.",
+          "sets_flags": [
+            "hd_smithmonk_q1_complete"
+          ]
+        },
+        {
+          "id": "hd_smithmonk_q2_test_the_burst",
+          "act": "ACT_2",
+          "plateau": "HOLLOW_DEPTHS",
+          "required_flags": [
+            "dash_restored"
+          ],
+          "hook": "The monk refuses to call the work complete until Aen proves the body will answer.",
+          "objective": "Use the restored dash to clear a short trial path and return.",
+          "area_pool": [
+            "area_hollow_hub_first_sparks",
+            "area_fractured_contact_high_winds"
+          ],
+          "reward_effects": [
+            {
+              "type": "PASSIVE_BUFF",
+              "magnitude": 1,
+              "payload": {
+                "id": "hd_smithmonk_dash_recovery_buff",
+                "buff_family": "dash_recovery_minor"
+              }
+            }
+          ],
+          "story_beat": "The monk trusts completed motion more than spoken gratitude.",
+          "sets_flags": [
+            "hd_smithmonk_q2_complete"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quest_hd_elder_listen_before_light",
+      "npc": "LISTENING_ELDER",
+      "title": "Listen Before Light",
+      "steps": [
+        {
+          "id": "hd_elder_q1_gather_the_quiet",
+          "act": "ACT_2",
+          "plateau": "HOLLOW_DEPTHS",
+          "required_flags": [
+            "awoke_in_depths"
+          ],
+          "hook": "The elder asks Aen to find the few places in the Depths where the noise briefly stops.",
+          "objective": "Visit the quiet pockets and return with what each silence changed in you.",
+          "area_pool": [
+            "area_hollow_depths_camp",
+            "area_echo_galleries"
+          ],
+          "reward_effects": [
+            {
+              "type": "ITEM_UNLOCK",
+              "magnitude": 1,
+              "payload": {
+                "id": "hd_elder_q1_quiet_token",
+                "item_key": "quiet_token"
+              }
+            }
+          ],
+          "story_beat": "Recovery begins when Aen can hear more than panic.",
+          "sets_flags": [
+            "hd_elder_q1_complete"
+          ]
+        },
+        {
+          "id": "hd_elder_q2_name_the_echoes",
+          "act": "ACT_2",
+          "plateau": "HOLLOW_DEPTHS",
+          "required_flags": [
+            "echoes_encountered"
+          ],
+          "hook": "The elder asks Aen not to flee the echoes this time.",
+          "objective": "Return to the echo halls and endure the memory long enough to name what remains.",
+          "area_pool": [
+            "area_echo_galleries",
+            "area_hollow_depths_caves"
+          ],
+          "reward_effects": [
+            {
+              "type": "PASSIVE_BUFF",
+              "magnitude": 1,
+              "payload": {
+                "id": "hd_elder_echo_resolve_buff",
+                "buff_family": "echo_resolve_minor"
+              }
+            }
+          ],
+          "story_beat": "The echoes become memory instead of accusation.",
+          "sets_flags": [
+            "hd_elder_q2_complete"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quest_hd_advocate_the_open_verdict",
+      "npc": "ADVOCATE",
+      "title": "The Open Verdict",
+      "steps": [
+        {
+          "id": "hd_advocate_q1_record_the_wounds",
+          "act": "ACT_2",
+          "plateau": "HOLLOW_DEPTHS",
+          "required_flags": [
+            "double_jump_restored"
+          ],
+          "hook": "The Advocate asks Aen to carry witness, not triumph, through the lower trials.",
+          "objective": "Cross the broken ascent route and recover the marks left by those who failed before you.",
+          "area_pool": [
+            "area_fractured_contact_high_winds",
+            "area_stone_judge_maze"
+          ],
+          "reward_effects": [
+            {
+              "type": "ITEM_UNLOCK",
+              "magnitude": 1,
+              "payload": {
+                "id": "hd_advocate_q1_trial_record",
+                "item_key": "trial_record"
+              }
+            }
+          ],
+          "story_beat": "The Depths keep verdicts even when no judge is watching.",
+          "sets_flags": [
+            "hd_advocate_q1_complete"
+          ]
+        },
+        {
+          "id": "hd_advocate_q2_leave_with_witness",
+          "act": "ACT_2",
+          "plateau": "HOLLOW_DEPTHS",
+          "required_flags": [
+            "stone_judge_defeated"
+          ],
+          "hook": "The Advocate asks for one final proof that surviving the maze changed more than your route.",
+          "objective": "Carry the record to the last cutoff and leave it where the next lost soul might find it.",
+          "area_pool": [
+            "area_stone_judge_maze",
+            "area_abyssal_gate"
+          ],
+          "reward_effects": [
+            {
+              "type": "MAP_UPGRADE",
+              "magnitude": 1,
+              "payload": {
+                "id": "hd_advocate_last_cutoff_marker",
+                "map_layer": "witness_marker"
+              }
+            }
+          ],
+          "story_beat": "Aen leaves behind witness instead of vanishing without trace.",
+          "sets_flags": [
+            "hd_advocate_q2_complete"
+          ]
+        }
+      ]
+    }
+  ],
   "optional_npcs": [
     {
       "id": "old_man_riku",

@@ -2,7 +2,7 @@
 doc_type: migration_map
 status: living
 owner: core-team
-last_updated: 2026-05-08
+last_updated: 2026-05-09
 version_anchor: 0.0.1
 ---
 # File-by-File Migration Map
@@ -118,10 +118,10 @@ This map defines **exact first imports** from donor repos into `shadow_ascent_cl
 
 | Source Repo | Source Path | Target Module/Path | Purpose | Effort | Risk | Status |
 |---|---|---|---|---|---|---|
-| old | `java/client/src/main/java/com/indieniinja/client/game/StoryManager.java` | `java/client/.../StoryManager.java` | client-side story presentation integration | M | Medium | queued |
-| old | `java/client/src/main/java/com/indieniinja/client/game/MissionManager.java` | `java/client/.../MissionUiCoordinator.java` | mission UI/runtime coordination (adapted) | M | Medium | queued |
+| old | `java/client/src/main/java/com/indieniinja/client/game/StoryManager.java` | `java/client/.../StoryManager.java` | client-side story presentation integration | M | Medium | done (2026-05-09) |
+| old | `java/client/src/main/java/com/indieniinja/client/game/MissionManager.java` | `java/client/.../MissionUiCoordinator.java` | mission UI/runtime coordination (adapted) | M | Medium | done (2026-05-09) |
 | old | `java/client/src/main/java/com/indieniinja/client/ui/MinimapRenderer.java` | `java/client/.../ui/MinimapRenderer.java` | minimap gameplay readability | M | Medium | done |
-| old | `java/client/src/main/java/com/indieniinja/client/rendering/HudRenderer.java` | `java/client/.../ui/HudRenderer.java` | HUD evolution path | M | Medium | queued |
+| old | `java/client/src/main/java/com/indieniinja/client/rendering/HudRenderer.java` | `java/client/.../ui/HudRenderer.java` | HUD evolution path | M | Medium | done (2026-05-08) |
 | clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/PlaytestClient.java` | MVP human-playtest window to exercise mission/hub runtime interactively | M | Medium | done |
 | clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/PlaytestClient.java` | bounded minimap and collision-geometry playability overlays for traversal QA | M | Medium | done |
 | clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/PlaytestClient.java` | mission/HUD feedback polish (objective progress surfacing, ability status, gate status, mission feed) | M | Medium | done |
@@ -129,6 +129,11 @@ This map defines **exact first imports** from donor repos into `shadow_ascent_cl
 | clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/PlaytestClient.java` | combat-state HUD/minimap surfacing (attack cooldown, encounter focus, encounter markers) | S | Low | done |
 | clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/InventoryPanel.java` + `ShopPanel.java` + `CraftingPanel.java` | UI overlay panels: inventory grid, shop buy/sell, crafting recipe execution; LibGDX patterns adapted to Swing | M | Medium | done |
 | clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/MinimapRenderer.java` | extracted minimap rendering from UISubsystem; standalone client class | S | Low | done |
+| clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/DesktopLauncher.java` | LibGDX LWJGL3 entry point for production client | S | Low | done (2026-05-09) |
+| clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/ShadowAscentGame.java` | LibGDX Game subclass; wires GameSimulator + StubWorldRenderer + GameInputProcessor | S | Low | done (2026-05-09) |
+| clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/HubScreen.java` | LibGDX Screen; owns OrthographicCamera, delta-capped tick loop, camera lerp-follow | S | Low | done (2026-05-09) |
+| clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/rendering/StubWorldRenderer.java` | P1 entity renderer as ShapeRenderer rectangles; accepts Matrix4 projection matrix | S | Low | done (2026-05-09) |
+| clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/input/GameInputProcessor.java` | LibGDX InputAdapter; routes WASD/Space/Shift/F/E/I to InputCommand per frame | S | Low | done (2026-05-09) |
 
 ## Wave 6 — M6 Open-World Runtime (new)
 

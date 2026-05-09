@@ -440,6 +440,32 @@
       ],
       "notes": "Early and hopeful echo.",
       "dialogue_tags": []
+    },
+    {
+      "id": "LISTENING_ELDER",
+      "display_name": "Listening Elder",
+      "allowed_roles": [
+        "support",
+        "recovery_anchor"
+      ],
+      "eligible_plateaus": [
+        "HOLLOW_DEPTHS"
+      ],
+      "notes": "Recovery-space voice. Asks Aen to stop and hear before moving. Does not prescribe action.",
+      "dialogue_tags": []
+    },
+    {
+      "id": "ADVOCATE",
+      "display_name": "Advocate",
+      "allowed_roles": [
+        "witness",
+        "trial_guide"
+      ],
+      "eligible_plateaus": [
+        "HOLLOW_DEPTHS"
+      ],
+      "notes": "Records and witnesses rather than guides. Asks Aen to carry proof of survival, not glory.",
+      "dialogue_tags": []
     }
   ]
 }

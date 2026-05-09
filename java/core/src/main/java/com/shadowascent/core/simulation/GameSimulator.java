@@ -1,5 +1,6 @@
 package com.shadowascent.core.simulation;
 
+import com.shadowascent.core.physics.PhysicsConstants;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -40,6 +41,7 @@ public final class GameSimulator {
             SimEnemy.ATTACK_WINDUP_TIME + SimEnemy.ATTACK_ACTIVE_TIME + SimEnemy.ATTACK_RECOVERY_TIME;
     private static final float RESPAWN_DELAY  = 3.0f;
     private static final float REVIVE_RANGE   = 80f;
+    // Stub floor — P2 replaces with CollisionWorld AABB resolution
 
     // ── State ─────────────────────────────────────────────────────────────────
 
@@ -163,6 +165,23 @@ public final class GameSimulator {
                     p.health = p.maxHealth;
                     p.physics.x = p.spawnX;
                     p.physics.y = p.spawnY;
+                    p.physics.vy = 0f;
+                    p.physics.onGround = true;
+                }
+            }
+            if (!p.isDead) {
+                if (!p.physics.gravityFrozen) {
+                    p.physics.vy += PhysicsConstants.GRAVITY;
+                }
+                p.physics.x += p.physics.vx;
+                p.physics.y += p.physics.vy;
+                // Stub floor at spawn Y — P2 replaces with CollisionWorld AABB resolution
+                if (p.physics.y >= p.spawnY) {
+                    p.physics.y      = p.spawnY;
+                    p.physics.vy     = 0f;
+                    p.physics.onGround = true;
+                } else {
+                    p.physics.onGround = false;
                 }
             }
         }

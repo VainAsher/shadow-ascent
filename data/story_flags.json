@@ -390,6 +390,54 @@
       "type": "side_quest",
       "source": "quest_hazel_lantern_weaver",
       "debug_color": "purple"
+    },
+    {
+      "id": "hd_hermit_q1_complete",
+      "type": "side_quest",
+      "source": "quest_hd_hermit_circles_of_survival",
+      "debug_color": "purple"
+    },
+    {
+      "id": "hd_hermit_q2_complete",
+      "type": "side_quest",
+      "source": "quest_hd_hermit_circles_of_survival",
+      "debug_color": "purple"
+    },
+    {
+      "id": "hd_smithmonk_q1_complete",
+      "type": "side_quest",
+      "source": "quest_hd_smithmonk_coals_of_motion",
+      "debug_color": "purple"
+    },
+    {
+      "id": "hd_smithmonk_q2_complete",
+      "type": "side_quest",
+      "source": "quest_hd_smithmonk_coals_of_motion",
+      "debug_color": "purple"
+    },
+    {
+      "id": "hd_elder_q1_complete",
+      "type": "side_quest",
+      "source": "quest_hd_elder_listen_before_light",
+      "debug_color": "purple"
+    },
+    {
+      "id": "hd_elder_q2_complete",
+      "type": "side_quest",
+      "source": "quest_hd_elder_listen_before_light",
+      "debug_color": "purple"
+    },
+    {
+      "id": "hd_advocate_q1_complete",
+      "type": "side_quest",
+      "source": "quest_hd_advocate_the_open_verdict",
+      "debug_color": "purple"
+    },
+    {
+      "id": "hd_advocate_q2_complete",
+      "type": "side_quest",
+      "source": "quest_hd_advocate_the_open_verdict",
+      "debug_color": "purple"
     }
   ]
 }

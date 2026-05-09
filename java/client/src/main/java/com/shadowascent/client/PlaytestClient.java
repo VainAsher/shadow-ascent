@@ -15,8 +15,6 @@ import com.shadowascent.core.physics.TileType;
 import com.shadowascent.core.world.progression.WorldProgressionGraph;
 import com.shadowascent.core.world.progression.WorldProgressionGraph.ProgressionNode;
 import com.shadowascent.core.world.sections.SectionTemplateLibrary;
-import com.shadowascent.core.world.streaming.MutationOverlay;
-import com.shadowascent.core.world.streaming.OverlayPayloadCodec;
 import com.shadowascent.core.world.streaming.RegionInstance;
 import com.shadowascent.core.world.streaming.RegionLoadException;
 import com.shadowascent.core.world.streaming.RegionLoader;
@@ -24,11 +22,8 @@ import com.shadowascent.core.world.streaming.RegionManifest;
 import com.shadowascent.core.world.streaming.RegionalStreamingConstraintValidator;
 import com.shadowascent.core.world.streaming.ZoneOverride;
 
-import javax.swing.AbstractAction;
 import javax.swing.JFrame;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import java.awt.Dimension;
@@ -37,7 +32,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -133,7 +127,8 @@ public final class PlaytestClient {
     private final EchoPuzzleSolution summitEchoPuzzle = EchoPuzzleSolution.ofKills("summit_echo_room_1", 1);
     private final EchoPuzzleEvaluator echoPuzzleEvaluator = new EchoPuzzleEvaluator();
 
-    private final Set<Integer> pressedKeys;
+    private final InputHandler inputHandler;
+    private final SaveLoad saveLoad;
     private final SpatialHash collisionHash;
     private final List<TileRect> collisionTiles;
     private final List<TileRect> dynamicCollisionTiles;
@@ -168,22 +163,7 @@ public final class PlaytestClient {
     private boolean playerDead;
     private float deathResetTimerSeconds;
 
-    private boolean queueInteract;
-    private boolean queueStartMission;
-    private boolean queueResolveObjective;
-    private boolean queueJump;
-    private boolean queueDash;
-    private boolean queueAttack;
-    private boolean queueSave;
-    private boolean queueLoad;
-    private boolean queueInventoryToggle;
-    private boolean queueCraftToggle;
-    private boolean queuePanelUp;
-    private boolean queuePanelDown;
-    private boolean queuePanelLeft;
-    private boolean queuePanelRight;
-    private boolean queuePanelAction;
-    private boolean queuePanelClose;
+    // Input queue flags live in InputHandler
 
     private SimInventory playerInventory;
     private InventoryPanel inventoryPanel;
@@ -209,8 +189,9 @@ public final class PlaytestClient {
         this.missionManager = gameState.getMissionManager();
         this.hubManager = gameState.getHubManager();
         this.storyManager = new StoryManager(storyState, hubManager, missionManager, this::log);
+        this.saveLoad = new SaveLoad(gameState, savePath);
 
-        this.pressedKeys = new HashSet<>();
+        this.inputHandler = new InputHandler();
         this.collisionHash = new SpatialHash();
         this.collisionTiles = new ArrayList<>();
         this.dynamicCollisionTiles = new ArrayList<>();
@@ -359,84 +340,9 @@ public final class PlaytestClient {
         }
 
         private void configureKeyBindings() {
-            bindHold(KeyEvent.VK_A);
-            bindHold(KeyEvent.VK_D);
-            bindHold(KeyEvent.VK_S);
-            bindHold(KeyEvent.VK_ALT);
-
-            bindPress("interact", KeyEvent.VK_E, () -> queueInteract = true);
-            bindPress("start_mission_enter", KeyEvent.VK_ENTER, () -> {
-                if (anyPanelOpen()) queuePanelAction = true;
-                else queueStartMission = true;
-            });
-            bindPress("start_mission_tab", KeyEvent.VK_TAB, () -> queueStartMission = true);
-            bindPress("toggle_inventory", KeyEvent.VK_I, () -> queueInventoryToggle = true);
-            bindPress("toggle_crafting", KeyEvent.VK_T, () -> queueCraftToggle = true);
-            bindPress("panel_up",    KeyEvent.VK_UP,    () -> queuePanelUp    = true);
-            bindPress("panel_down",  KeyEvent.VK_DOWN,  () -> queuePanelDown  = true);
-            bindPress("panel_left",  KeyEvent.VK_LEFT,  () -> queuePanelLeft  = true);
-            bindPress("panel_right", KeyEvent.VK_RIGHT, () -> queuePanelRight = true);
-            bindPress("panel_close", KeyEvent.VK_ESCAPE, () -> queuePanelClose = true);
-            bindPress("jump", KeyEvent.VK_SPACE, () -> queueJump = true);
-            bindPress("resolve_objective", KeyEvent.VK_R, () -> queueResolveObjective = true);
-            bindPress("dash", KeyEvent.VK_SHIFT, () -> queueDash = true);
-            bindPress("dash_shift_masked", KeyEvent.VK_SHIFT, InputEvent.SHIFT_DOWN_MASK, () -> queueDash = true);
-            bindPress("dash_alt_key", KeyEvent.VK_C, () -> queueDash = true);
-            bindPress("attack", KeyEvent.VK_F, () -> queueAttack = true);
-            bindPress("toggle_minimap", KeyEvent.VK_M, () -> uiSubsystem.toggleMinimap());
-            bindPress("save", KeyEvent.VK_F5, () -> queueSave = true);
-            bindPress("load", KeyEvent.VK_F9, () -> queueLoad = true);
-        }
-
-        private void bindHold(int keyCode) {
-            String heldAction = "held_" + keyCode;
-            String releasedAction = "released_" + keyCode;
-            getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-                    .put(KeyStroke.getKeyStroke(keyCode, 0, false), heldAction);
-            getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-                    .put(KeyStroke.getKeyStroke(keyCode, 0, true), releasedAction);
-            // Also catch press/release when SHIFT is held so that dashing with SHIFT does not
-            // drop the held-key state or silently swallow the release event for A/D.
-            getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-                    .put(KeyStroke.getKeyStroke(keyCode, InputEvent.SHIFT_DOWN_MASK, false), heldAction);
-            getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-                    .put(KeyStroke.getKeyStroke(keyCode, InputEvent.SHIFT_DOWN_MASK, true), releasedAction);
-            getActionMap().put(heldAction, new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    pressedKeys.add(keyCode);
-                }
-            });
-            getActionMap().put(releasedAction, new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    pressedKeys.remove(keyCode);
-                }
-            });
-        }
-
-        private void bindPress(String actionKey, int keyCode, Runnable action) {
-            String pressedAction = "press_" + actionKey;
-            getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-                    .put(KeyStroke.getKeyStroke(keyCode, 0, false), pressedAction);
-            getActionMap().put(pressedAction, new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    action.run();
-                }
-            });
-        }
-
-        private void bindPress(String actionKey, int keyCode, int modifiers, Runnable action) {
-            String pressedAction = "press_" + actionKey + "_" + modifiers;
-            getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-                    .put(KeyStroke.getKeyStroke(keyCode, modifiers, false), pressedAction);
-            getActionMap().put(pressedAction, new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    action.run();
-                }
-            });
+            inputHandler.install(this,
+                    PlaytestClient.this::anyPanelOpen,
+                    () -> uiSubsystem.toggleMinimap());
         }
     }
 
@@ -457,26 +363,26 @@ public final class PlaytestClient {
         updateTraversalDynamics(dt);
 
         float inputX = 0f;
-        if (pressedKeys.contains(KeyEvent.VK_A)) {
+        if (inputHandler.pressedKeys.contains(KeyEvent.VK_A)) {
             inputX -= 1f;
         }
-        if (pressedKeys.contains(KeyEvent.VK_D)) {
+        if (inputHandler.pressedKeys.contains(KeyEvent.VK_D)) {
             inputX += 1f;
         }
-        boolean fastFallPressed = pressedKeys.contains(KeyEvent.VK_S);
-        boolean precisionWalkHeld = pressedKeys.contains(KeyEvent.VK_ALT);
+        boolean fastFallPressed = inputHandler.pressedKeys.contains(KeyEvent.VK_S);
+        boolean precisionWalkHeld = inputHandler.pressedKeys.contains(KeyEvent.VK_ALT);
 
         if (inputX != 0f) {
             lastMoveDirX = inputX;
         }
 
-        if (queueJump) {
-            queueJump = false;
+        if (inputHandler.queueJump) {
+            inputHandler.queueJump = false;
             jumpBufferSeconds = PhysicsConstants.JUMP_BUFFER_TIME;
         }
 
-        if (queueDash) {
-            queueDash = false;
+        if (inputHandler.queueDash) {
+            inputHandler.queueDash = false;
             startDash(inputX);
         }
 
@@ -488,29 +394,29 @@ public final class PlaytestClient {
         combatSubsystem.update(playerPhysics.x, playerPhysics.y, storyState::hasAbility, this::log, dt);
         updateCamera(dt);
 
-        if (queueAttack) {
-            queueAttack = false;
+        if (inputHandler.queueAttack) {
+            inputHandler.queueAttack = false;
             performCombatAttack();
         }
 
-        if (queueStartMission) {
-            queueStartMission = false;
+        if (inputHandler.queueStartMission) {
+            inputHandler.queueStartMission = false;
             startNextAvailableMission();
         }
-        if (queueInteract) {
-            queueInteract = false;
+        if (inputHandler.queueInteract) {
+            inputHandler.queueInteract = false;
             interactNearestNpc();
         }
-        if (queueResolveObjective) {
-            queueResolveObjective = false;
+        if (inputHandler.queueResolveObjective) {
+            inputHandler.queueResolveObjective = false;
             resolveActiveObjectiveShortcut();
         }
-        if (queueSave) {
-            queueSave = false;
+        if (inputHandler.queueSave) {
+            inputHandler.queueSave = false;
             saveState();
         }
-        if (queueLoad) {
-            queueLoad = false;
+        if (inputHandler.queueLoad) {
+            inputHandler.queueLoad = false;
             loadState();
         }
 
@@ -723,9 +629,7 @@ public final class PlaytestClient {
     }
 
     private String resolveRegionIdForX(float x) {
-        if (x <= HUB_ROOM_END_X) return "hub_lantern_heights";
-        if (x <= FORGE_ROOM_END_X) return "dungeon_forge_terrace_a";
-        return "region_hollow_shaft";
+        return RoomGeometry.resolveRegionIdForX(x);
     }
 
     private void checkAndApplyRegionTransition() {
@@ -1591,15 +1495,15 @@ public final class PlaytestClient {
     }
 
     private void processPanelInputs() {
-        if (queueInventoryToggle) {
-            queueInventoryToggle = false;
+        if (inputHandler.queueInventoryToggle) {
+            inputHandler.queueInventoryToggle = false;
             shopPanel.close();
             craftingPanel.close();
             inventoryPanel.toggle();
             if (inventoryPanel.isVisible()) writeEvidenceLine("OVERLAY", "inventory_open");
         }
-        if (queueCraftToggle) {
-            queueCraftToggle = false;
+        if (inputHandler.queueCraftToggle) {
+            inputHandler.queueCraftToggle = false;
             shopPanel.close();
             inventoryPanel.close();
             if (craftingPanel.isVisible()) {
@@ -1609,36 +1513,36 @@ public final class PlaytestClient {
                 writeEvidenceLine("OVERLAY", "crafting_open");
             }
         }
-        if (queuePanelClose) {
-            queuePanelClose = false;
+        if (inputHandler.queuePanelClose) {
+            inputHandler.queuePanelClose = false;
             inventoryPanel.close();
             shopPanel.close();
             craftingPanel.close();
         }
-        if (queuePanelUp) {
-            queuePanelUp = false;
+        if (inputHandler.queuePanelUp) {
+            inputHandler.queuePanelUp = false;
             if (inventoryPanel.isVisible()) inventoryPanel.moveUp();
             else if (shopPanel.isVisible())  shopPanel.moveUp();
             else if (craftingPanel.isVisible()) craftingPanel.moveUp();
         }
-        if (queuePanelDown) {
-            queuePanelDown = false;
+        if (inputHandler.queuePanelDown) {
+            inputHandler.queuePanelDown = false;
             if (inventoryPanel.isVisible()) inventoryPanel.moveDown();
             else if (shopPanel.isVisible())  shopPanel.moveDown();
             else if (craftingPanel.isVisible()) craftingPanel.moveDown();
         }
-        if (queuePanelLeft) {
-            queuePanelLeft = false;
+        if (inputHandler.queuePanelLeft) {
+            inputHandler.queuePanelLeft = false;
             if (inventoryPanel.isVisible()) inventoryPanel.moveLeft();
             else if (shopPanel.isVisible())  shopPanel.toggleFocus();
         }
-        if (queuePanelRight) {
-            queuePanelRight = false;
+        if (inputHandler.queuePanelRight) {
+            inputHandler.queuePanelRight = false;
             if (inventoryPanel.isVisible()) inventoryPanel.moveRight();
             else if (shopPanel.isVisible())  shopPanel.toggleFocus();
         }
-        if (queuePanelAction) {
-            queuePanelAction = false;
+        if (inputHandler.queuePanelAction) {
+            inputHandler.queuePanelAction = false;
             if (inventoryPanel.isVisible()) {
                 String feedback = inventoryPanel.useSelected();
                 if (feedback != null) {
@@ -1664,12 +1568,10 @@ public final class PlaytestClient {
 
     private void saveState() {
         try {
-            MutationOverlay overlay = new MutationOverlay();
-            String overlaysB64 = OverlayPayloadCodec.encodeToB64(
-                    overlay.extractSaveState(activeRegions));
-            gameState.save(savePath, overlaysB64);
+            String overlaysB64 = saveLoad.buildOverlaysB64(activeRegions);
+            saveLoad.save(overlaysB64);
             writeEvidenceLine("MUTATION_OVERLAY_SAVE", buildOverlaySummary());
-            log("Saved playtest state to " + savePath.toAbsolutePath());
+            log("Saved playtest state to " + saveLoad.savePath().toAbsolutePath());
         } catch (Exception ex) {
             log("Save failed: " + ex.getMessage());
         }
@@ -1677,9 +1579,8 @@ public final class PlaytestClient {
 
     private void loadState() {
         try {
-            gameState.load(savePath);
-            String overlaysB64 = gameState.loadOverlaysB64(savePath);
-            savedOverlays = OverlayPayloadCodec.decodeFromB64(overlaysB64);
+            SaveLoad.LoadResult result = saveLoad.load();
+            savedOverlays = result.overlays();
             activeRegions.clear();
             streamingConstraintWarnings.clear();
             try {

@@ -2,6 +2,7 @@ package com.shadowascent.client.rendering;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.shadowascent.core.simulation.GameSimulator;
 import com.shadowascent.core.simulation.SimEnemy;
 import com.shadowascent.core.simulation.SimNPC;
@@ -24,7 +25,8 @@ public final class StubWorldRenderer {
         shapes = new ShapeRenderer();
     }
 
-    public void render(GameSimulator simulator) {
+    public void render(GameSimulator simulator, Matrix4 projMatrix) {
+        shapes.setProjectionMatrix(projMatrix);
         shapes.begin(ShapeRenderer.ShapeType.Filled);
 
         for (SimPlayer p : simulator.getPlayers()) {

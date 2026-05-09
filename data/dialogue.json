@@ -508,7 +508,7 @@
     {
       "id": "dlg_hermit_depression_weight",
       "speaker": "SHADE_HERMIT",
-      "text": "Depression is weight without shape. You must push through it.",
+      "text": "The caves feel heavier than they are. Keep walking anyway.",
       "plateau": "HOLLOW_DEPTHS",
       "beat_ref": "beat_hollow_depths_weight_dialogue",
       "tags": [
@@ -596,7 +596,7 @@
     {
       "id": "dlg_hermit_shatter_moth_warning",
       "speaker": "SHADE_HERMIT",
-      "text": "She does not fight you directly. She makes you doubt what you see. Trust your own eyes.",
+      "text": "The floor here lies. Step where you'd expect nothing to hold.",
       "plateau": "HOLLOW_DEPTHS",
       "beat_ref": "beat_shatter_moth_queen",
       "tags": [
@@ -669,7 +669,7 @@
     {
       "id": "dlg_hermit_path_closes",
       "speaker": "SHADE_HERMIT",
-      "text": "When a path closes… another must open.",
+      "text": "The way back is sealed. There is a descent to the west.",
       "plateau": "HOLLOW_DEPTHS",
       "beat_ref": "beat_final_cutoff_glide",
       "tags": [

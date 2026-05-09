@@ -2,7 +2,7 @@
 doc_type: architecture_plan
 status: living
 owner: core-team
-last_updated: 2026-05-07
+last_updated: 2026-05-09
 version_anchor: 0.0.1
 ---
 # Canonical Architecture Plan
@@ -58,6 +58,16 @@ Rules:
 - client should consume core state and contract outputs,
 - avoid re-implementing progression logic client-side.
 
+**Shipping client decision (2026-05-08): LibGDX (`lwjgl3` backend).**
+
+- `DesktopLauncher` + `ShadowAscentGame` are the LibGDX entry points.
+- `HubScreen` owns the `OrthographicCamera`, render loop, and input submission.
+- `StubWorldRenderer` (Phase P1) renders entities as `ShapeRenderer` rectangles; replaced by `SpriteWorldRenderer` in P3.
+- `GameInputProcessor` routes keyboard input to `InputCommand` → `GameSimulator.applyInput()`.
+- `PlaytestClient` (Swing) coexists as the regression/QA harness until LibGDX reaches feature parity; both run via separate Gradle tasks (`runPlayableClient`, `runGame`). Do not delete `PlaytestClient` during migration.
+- `GameSimulator.drainEvents()` is the canonical event bus between simulation and presentation. No pub/sub framework.
+- Custom AABB physics only — Box2D is ruled out. HTML5/GWT and multiplayer networking are out of scope for v1.0.
+
 ## Layer 4: Server Runtime (`java/server`)
 
 Responsibilities:
@@ -76,12 +86,16 @@ Core commands:
 
 - `runRegressionTests` for scenario/regression checks,
 - `runDataContractDiagnostics` for contract validity and beat resolution.
+- `runWorldgenDiagnostics` for worldgen section/progression graph checks.
+- `runWorldSimulationDiagnostics` for M5 world/faction/settlement simulation contract checks.
 
-Future additions:
+Full CI gate: `./gradlew clean :core:compileJava :client:compileJava :server:compileJava runDataContractDiagnostics runWorldgenDiagnostics runWorldSimulationDiagnostics runRegressionTests`
+
+Active/future additions:
 
 - mission/quest signal traceability integration over M5 simulation events,
 - regional streaming + mutation safety validation (`M6`),
-- expanded persistence migration checks for post-`SAVE_V2` schemas.
+- expanded persistence migration checks for `SAVE_V4+` schemas (SAVE_V3 is current; V1/V2/V0 migratable).
 
 ## Migration Architecture Strategy
 
@@ -91,11 +105,12 @@ Future additions:
 
 Reference: `docs/MIGRATION_MAP.md`.
 
-## Current Core Gap Summary
+## Current Core Gap Summary (as of 2026-05-09)
 
-1. Mission objectives/hub/dialogue contract binding is implemented; remaining M1 gate work is manual movement-feel sign-off evidence against donor behavior.
-2. Save format is versioned with backward compatibility and a concrete `v1 -> v2` migrator; next forward migrator (`SAVE_V3`) is still pending schema evolution.
-3. Wave 2 worldgen imports and donor-parity regression checks are implemented; remaining migration depth is in Wave 4/5 simulation and UI slices.
-4. M5 expansion lane is active with world/faction/settlement contracts, diagnostics, and deterministic tick/event runtime; remaining M5 gap is mission/quest consumption of simulation events, plus M6 regional mutation/streaming validation.
+1. **M0–M3 complete.** M1 movement-feel sign-off done (donor-physics parity 2026-05-07). SAVE_V3 envelope active with SHA-256 checksum and V0/V1/V2 migration chain.
+2. **M4 (Campaign Content Scale) — queued.** SUMMIT_SHRINE narrative decisions provided; authoring of beats, flags, quests, and NPC eligibility entries is next.
+3. **M5 complete.** World/faction/settlement simulation contracts, diagnostics, and deterministic tick/event runtime all shipped (2026-05-07).
+4. **M6 (Open-World Runtime) — active.** Regional streaming constraint model + authored region fragments done. Remaining M6 gap: open-world runtime design (mutation loop wiring, mission/quest consumption of simulation events, regional mutation safety).
+5. **LibGDX P1 bootstrap done (2026-05-09).** DesktopLauncher + ShadowAscentGame + HubScreen + StubWorldRenderer + GameInputProcessor wired. OrthographicCamera follow, stub gravity, and position integration added. Next P1 step: CollisionWorld extraction (Phase P2) for AABB resolution parity.
 
-These gaps define the immediate architecture work for M1 completion hardening, M3 persistence evolution, and staged M5/M6 expansion.
+These gaps define the immediate architecture work for M4 content authoring, M6 runtime design, and LibGDX P2 collision extraction.
