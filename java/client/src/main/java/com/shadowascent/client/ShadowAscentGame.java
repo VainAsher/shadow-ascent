@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.shadowascent.client.input.GameInputProcessor;
+import com.shadowascent.client.rendering.SpriteWorldRenderer;
 import com.shadowascent.client.rendering.StubWorldRenderer;
 import com.shadowascent.core.GameState;
 import com.shadowascent.core.physics.CollisionWorld;
@@ -24,6 +25,7 @@ public final class ShadowAscentGame extends Game {
 
     GameSimulator      simulator;
     StubWorldRenderer  stubRenderer;
+    SpriteWorldRenderer spriteRenderer;
     GameInputProcessor inputProcessor;
     List<TileRect>     worldTiles;
     AssetManager       assetManager;
@@ -58,7 +60,8 @@ public final class ShadowAscentGame extends Game {
         assetManager = new AssetManager();
         assetManager.load("assets/sprites/packed/sprites.atlas", TextureAtlas.class);
         assetManager.finishLoading();
-        atlas = assetManager.get("assets/sprites/packed/sprites.atlas", TextureAtlas.class);
+        atlas          = assetManager.get("assets/sprites/packed/sprites.atlas", TextureAtlas.class);
+        spriteRenderer = new SpriteWorldRenderer(batch, atlas);
         Gdx.app.log("ShadowAscentGame", "atlas loaded: " + atlas.getRegions().size + " regions");
 
         setScreen(new HubScreen(this, gameState));

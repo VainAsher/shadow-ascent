@@ -83,7 +83,7 @@ final class HubScreen implements Screen {
         Gdx.gl.glClearColor(0.08f, 0.11f, 0.17f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        game.stubRenderer.render(game.simulator, game.worldTiles, camera.combined);
+        game.spriteRenderer.render(game.simulator, game.worldTiles, camera.combined);
     }
 
     @Override
