@@ -1,5 +1,6 @@
 package com.shadowascent.core.simulation;
 
+import com.shadowascent.core.physics.CollisionWorld;
 import com.shadowascent.core.physics.PhysicsConstants;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -57,6 +58,14 @@ public final class GameSimulator {
     private final List<SimEcho>           echoes          = new ArrayList<>();
     private final PlayerInputController   inputController = new PlayerInputController();
     private final List<SimEvent>          eventQueue      = new ArrayList<>();
+    private       CollisionWorld          collisionWorld  = null;
+
+    // ── CollisionWorld injection ──────────────────────────────────────────────
+
+    /** Inject tile geometry so tickPlayers() uses real AABB resolution instead of spawnY stub. */
+    public void setCollisionWorld(CollisionWorld world) {
+        this.collisionWorld = world;
+    }
 
     // ── Entity registration ───────────────────────────────────────────────────
 
@@ -174,14 +183,19 @@ public final class GameSimulator {
                     p.physics.vy += PhysicsConstants.GRAVITY;
                 }
                 p.physics.x += p.physics.vx;
+                float prevY = p.physics.y;
                 p.physics.y += p.physics.vy;
-                // Stub floor at spawn Y — P2 replaces with CollisionWorld AABB resolution
-                if (p.physics.y >= p.spawnY) {
-                    p.physics.y      = p.spawnY;
-                    p.physics.vy     = 0f;
-                    p.physics.onGround = true;
+                if (collisionWorld != null) {
+                    collisionWorld.resolveY(p.physics, prevY);
                 } else {
-                    p.physics.onGround = false;
+                    // Stub floor at spawn Y — replaced by CollisionWorld when injected
+                    if (p.physics.y >= p.spawnY) {
+                        p.physics.y        = p.spawnY;
+                        p.physics.vy       = 0f;
+                        p.physics.onGround = true;
+                    } else {
+                        p.physics.onGround = false;
+                    }
                 }
             }
         }
