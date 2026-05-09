@@ -40,6 +40,13 @@ Before every substantial task, classify it:
 
 Never advance from `VALIDATE` to `PATCH` without an explicit narrow task boundary confirmed by Claude Code.
 
+For broad `INSPECT` tasks that require reading multiple large files simultaneously (e.g., all five data contracts before authoring a new plateau), spawn parallel `Explore` sub-agents rather than burning main context. Main Claude context is then reserved for the design reasoning that follows:
+
+```text
+Agent(subagent_type="Explore", prompt="Read plateaus.json, story_flags.json, narrative_beats.json
+and summarize tag ranges and blocked flag keys relevant to a new Act II plateau...")
+```
+
 ### Token Rationing Rule
 
 Preserve Claude context wherever possible.
@@ -293,7 +300,7 @@ Step 5  Codex CLI       Run full regression suite:
 
 ## Workflow 3 — Migration Wave (Donor Repo Import)
 
-Applies to any future wave import from `indie-ninja-adventures` or `shadow_ascent_integrated_package`. Waves 0–6 are complete as of 2026-05-08. Wave 5 has three items still queued (StoryManager, MissionUiCoordinator, HudRenderer) — these are next candidates. See `docs/MIGRATION_MAP.md` for the full status table.
+Applies to any future wave import from `indie-ninja-adventures` or `shadow_ascent_integrated_package`. Waves 0–5 are complete as of 2026-05-08. See `docs/MIGRATION_MAP.md` for the authoritative wave status table before starting any new import.
 
 ```
 Step 1  Claude Code     Review the donor class or module to be imported
@@ -314,6 +321,10 @@ Step 5  Codex CLI       Wave completeness check:
 
 Step 6  Claude Code     Review Codex wave-check result
                         Confirm MIGRATION_MAP.md is updated before closing the wave
+
+Step 7  Claude Code     Run /review on the wave commit or PR
+                        Checks layer boundaries, API changes, and contract violations
+                        across all changed files — not just the diff summary
 ```
 
 ---

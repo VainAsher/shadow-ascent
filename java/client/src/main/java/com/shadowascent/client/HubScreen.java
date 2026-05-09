@@ -4,12 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.shadowascent.core.GameState;
+import com.shadowascent.core.simulation.SimEvent;
+
+import java.util.List;
 
 /**
- * First LibGDX screen — placeholder hub render loop.
- * Drains GameSimulator events each frame; tile/sprite rendering wired in subsequent phases.
+ * LibGDX game screen — ticks GameSimulator, drains events, renders entities via StubWorldRenderer.
+ * Sprite rendering and camera follow wired in Phase P3.
  */
 final class HubScreen implements Screen {
+
+    private static final float MAX_DELTA = 0.05f;
 
     private final ShadowAscentGame game;
     @SuppressWarnings("unused")
@@ -25,8 +30,18 @@ final class HubScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        float dt = Math.min(delta, MAX_DELTA);
+
+        game.inputProcessor.submitFrame();
+        game.simulator.tick(dt);
+
+        @SuppressWarnings("unused")
+        List<SimEvent> events = game.simulator.drainEvents();
+
         Gdx.gl.glClearColor(0.08f, 0.11f, 0.17f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        game.stubRenderer.render(game.simulator);
     }
 
     @Override

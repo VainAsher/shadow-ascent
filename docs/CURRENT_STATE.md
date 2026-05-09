@@ -2,7 +2,7 @@
 doc_type: current_state
 status: living
 owner: core-team
-last_updated: 2026-05-08
+last_updated: 2026-05-09
 version_anchor: 0.0.1
 ---
 # Current State
@@ -160,6 +160,21 @@ Canonical runtime and execution snapshot for the clean-start repository.
   - `PlaytestClient` seeded with `SimInventory playerInventory` (100 coins, dagger, 3 potions, 4 iron) and `SimShop hubShop` at startup,
   - arrow-key navigation + Esc close + contextual Enter (panel action or mission start) wired,
   - `processPanelInputs()` and `anyPanelOpen()` manage panel input routing in `tick()`.
+- Wave 5 PlaytestClient decomposition — phase 2 extractions (2026-05-09):
+  - `HudRenderer` extracted from `UISubsystem`: owns all mutable HUD state (`feedbackLine`, `overlayStatusLine`, `interactionHint`, `showMinimap`, ability snapshot) + full `drawHud()` body; `UISubsystem` delegates via `hudRenderer.draw(g, state)` + `hudRenderer.tick(x, y, dt)`; ability-unlock log lines routed back through `Consumer<String> eventLogSink` = `UISubsystem::addEventLogLine`,
+  - `StoryManager` extracted from `PlaytestClient`: encapsulates `seedState()` + `refreshFromStoryChange()` + `restoreAbilityTriggers()` + `restoreCombatEncounters()`; all 4 inline `hubManager.updateHubState(); missionManager.updateAvailableMissions()` pairs replaced with `storyManager.refreshFromStoryChange()`,
+  - `MissionUiCoordinator` extracted from `PlaytestClient`: objective-advance + feedback-flash chain; `feedbackSink` consumer (`uiSubsystem.setMissionFeedback`) + `logSink` consumer; `applyCombatEncounterObjectiveProgress`, `applyAbilityTriggerObjectiveProgress`, `advanceObjective` are 1-liner delegates.
+- First authored echo puzzle room (2026-05-09):
+  - `echo_puzzle_sentinel` encounter added to PlaytestClient Room 4 (x=2750, radius=80, 1-hit STANDARD pattern, keywords: echo/puzzle/sentinel/summit),
+  - `EchoPuzzleSolution.ofKills("summit_echo_room_1", minKills=1)` + `EchoPuzzleEvaluator` wired; `checkEchoPuzzle()` called on sentinel clear,
+  - emits `PUZZLE_PASSED` / `PUZZLE_FAILED`; sets `echo_puzzle_summit_cleared` flag on pass.
+- Faction tension mutation floor (2026-05-09):
+  - `WorldSimulationTick.maxFactionTensionForPlateau()` computes max faction tension for a plateau from `faction_state` contracts,
+  - tension computed as `Math.max(region.factionTension(), maxContractTension) + noise`; `faction_veil_covenant` (tension=0.73) now floors HOLLOW_DEPTHS ≥ 0.65 → `MutationOverlay.compute()` fires `FACTION_CONFLICT`.
+- LibGDX production client scaffold (2026-05-09):
+  - libgdx 1.12.1 deps added to `:client` in `build.gradle.kts`; `runGame` Gradle task targeting `DesktopLauncher`,
+  - `DesktopLauncher.java` (1280×720, 60fps LWJGL3 config) + `ShadowAscentGame.java` (Game, creates `HubScreen` on `create()`) + `HubScreen.java` (GL clear per frame, all lifecycle stubs),
+  - `.gitattributes` added enforcing `eol=lf` on `gradlew`; GitHub Actions CI passing (all 53 regression sections + diagnostics).
 - Wave 5 MinimapRenderer extraction (2026-05-08):
   - `MinimapRenderer` standalone class in `com.shadowascent.client`; extracted from `UISubsystem.drawMinimap`,
   - full minimap rendering logic owned by `MinimapRenderer.draw(Graphics2D g, UISubsystem.RenderState state)`,

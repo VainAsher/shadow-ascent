@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"c:\\Users\\asher\\tester\\shadow_ascent_integrated_complete_prototype_package\\shadow_ascent_clean_start\" && .\\gradlew.bat *)",
+      "Bash(cd \"c:\\Users\\asher\\tester\\shadow_ascent_integrated_complete_prototype_package\\shadow_ascent_clean_start\" && ./gradlew *)",
+      "Bash(cd \"c:\\Users\\asher\\tester\\shadow_ascent_integrated_complete_prototype_package\\shadow_ascent_clean_start\" && ./gradlew.bat *)",
+      "Bash(cd \"c:\\Users\\asher\\tester\\shadow_ascent_integrated_complete_prototype_package\\shadow_ascent_clean_start\" && gradlew.bat *)",
+      "Bash(./gradlew *)",
+      "Bash(.\\gradlew.bat *)",
+      "Bash(./gradlew.bat *)",
+      "Bash(Get-ChildItem C:\\Users\\asher\\tester\\shadow_ascent_integrated_complete_prototype_package\\shadow_ascent_clean_start\\*)",
+      "Bash(Get-Content C:\\Users\\asher\\tester\\shadow_ascent_integrated_complete_prototype_package\\shadow_ascent_clean_start\\*)"
+    ]
+  }
+}

@@ -183,5 +183,9 @@ Delivered in this lane (2026-05-08):
 ### Next open items
 
 - ~~M3 exit criteria.~~ Closed 2026-05-08 — gate doc at `docs/M3_RELEASE_GATE.md`; M3 promoted to complete.
-- M4 campaign content: authored act coverage expansion, optional plateau content with worldgen gates. Now unblocked.
-- M6 remaining: authored chunk-streaming geometry to replace traversal route stubs; echo puzzle evaluation logic; mutation visibility evidence; co-op collision model.
+- M4 campaign content: authored act coverage expansion, optional plateau content with worldgen gates. Unblocked but blocked on SUMMIT_SHRINE narrative decisions — see backlog item `[AUTHORING DECISION REQUIRED]`.
+- ~~M6 remaining: authored chunk-streaming geometry.~~ Resolved 2026-05-08. Region fragment JSONs carry world-space tile geometry; `RegionLoader` sources static tiles from fragment data.
+- ~~M6 remaining: echo puzzle evaluation logic.~~ Resolved 2026-05-09. `EchoPuzzleSolution` + `EchoPuzzleEvaluator` in `core.simulation`; first authored puzzle room in PlaytestClient Room 4.
+- ~~M6 remaining: mutation visibility evidence.~~ Resolved 2026-05-08. `overlayStatusLine` in HUD; `MUTATION_OVERLAY_SAVE`/`LOAD` evidence lines; `refreshOverlayHud()` wired.
+- ~~M6 remaining: co-op collision model.~~ Resolved 2026-05-08. `tickCoopCollisions()` pairwise AABB separation; `PLAYER_COLLISION` event; 51/51 pass.
+- **P1 LibGDX bootstrap**: `DesktopLauncher` + `ShadowAscentGame` + `HubScreen` + `runGame` task created (2026-05-09). Next: `StubWorldRenderer` + `GameInputProcessor` + `GameSimulator` wiring (see production stack plan P1).

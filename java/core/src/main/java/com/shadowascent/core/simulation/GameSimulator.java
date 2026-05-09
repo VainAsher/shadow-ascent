@@ -1,6 +1,7 @@
 package com.shadowascent.core.simulation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -307,6 +308,10 @@ public final class GameSimulator {
 
     public SimPlayer getPlayer(String playerId) {
         return players.get(playerId);
+    }
+
+    public Collection<SimPlayer> getPlayers() {
+        return Collections.unmodifiableCollection(players.values());
     }
 
     public List<SimEnemy> getEnemies() {

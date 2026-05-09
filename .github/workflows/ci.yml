@@ -26,4 +26,4 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run compile and diagnostics gates
-        run: ./gradlew --no-daemon clean :core:compileJava :client:compileJava :server:compileJava runDataContractDiagnostics runWorldgenDiagnostics runRegressionTests
+        run: ./gradlew --no-daemon clean :core:compileJava :client:compileJava :server:compileJava runDataContractDiagnostics runWorldgenDiagnostics runWorldSimulationDiagnostics runRegressionTests
