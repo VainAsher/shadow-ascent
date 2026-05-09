@@ -16,3 +16,6 @@ Thumbs.db
 
 # Runtime logs
 logs/
+
+# P3 generated sprite sheet (rebuilt by packSprites task)
+assets/sprites/packed/

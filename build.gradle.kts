@@ -73,10 +73,20 @@ task<JavaExec>("runPlayableClient") {
     mainClass.set("com.shadowascent.client.PlaytestClient")
 }
 
+task<JavaExec>("packSprites") {
+    group = "build"
+    description = "Generate placeholder sprite sheet and atlas for the P3 asset pipeline."
+    dependsOn(":client:classes")
+    classpath = project(":client").mainSourceSet().runtimeClasspath
+    mainClass.set("com.shadowascent.client.tools.SpritePackerTool")
+    args("${projectDir}/assets/sprites/packed")
+    outputs.dir("${projectDir}/assets/sprites/packed")
+}
+
 task<JavaExec>("runGame") {
     group = "application"
     description = "Launch LibGDX game client (Phase 1 rendering stack)."
-    dependsOn(":client:classes")
+    dependsOn("packSprites")
     classpath = project(":client").mainSourceSet().runtimeClasspath
     mainClass.set("com.shadowascent.client.DesktopLauncher")
 }

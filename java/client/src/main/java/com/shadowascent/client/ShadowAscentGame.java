@@ -2,6 +2,9 @@ package com.shadowascent.client;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.shadowascent.client.input.GameInputProcessor;
 import com.shadowascent.client.rendering.StubWorldRenderer;
 import com.shadowascent.core.GameState;
@@ -23,6 +26,9 @@ public final class ShadowAscentGame extends Game {
     StubWorldRenderer  stubRenderer;
     GameInputProcessor inputProcessor;
     List<TileRect>     worldTiles;
+    AssetManager       assetManager;
+    TextureAtlas       atlas;
+    SpriteBatch        batch;
 
     private GameState gameState;
 
@@ -48,12 +54,21 @@ public final class ShadowAscentGame extends Game {
         inputProcessor = new GameInputProcessor(simulator, PLAYER_ID);
         Gdx.input.setInputProcessor(inputProcessor);
 
+        batch        = new SpriteBatch();
+        assetManager = new AssetManager();
+        assetManager.load("assets/sprites/packed/sprites.atlas", TextureAtlas.class);
+        assetManager.finishLoading();
+        atlas = assetManager.get("assets/sprites/packed/sprites.atlas", TextureAtlas.class);
+        Gdx.app.log("ShadowAscentGame", "atlas loaded: " + atlas.getRegions().size + " regions");
+
         setScreen(new HubScreen(this, gameState));
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        if (stubRenderer != null) stubRenderer.dispose();
+        if (stubRenderer    != null) stubRenderer.dispose();
+        if (batch           != null) batch.dispose();
+        if (assetManager    != null) assetManager.dispose();
     }
 }
