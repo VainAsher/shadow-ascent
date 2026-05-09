@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.shadowascent.core.GameState;
+import com.shadowascent.core.physics.TileRect;
 import com.shadowascent.core.simulation.SimEvent;
 import com.shadowascent.core.simulation.SimPlayer;
 
@@ -27,6 +28,8 @@ final class HubScreen implements Screen {
     private final GameState gameState;
 
     private OrthographicCamera camera;
+    private float worldRight;
+    private float worldBottom;
 
     HubScreen(ShadowAscentGame game, GameState gameState) {
         this.game      = game;
@@ -35,9 +38,16 @@ final class HubScreen implements Screen {
 
     @Override
     public void show() {
-        camera = new OrthographicCamera(VIEWPORT_W, VIEWPORT_H);
-        camera.position.set(VIEWPORT_W * 0.5f, VIEWPORT_H * 0.5f, 0f);
-        camera.update();
+        camera = new OrthographicCamera();
+        camera.setToOrtho(true, VIEWPORT_W, VIEWPORT_H);
+
+        // Derive world extents from tile geometry so camera never shows black.
+        worldRight  = VIEWPORT_W;
+        worldBottom = VIEWPORT_H;
+        for (TileRect t : game.worldTiles) {
+            worldRight  = Math.max(worldRight,  t.x() + t.w());
+            worldBottom = Math.max(worldBottom, t.y() + t.h());
+        }
     }
 
     @Override
@@ -61,6 +71,13 @@ final class HubScreen implements Screen {
                 camera.position.y += (cy - camera.position.y) * CAM_LERP;
             }
         }
+
+        // Clamp so the visible area never extends past tile geometry edges.
+        float halfW = camera.viewportWidth  * 0.5f;
+        float halfH = camera.viewportHeight * 0.5f;
+        camera.position.x = Math.max(halfW, Math.min(camera.position.x, Math.max(halfW, worldRight  - halfW)));
+        camera.position.y = Math.max(halfH, Math.min(camera.position.y, Math.max(halfH, worldBottom - halfH)));
+
         camera.update();
 
         Gdx.gl.glClearColor(0.08f, 0.11f, 0.17f, 1f);
@@ -71,9 +88,7 @@ final class HubScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        camera.viewportWidth  = width;
-        camera.viewportHeight = height;
-        camera.update();
+        camera.setToOrtho(true, width, height);
     }
 
     @Override
