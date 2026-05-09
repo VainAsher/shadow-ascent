@@ -3,21 +3,26 @@ package com.shadowascent.client.rendering;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.shadowascent.core.physics.TileRect;
 import com.shadowascent.core.simulation.GameSimulator;
 import com.shadowascent.core.simulation.SimEnemy;
 import com.shadowascent.core.simulation.SimNPC;
 import com.shadowascent.core.simulation.SimPlayer;
 
+import java.util.List;
+
 /**
- * P1 placeholder renderer — draws all simulation entities as coloured rectangles.
+ * P1 placeholder renderer — draws tile geometry and simulation entities as coloured rectangles.
  * No art assets required. Replaced by SpriteWorldRenderer in Phase P3.
  */
 public final class StubWorldRenderer {
 
-    private static final Color PLAYER_COLOUR = new Color(0.2f, 0.8f, 0.3f, 1f);
-    private static final Color ENEMY_COLOUR  = new Color(0.9f, 0.2f, 0.2f, 1f);
-    private static final Color NPC_COLOUR    = new Color(0.3f, 0.6f, 0.9f, 1f);
-    private static final Color DEAD_COLOUR   = new Color(0.4f, 0.4f, 0.4f, 0.5f);
+    private static final Color TILE_SOLID_COLOUR    = new Color(0.55f, 0.55f, 0.60f, 1f);
+    private static final Color TILE_PLATFORM_COLOUR = new Color(0.45f, 0.65f, 0.45f, 1f);
+    private static final Color PLAYER_COLOUR        = new Color(0.2f,  0.8f,  0.3f,  1f);
+    private static final Color ENEMY_COLOUR         = new Color(0.9f,  0.2f,  0.2f,  1f);
+    private static final Color NPC_COLOUR           = new Color(0.3f,  0.6f,  0.9f,  1f);
+    private static final Color DEAD_COLOUR          = new Color(0.4f,  0.4f,  0.4f,  0.5f);
 
     private final ShapeRenderer shapes;
 
@@ -25,9 +30,14 @@ public final class StubWorldRenderer {
         shapes = new ShapeRenderer();
     }
 
-    public void render(GameSimulator simulator, Matrix4 projMatrix) {
+    public void render(GameSimulator simulator, List<TileRect> tiles, Matrix4 projMatrix) {
         shapes.setProjectionMatrix(projMatrix);
         shapes.begin(ShapeRenderer.ShapeType.Filled);
+
+        for (TileRect tile : tiles) {
+            shapes.setColor(tile.isPlatform() ? TILE_PLATFORM_COLOUR : TILE_SOLID_COLOUR);
+            shapes.rect(tile.x(), tile.y(), tile.w(), tile.h());
+        }
 
         for (SimPlayer p : simulator.getPlayers()) {
             shapes.setColor(p.isDead ? DEAD_COLOUR : PLAYER_COLOUR);

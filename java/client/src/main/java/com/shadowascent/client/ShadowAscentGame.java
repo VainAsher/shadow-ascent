@@ -5,15 +5,24 @@ import com.badlogic.gdx.Gdx;
 import com.shadowascent.client.input.GameInputProcessor;
 import com.shadowascent.client.rendering.StubWorldRenderer;
 import com.shadowascent.core.GameState;
+import com.shadowascent.core.physics.CollisionWorld;
+import com.shadowascent.core.physics.TileRect;
 import com.shadowascent.core.simulation.GameSimulator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public final class ShadowAscentGame extends Game {
 
-    private static final String PLAYER_ID = "player1";
+    private static final String PLAYER_ID    = "player1";
+    private static final float  FLOOR_Y      = 360f;
+    private static final float  WORLD_WIDTH  = 3500f;
 
     GameSimulator      simulator;
     StubWorldRenderer  stubRenderer;
     GameInputProcessor inputProcessor;
+    List<TileRect>     worldTiles;
 
     private GameState gameState;
 
@@ -21,9 +30,19 @@ public final class ShadowAscentGame extends Game {
     public void create() {
         gameState = new GameState();
 
+        // Stub world geometry — solid floor + one platform
+        List<TileRect> tiles = new ArrayList<>();
+        tiles.add(new TileRect(0f,    FLOOR_Y,        WORLD_WIDTH, 30f,  false));  // solid floor
+        tiles.add(new TileRect(300f,  FLOOR_Y - 120f, 200f,        15f,  true));   // one-way platform
+        worldTiles = Collections.unmodifiableList(tiles);
+
+        CollisionWorld collisionWorld = new CollisionWorld();
+        for (TileRect t : worldTiles) collisionWorld.addTile(t);
+
         simulator = new GameSimulator();
-        simulator.addPlayer(PLAYER_ID, 0, 200f, 300f);
-        simulator.addEnemy("goblin_1", "goblin", 600f, 300f);
+        simulator.setCollisionWorld(collisionWorld);
+        simulator.addPlayer(PLAYER_ID, 0, 200f, 280f);
+        simulator.addEnemy("goblin_1", "goblin", 600f, 280f);
 
         stubRenderer   = new StubWorldRenderer();
         inputProcessor = new GameInputProcessor(simulator, PLAYER_ID);
