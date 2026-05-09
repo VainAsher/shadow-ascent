@@ -146,8 +146,42 @@
       "eligible_plateaus": [
         "SUMMIT_SHRINE"
       ],
-      "notes": "Not final boss.",
-      "dialogue_tags": []
+      "notes": "Not final boss. Appears as VEIL_MAIDEN until beat_siren_reveal; same entity, two presentation states.",
+      "dialogue_tags": [],
+      "encounter": {
+        "beat_ref": "beat_siren_boss_scripted",
+        "encounter_type": "scripted_loss",
+        "killable": false,
+        "constraint": "Do not allow victory state to kill or finalize the Siren here. She survives as a recurring antagonist threat.",
+        "force_loss_trigger_ticks": 510,
+        "timeline_events": [
+          {
+            "tick": 120,
+            "event": "An illusion of Samson turns away. The mouth is wrong."
+          },
+          {
+            "tick": 230,
+            "event": "Yin reveals a safe line. Yang breaks one mask. Their light weakens."
+          },
+          {
+            "tick": 360,
+            "event": "The Siren's health refuses to reach zero."
+          },
+          {
+            "tick": 510,
+            "event": "Force-loss: Yin and Yang taken. Sets flags: yin_yang_taken, hollowed. Transition to HOLLOW_DEPTHS."
+          }
+        ],
+        "mechanics": {
+          "mask_collision": "player passes through masks with knockback — masks are not walls",
+          "hp_floor": "Siren HP is clamped above zero regardless of player damage",
+          "post_loss_toast": "Yin and Yang are gone. The controller is the same. The world is not."
+        },
+        "flags_set_on_loss": [
+          "yin_yang_taken",
+          "hollowed"
+        ]
+      }
     },
     {
       "id": "SHADE_HERMIT",

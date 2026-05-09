@@ -175,6 +175,21 @@ Canonical runtime and execution snapshot for the clean-start repository.
   - libgdx 1.12.1 deps added to `:client` in `build.gradle.kts`; `runGame` Gradle task targeting `DesktopLauncher`,
   - `DesktopLauncher.java` (1280×720, 60fps LWJGL3 config) + `ShadowAscentGame.java` (Game, creates `HubScreen` on `create()`) + `HubScreen.java` (GL clear per frame, all lifecycle stubs),
   - `.gitattributes` added enforcing `eol=lf` on `gradlew`; GitHub Actions CI passing (all 53 regression sections + diagnostics).
+- M4 SUMMIT_SHRINE content authoring (2026-05-09):
+  - 5 critical narrative beats in `narrative_beats.json` (`beat_empty_hub_only_maiden` → `beat_aen_hollowed`, route_order 100–140),
+  - NPC registry entries (YIN, YANG, VEIL_MAIDEN, SIREN_OF_MASKS with role/eligibility); SIREN_OF_MASKS encounter block (scripted_loss, force-loss at tick 510, 4-event timeline),
+  - `plateau_quest_policy.SUMMIT_SHRINE` in `quests.json` (critical_only_no_side_quests, `quest_chains_permitted: false`, `elastic_content_permitted: true`),
+  - `plateau_tag_rules.SUMMIT_SHRINE` in `chunk_grammar.json` (6 tag rules: 3 elastic-eligible, 3 authored-critical-only with `elastic_eligible: false`),
+  - 3 elastic chunk templates in `elastic_chunk_templates.json` (mask_gallery, pressure_corridor, circular_shrine),
+  - story flags: `mask_truth_seen`, `siren_fight_started`, `yin_yang_taken`, `hollowed`, `act2_unlocked`.
+- M4 HOLLOW_DEPTHS side quest chain authoring (2026-05-09):
+  - 4 side quest chains in `quests.json` (`hollow_depths_chains`): SHADE_HERMIT (circles_of_survival), SMITH_MONK (coals_of_motion), LISTENING_ELDER (listen_before_light), ADVOCATE (the_open_verdict); 2 steps each,
+  - 9 `hd_*_complete` flags in `story_flags.json`; NPC registry entries and dialogue lines authored for all 4 NPCs,
+  - all quest gate flags verified against beat `sets_flags` — all 7 required flags (`awoke_in_depths`, `hollow_weight_understood`, `weightbound_ogre_defeated`, `dash_restored`, `echoes_encountered`, `double_jump_restored`, `stone_judge_defeated`) set by the 10 existing HOLLOW_DEPTHS critical-route beats.
+- PlaytestClient decomposition — Wave 5 phase 3 extractions (2026-05-09):
+  - `InputHandler`: owns `pressedKeys` Set + 16 queue boolean flags; `install(JComponent, BooleanSupplier, Runnable)` replaces `GamePanel.configureKeyBindings()` + `bindHold`/`bindPress`; ENTER dual-purpose + M minimap toggle delegated via callbacks,
+  - `RoomGeometry`: static constants for room boundaries (`FLOOR_Y`, `CEILING_Y`, `WORLD_LEFT_X`, 4 room-end X markers, `PLAYER_SPAWN_X`, `SHOP_NPC_X`) + `resolveRegionIdForX(float x)`,
+  - `SaveLoad`: `record LoadResult`; `buildOverlaysB64()` / `save()` / `load()` encapsulate all persistence I/O; PlaytestClient retains post-load refresh callbacks; removed 6 stale imports.
 - Wave 5 MinimapRenderer extraction (2026-05-08):
   - `MinimapRenderer` standalone class in `com.shadowascent.client`; extracted from `UISubsystem.drawMinimap`,
   - full minimap rendering logic owned by `MinimapRenderer.draw(Graphics2D g, UISubsystem.RenderState state)`,
@@ -192,16 +207,29 @@ Canonical runtime and execution snapshot for the clean-start repository.
 ## Open Issues / Remaining Work
 
 - ~~**M3 exit criteria not fully defined**~~ — resolved 2026-05-08. Formal gate checklist defined and all 12 criteria confirmed green; gate doc at `docs/M3_RELEASE_GATE.md`; M3 promoted to complete.
-- **M4 campaign content**: authored act coverage beyond current scaffold not yet expanded; optional plateau content with worldgen validation gates pending.
+- ~~**M4 campaign content**~~ — resolved 2026-05-09. SUMMIT_SHRINE (5 critical beats, NPCs, chunk grammar, 3 elastic templates, quest policy) and HOLLOW_DEPTHS (4 side quest chains, 9 completion flags, NPC registry, dialogue) fully authored; gate: beats=45, critical_flags=69, validation issues: none.
 - ~~**Chunk-streaming geometry**~~ — resolved 2026-05-08. All 3 region fragment JSONs now carry authored world-space tile geometry; `RegionLoader` sources static tiles from fragment data; stub fallback retained only for missing fragments; dead `addSolidTile`/`addPlatformTile` helpers removed.
 - ~~**Echo puzzle evaluation**~~ — resolved 2026-05-08. `EchoPuzzleSolution` + `EchoPuzzleEvaluator` in `core.simulation`; rising-edge press counting; completion/tick/action-minimum checks with per-rule trace; 51/51 pass.
-- **Echo / enemy / player collision**: `SimEcho` does not participate in collision with enemies or players (echo combat deferred).
+- ~~**Echo / enemy / player collision**~~ — resolved 2026-05-08. `SimEcho` AABB-tests live enemies on `attackedThisTick`; emits `ECHO_COMBAT_HIT` / `ENEMY_DAMAGED`; `echoKillCount` tracked; `EchoPuzzleSolution.ofKills()` evaluates echo kills; 51/51 pass.
 - ~~**Co-op collision model**~~ — resolved 2026-05-08. `tickCoopCollisions()` added to `GameSimulator`; pairwise AABB separation with MSA push; `PLAYER_COLLISION` event; dead players excluded; 51/51 pass.
-- **PlaytestClient decomposition**: `PlaytestClient.java` remains large despite subsystem extractions. Further decomposition scoped to future waves.
+- ~~**PlaytestClient decomposition**~~ — resolved 2026-05-09. `InputHandler` (key bindings + 16 queue flags), `RoomGeometry` (boundary constants + region resolver), `SaveLoad` (persistence I/O + `LoadResult` record) all extracted; `PlaytestClient` delegates fully to all three.
+- **Stub physics floor (P2)**: `GameSimulator.tickPlayers()` uses `p.spawnY` as the floor clamp — deliberate stub. P2 replaces with `core.physics.CollisionWorld` AABB resolution. Both clients must share the same `CollisionWorld` instance.
+- **LibGDX world geometry**: `StubWorldRenderer` draws entity rectangles only; `RegionInstance.staticTiles()` are not yet threaded through to the LibGDX render path.
 
 ## Verification Evidence
 
-Latest gate (2026-05-08) — Wave 5 extractions (StoryManager, MissionUiCoordinator, HudRenderer) + LibGDX scaffold + echo puzzle room + faction tension mutation + M3 save envelope / checksum guard:
+Latest gate (2026-05-09) — M4 SUMMIT_SHRINE + HOLLOW_DEPTHS contract authoring; PlaytestClient decomposition (InputHandler, RoomGeometry, SaveLoad); stub gravity (spawnY floor); OrthographicCamera follow; LibGDX P1 scaffold; Node.js 24 CI opt-in:
+
+```text
+.\gradlew.bat runDataContractDiagnostics runWorldgenDiagnostics
+BUILD SUCCESSFUL in 2m 12s
+runDataContractDiagnostics: contracts_loaded=true valid=true beats=45 critical_flags=69
+  plateaus=7 world_regions=3 factions=3 settlements=3
+  Validation issues: none
+runWorldgenDiagnostics: Section templates loaded: 13, validation issues: 0
+```
+
+Previous gate (2026-05-08) — Wave 5 extractions + LibGDX scaffold + echo puzzle room + faction tension mutation + M3 save envelope / checksum guard:
 
 ```text
 .\gradlew.bat clean :core:compileJava :client:compileJava :server:compileJava \
@@ -227,8 +255,10 @@ Historical gate evidence is in `docs/handover/CODEX_*.md` files (one per deliver
 ## Next Actions
 
 1. ~~**M3 exit criteria**~~ — closed 2026-05-08. Gate doc: `docs/M3_RELEASE_GATE.md`.
-2. **M4 campaign content** — extend authored act coverage beyond current scaffold; integrate optional plateau content with worldgen validation gates. Unblocked as of M3 close.
+2. ~~**M4 campaign content**~~ — closed 2026-05-09. SUMMIT_SHRINE + HOLLOW_DEPTHS fully authored; gate: critical_flags=69, validation issues: none.
 3. ~~**Chunk-streaming geometry (M6)**~~ — resolved 2026-05-08. `RegionFragmentData.tiles` + `RegionLoader` parse path; all 3 region fragment JSONs authored; `addSolidTile`/`addPlatformTile` removed.
 3a. ~~**Mutation visibility evidence (M6)**~~ — resolved 2026-05-08. HUD overlay line (amber when active), `MUTATION_OVERLAY_SAVE`/`LOAD` evidence lines, `refreshOverlayHud()` wired at init/transition/load.
 4. ~~**Echo puzzle evaluation (M6)**~~ — resolved 2026-05-08. `EchoPuzzleSolution` + `EchoPuzzleEvaluator` wired; first authored echo puzzle room (summit_echo_room_1, minKills=1) in PlaytestClient Room 4; PUZZLE_PASSED/PUZZLE_FAILED emitted.
 5. ~~**Co-op collision model (M6)**~~ — resolved 2026-05-08. `tickCoopCollisions()` in `GameSimulator`; pairwise AABB separation with MSA push; `PLAYER_COLLISION` event; dead players excluded.
+6. **P2: `core.physics.CollisionWorld`** — extract tile collision from PlaytestClient into `core.physics`; replace stub `spawnY` floor in `GameSimulator.tickPlayers()` with real AABB resolution; wire both clients to share the same instance.
+7. **LibGDX world geometry rendering** — thread `RegionInstance.staticTiles()` through `HubScreen` into `StubWorldRenderer`; render as colored quads under entity rectangles.

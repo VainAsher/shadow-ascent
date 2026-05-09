@@ -1,0 +1,80 @@
+{
+  "schema": "elastic_chunk_templates.v1",
+  "principle": "Elastic chunk templates define the authored bounds for generated pacing content. They are not narrative beats — they cannot set major story flags. Each template references a plateau, a chunk category, and a socket profile.",
+  "templates": [
+    {
+      "id": "elastic_ss_mask_gallery",
+      "plateau": "SUMMIT_SHRINE",
+      "display_name": "Mask Gallery",
+      "category": "ELASTIC_DEEPEN",
+      "kind": "DEEPEN",
+      "pacing_bias": 0.25,
+      "tags": [
+        "mask_corridor",
+        "illusion",
+        "siren_foreshadow"
+      ],
+      "area_pool": [
+        "area_summit_shrine_arena"
+      ],
+      "socket_profile": [
+        "WEST",
+        "EAST"
+      ],
+      "can_set_major_story_flags": false,
+      "lore_tablet_eligible": [
+        "tablet_on_sirens",
+        "siren_fragment_mask_birth",
+        "siren_fragment_mirror_of_masks"
+      ],
+      "notes": "Atmosphere and lore texture before the arena. Masks hang in rows; some wear familiar faces. May reference siren_fragment lore tablets. Must not reveal Siren identity or trigger reveal cinematic."
+    },
+    {
+      "id": "elastic_ss_pressure_corridor",
+      "plateau": "SUMMIT_SHRINE",
+      "display_name": "False Praise Corridor",
+      "category": "ELASTIC_PRESSURE",
+      "kind": "PRESSURE",
+      "pacing_bias": 0.45,
+      "tags": [
+        "mask_corridor",
+        "siren_foreshadow"
+      ],
+      "area_pool": [
+        "area_summit_shrine_gate"
+      ],
+      "socket_profile": [
+        "WEST",
+        "EAST"
+      ],
+      "can_set_major_story_flags": false,
+      "lore_tablet_eligible": [],
+      "notes": "Tension-builder feeding toward the scripted collapse. Narrow geometry, mask hazards, praise whispers from VEIL_ILLUSION. Must not resolve the Siren reveal; that is AUTHORED_CRITICAL only."
+    },
+    {
+      "id": "elastic_ss_circular_shrine",
+      "plateau": "SUMMIT_SHRINE",
+      "display_name": "Circular Shrine",
+      "category": "ELASTIC_STAGNATE",
+      "kind": "STAGNATE",
+      "pacing_bias": 0.20,
+      "tags": [
+        "empty_hub",
+        "illusion"
+      ],
+      "area_pool": [
+        "area_empty_lantern_heights_hub"
+      ],
+      "socket_profile": [
+        "WEST",
+        "EAST",
+        "SOUTH"
+      ],
+      "can_set_major_story_flags": false,
+      "lore_tablet_eligible": [
+        "siren_fragment_downfall"
+      ],
+      "notes": "Loop and isolation pacing. Player feels the circularity of the space — corridors that lead back. Emotionally reinforces the stagnation and false-praise trap without advancing the critical route."
+    }
+  ]
+}

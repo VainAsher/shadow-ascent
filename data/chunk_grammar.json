@@ -67,5 +67,45 @@
     "chunk_may_reference": "source_beat",
     "authored_chunks_must_reference": "narrative_beats.json",
     "elastic_chunks_should_reference": "elastic_chunk_templates.json"
+  },
+  "plateau_tag_rules": {
+    "SUMMIT_SHRINE": {
+      "policy": "narrow_scripted_plateau — authored critical path plus elastic pacing chunks only; no quest lane",
+      "tags": {
+        "empty_hub": {
+          "category": "AUTHORED_CRITICAL",
+          "elastic_eligible": false,
+          "notes": "Beat-specific. Used only in beat_empty_hub_only_maiden."
+        },
+        "sealed_shrine": {
+          "category": "AUTHORED_CRITICAL",
+          "elastic_eligible": false,
+          "notes": "Authored-critical only. Narrative purpose of the sealed space is not exposed in elastic content."
+        },
+        "scripted_loss": {
+          "category": "AUTHORED_CRITICAL",
+          "elastic_eligible": false,
+          "notes": "Authored-critical only. Only beat_siren_boss_scripted may carry this tag."
+        },
+        "mask_corridor": {
+          "category": "ELASTIC_PRESSURE",
+          "elastic_eligible": true,
+          "eligible_elastic_kinds": ["PRESSURE", "DEEPEN"],
+          "notes": "Elastic-capable. Used in pacing tension chunks before the arena."
+        },
+        "illusion": {
+          "category": "ELASTIC_DEEPEN",
+          "elastic_eligible": true,
+          "eligible_elastic_kinds": ["DEEPEN", "PRESSURE"],
+          "notes": "Elastic-capable. Lore and atmosphere chunks; may reference siren_fragment lore tablets."
+        },
+        "siren_foreshadow": {
+          "category": "ELASTIC_PRESSURE",
+          "elastic_eligible": true,
+          "eligible_elastic_kinds": ["PRESSURE"],
+          "notes": "Elastic-capable. Tension-builder only; must not resolve or reveal the Siren identity."
+        }
+      }
+    }
   }
 }

@@ -429,6 +429,14 @@
       ]
     }
   ],
+  "plateau_quest_policy": {
+    "SUMMIT_SHRINE": {
+      "policy": "critical_only_no_side_quests",
+      "rationale": "SUMMIT_SHRINE is a narrow_scripted_plateau. Its entire purpose is the isolation arc collapse and forced loss. Adding side quest content would dilute the emotional architecture. The three elastic chunk templates (mask_gallery, pressure_corridor, circular_shrine) are pacing/geometry beats, not quest lanes.",
+      "elastic_content_permitted": true,
+      "quest_chains_permitted": false
+    }
+  },
   "hollow_depths_chains": [
     {
       "id": "quest_hd_hermit_circles_of_survival",
