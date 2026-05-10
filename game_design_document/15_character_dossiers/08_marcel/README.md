@@ -16,15 +16,15 @@
 - He also represents the idea that scars can become structure rather than shame.
 
 ## How They Express That In Play
-- Marcel-related scenes should appear after the Hollowing when Aen's tools, armor, or combat readiness no longer feel intact.
-- His questline should use forging and reinforcement as concrete loops: gather needed materials, return to the forge, and convert damaged readiness into sturdier but visibly altered gear.
+- Marcel-related scenes should appear after the Hollowing when Aen's tools, armor, or combat readiness no longer feel intact. His support should begin with a damaged-state repair loop, where cracked gear or compromised weapon fittings reduce reliability until the player brings forge materials back to him.
+- His questline should use forging and reinforcement as concrete loops: gather needed materials, return to the forge, repair the current damaged state, then unlock one reinforcement tier that permanently hardens the repaired gear against the next region's pressure.
 - Repairs should preserve meaning. Equipment should not snap back to pristine innocence; it should carry the logic of being rebuilt with intention.
-- Marcel's systems should teach players why gear matters. Reinforcement choices, repair benches, and forge upgrades should feel like reclaiming reliability, not chasing abstract item level.
+- Marcel's systems should teach players why gear matters. Reinforcement choices, repair benches, forge upgrades, and region-specific repair gates should feel like reclaiming reliability, not chasing abstract item level.
 
 ## Gameplay Impact
-- Marcel's dossier should affect survivability, gear tuning, and the emotional reading of upgrades.
-- Reinforcement should make the player feel more prepared without making the wound disappear from presentation.
-- His questline gives material weight to recovery by linking forge work to encounter readiness and long-form persistence.
+- Marcel's dossier should affect survivability, gear tuning, repair-state recovery, and the emotional reading of upgrades.
+- Reinforcement should make the player feel more prepared without making the wound disappear from presentation, and each completed forge loop should remove a concrete readiness penalty before adding a permanent durability or handling improvement.
+- His questline gives material weight to recovery by linking forge work to encounter readiness, reinforcement gates, and long-form persistence across acts.
 - He also keeps "repair" distinct from "healing": Marcel restores function and integrity, not innocence.
 
 ## Player Learning
@@ -40,9 +40,9 @@
 - Beacon resolution: Marcel's contribution confirms that rebuilt function is part of earned wholeness.
 
 ## System Dependencies
-- Gear upgrade, repair, reinforcement, and resource loops.
+- Gear damage-state, repair, reinforcement, and resource loops.
 - Visual state changes that preserve scars and repair history.
-- Optional quest gating through forge materials or relics.
+- Optional quest gating through forge materials, relics, and reinforcement benchmarks.
 - Encounter tuning that lets reinforced gear feel meaningful without trivializing challenge.
 
 ## Failure Mode
@@ -53,4 +53,4 @@
 ## Source Basis
 - `game_design_document/07_characters/01_main_characters/README.md`
 - `game_design_document/07_characters/07_supporting_characters/README.md`
-- `C:\Users\asher\assets for game\Shadow_Ascent_The_Hollowed_Ninja_GDD_Pack.md`
+- `external studio pack reviewed 2026-05-10`

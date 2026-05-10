@@ -1,31 +1,31 @@
 # Sophia
 
 ## Core Identity
-- Sophia is Aen's truth-keeper: a mapper, reader, and memory anchor who restores orientation when pain distorts the path.
+- Sophia is Aen's truth-keeper: a mapper and route-reader who restores orientation when pain distorts the path.
 - She should feel precise, calm, and evidence-driven, not mystical for its own sake.
 - Her support style is correction, naming, and showing what is actually there.
 
 ## Narrative Function
-- Sophia turns truth and memory into active navigation support.
+- Sophia turns truth, map evidence, and route correction into active navigation support.
 - She helps counter the Veil Maiden's isolating framing by giving Aen reliable external reference points.
 - She is one of the strongest proof points that recovery includes relearning how to read the world accurately.
 
 ## What They Represent
-- Sophia represents maps, truth, memory orientation, and the refusal to let false framing go unnamed.
+- Sophia represents maps, truth, route correction, star-ink cartography, and the refusal to let false framing go unnamed.
 - She represents clarity that does not flatten feeling.
-- She also represents the idea that remembering correctly is itself a form of care.
+- She also represents the idea that evidence-based navigation is itself a form of care.
 
 ## How They Express That In Play
 - In Lantern Heights, Sophia should point out real landmarks, routes, and village logic so the player learns to trust spatial truth before deception enters the campaign.
-- After the Hollowing, Sophia-related content should correct false paths, reveal misleading forks, and distinguish memory rooms from dead ends or manipulative illusions.
-- Star-ink logic should belong to her. Collecting or using star ink should reveal truthful map layers, mark honest routes through confusing zones, and restore orientation without erasing difficulty.
-- Her encounters should make memory legible. When Aen revisits changed spaces or emotionally loaded rooms, Sophia's systems should help the player tell what is remembered, what is hidden, and what is a lie.
+- After the Hollowing, Sophia-related content should correct false paths, reveal misleading forks, and distinguish navigable memory-site entrances from dead ends, trap loops, or manipulative detours.
+- Star-ink logic should belong to her. Collecting and turning in star ink should update map layers, annotate one-way drops, mark hidden route joins, and expose false walls or fake shrine doors without erasing difficulty.
+- Her encounters should make navigation evidence legible. When Aen revisits changed spaces or emotionally loaded rooms, Sophia's systems should tell the player which exits are real, which symbols are bait, and which route markers can be trusted.
 
 ## Gameplay Impact
 - Sophia's dossier should directly affect navigation clarity, map usefulness, and false-path readability.
 - She reduces confusion in a thematically aligned way: not by simplifying the world, but by making truth recoverable through attention and support.
-- Star-ink and orientation mechanics should make her questline materially valuable for backtracking, optional discovery, and emotionally coherent memory beats.
-- She also keeps Yin's memory logic from doing all the truth work alone. Yin codes witness and calm; Sophia codes evidence and route correction.
+- Star-ink and orientation mechanics should make her questline materially valuable for backtracking, optional discovery, and route planning through deceptive spaces.
+- She also keeps Yin's witness logic from absorbing navigation systems. Yin codes calm, safety, and restraint-valid interpretation; Sophia codes evidence, route correction, and cartographic truth.
 
 ## Player Learning
 - The player learns that getting lost after the wound is not just geographic.
@@ -42,16 +42,16 @@
 ## System Dependencies
 - Map UI and world-map reveal systems.
 - False-path, illusion, and hidden-route signaling.
-- Star-ink collectibles, quest states, and memory-room tagging.
+- Star-ink collectibles, turn-ins, quest states, and map annotation layers.
 - Dialogue and journal text that distinguish truth restoration from lore dumping.
 
 ## Failure Mode
 - Sophia fails if she becomes a generic map NPC with no mechanical leverage.
-- She also fails if truth correction is reduced to exposition instead of route readability and memory orientation.
+- She also fails if truth correction is reduced to exposition instead of route readability, map correction, and false-path legibility.
 - If her logic overlaps the Veil Maiden's deception beats without clearly countering them, the dossier is underpowered.
 
 ## Source Basis
 - `game_design_document/07_characters/01_main_characters/README.md`
 - `game_design_document/07_characters/07_supporting_characters/README.md`
 - `game_design_document/06_story_and_narrative/02_main_plot/README.md`
-- `C:\Users\asher\assets for game\Shadow_Ascent_The_Hollowed_Ninja_GDD_Pack.md`
+- `external studio pack reviewed 2026-05-10`

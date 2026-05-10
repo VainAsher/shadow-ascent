@@ -33,7 +33,7 @@
 - His content teaches the player how to fail without reading failure as personal collapse.
 
 ## Act-by-Act Presence
-- Early game: Roga may be known as a serious mentor figure but not yet central.
+- Early game: Roga is established as a serious mentor figure, but not yet a central support driver.
 - Post-Hollowing and Ember Monastery: Roga becomes active through dojo training and wall-cling mastery.
 - Winding Skyroad: his lessons pay off in sustained vertical ascent under pressure.
 - Mirror Summit and Beacon lead-up: his contribution persists as the player's capacity to hold form under stress.
@@ -55,4 +55,4 @@
 - `game_design_document/07_characters/07_supporting_characters/README.md`
 - `game_design_document/04_mechanics/05_character_movement/README.md`
 - `game_design_document/08_game_world/06_main_levels/README.md`
-- `C:\Users\asher\assets for game\Shadow_Ascent_The_Hollowed_Ninja_GDD_Pack.md`
+- `external studio pack reviewed 2026-05-10`

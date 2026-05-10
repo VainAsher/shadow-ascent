@@ -54,4 +54,4 @@
 - `game_design_document/07_characters/01_main_characters/README.md`
 - `game_design_document/07_characters/07_supporting_characters/README.md`
 - `game_design_document/06_story_and_narrative/02_main_plot/README.md`
-- `C:\Users\asher\assets for game\Shadow_Ascent_The_Hollowed_Ninja_GDD_Pack.md`
+- `external studio pack reviewed 2026-05-10`

@@ -17,13 +17,13 @@
 
 ## How They Express That In Play
 - In Lantern Heights, Hazel should help establish warmth through textiles, lantern imagery, and spaces that feel safe to exhale inside.
-- After the wound, Hazel-related content should define or improve safe-return spaces. Rooms linked to her should feel intentionally kept, repaired, or lit for Aen rather than generically functional.
-- Lantern silk should be concrete. Collecting it and returning it through Hazel's questline should contribute to upgraded lantern functions, recovery spaces, or final Beacon preparation.
-- Her late-game role should culminate in Beacon preparation, where the player feels that future warmth has been assembled from carried materials, remembered care, and intentional readiness.
+- After the wound, Hazel-related content should define or improve safe-return spaces. Each lantern-silk hand-in should reweave one class of refuge element: bedroll warmth, lantern wraps, or doorway drapes that convert a neutral checkpoint into a true recovery room with stronger light, calmer ambience, and full rest identity.
+- Lantern silk should be concrete. Collecting it and returning it through Hazel's questline should upgrade recovery-space warmth tiers, unlock Beacon-cloth weaving steps, and prepare the Beacon Lantern assembly in a fixed sequence rather than as generic flavor.
+- Her late-game role should culminate in Beacon preparation, where the player completes the final lantern-silk weave, fits the Beacon wrap, and feels that future warmth has been assembled from carried materials, remembered care, and intentional readiness.
 
 ## Gameplay Impact
-- Hazel's dossier should affect rest-space feel, safe-return readability, and the final Beacon setup.
-- Lantern silk should matter as more than a collectible by tying soft material care to protection, preparation, and future light systems.
+- Hazel's dossier should affect rest-space feel, safe-return readability, warmth-tier upgrades, and the final Beacon setup.
+- Lantern silk should matter as more than a collectible by tying soft material care to protection, preparation, and future light systems through explicit turn-ins, refuge upgrades, and Beacon assembly milestones.
 - Her support keeps warmth mechanical: the player feels where it is safe to settle, prepare, and continue.
 - She also prevents the ending from feeling abrupt by making Beacon activation the endpoint of a tenderness-based support thread.
 
@@ -41,8 +41,8 @@
 
 ## System Dependencies
 - Safe-room or hub-comfort presentation.
-- Lantern silk collection, turn-in, and upgrade/preparation logic.
-- Beacon Lantern or final preparation systems.
+- Lantern silk collection, turn-in, refuge-upgrade, and Beacon-preparation logic.
+- Beacon Lantern assembly and final preparation systems.
 - Environmental storytelling that distinguishes warm kept spaces from neutral checkpoints.
 
 ## Failure Mode
@@ -54,4 +54,4 @@
 - `game_design_document/07_characters/01_main_characters/README.md`
 - `game_design_document/07_characters/07_supporting_characters/README.md`
 - `game_design_document/06_story_and_narrative/02_main_plot/README.md`
-- `C:\Users\asher\assets for game\Shadow_Ascent_The_Hollowed_Ninja_GDD_Pack.md`
+- `external studio pack reviewed 2026-05-10`
