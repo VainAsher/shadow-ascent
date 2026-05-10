@@ -17,13 +17,15 @@
 
 ## How They Express That In Play
 - In Lantern Heights, Yin should be visibly readable around Aen during pauses, ledge checks, rest moments, and calm traversal. Her motion language should make balance legible before the player knows to miss it.
-- Early safe spaces, quiet tutorial beats, and memory-friendly hub interactions should feel subtly protected by Yin's presence through UI, VFX, or pacing cues rather than exposition alone.
-- After the scripted loss, Yin should not return as a mechanic pet. Instead, she should persist as cool star motifs, memory-room echoes, and calm sky markers that help the player interpret safety, honesty, and emotional truth.
-- Optional memory encounters and later reflective spaces should use Yin-coded visuals to tell the player when a room is about witness, recollection, restraint, or nonviolent understanding rather than conquest.
+- Early safe spaces, quiet tutorial beats, and memory-friendly hub interactions should feel subtly protected by Yin's presence through UI, VFX, or pacing cues rather than exposition alone. Pre-loss save rooms, shrine benches, or home hearth spaces can use a Yin cue to signal no ambushes, no hostile spawn pressure, and full emotional decompression before the wound.
+- Yin should carry concrete truth-reading mechanics. In memory rooms and shrine puzzles, her cueing can distinguish true echoes from manipulative false images by holding a steady glow near the correct object, safe platform, or valid interaction target while decoys flicker or remain cold.
+- After the scripted loss, Yin should not return as a mechanic pet. Instead, she should persist as cool star motifs, memory-room echoes, and calm sky markers that help the player interpret safety, honesty, and emotional truth. Post-loss navigation can use Yin-star alignment to mark recovery-space entrances, nonviolent puzzle solutions, or routes that preserve rest resources rather than forcing combat attrition.
+- Optional memory encounters and later reflective spaces should use Yin-coded logic to change encounter consequences: rooms flagged by her cues can suppress surprise attacks, reveal hidden lore panels, unlock restraint-based completions, or open quiet exits that are unavailable when the player resolves the room through pure aggression.
 
 ## Gameplay Impact
-- Yin's early presence should make safety readable. The player learns what calm, protected, truthful space feels like before the game removes it.
-- Her absence should change how the player reads memory and shelter. Later rooms that echo Yin should feel like orientation and witness, not restoration.
+- Yin's early presence should make safety readable. The player learns what calm, protected, truthful space feels like before the game removes it, and can reliably associate Yin-coded rooms with shelter, checkpoint confidence, and honest puzzle framing.
+- Her cueing should directly affect encounter readability. When Yin logic is present, players can identify safe recovery pockets, true memory objects, and lower-conflict exits faster; when she is absent, rooms become more ambiguous and emotionally colder to parse.
+- Her absence should change how the player reads memory and shelter. Later rooms that echo Yin should feel like orientation and witness, not restoration, and can materially reward patient observation with safer routing, preserved healing, or restraint-specific outcomes.
 - Ending interpretation should sharpen through Yin's continued star-state: a restrained resolution feels aligned with her meaning, while harsher play styles feel more distant from her logic.
 - She also helps distinguish emotional categories in the world, keeping "quiet" from collapsing into "empty."
 
