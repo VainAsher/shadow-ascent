@@ -13,5 +13,7 @@
 - [ ] Failure mode is documented
 
 ## Drift Risks
-- Samson becomes a generic rival if sparring and rescue beats do not teach courage without ownership
-- Combat honesty loses clarity if his pressure does not change player behavior or self-reading
+- Samson becomes a generic rival if sparring and rescue beats do not teach courage without ownership.
+- Combat honesty loses clarity if his pressure does not change player behavior or self-reading.
+- He overlaps Yang if courage as friendship is not distinguished from courage as lost spirit-fire.
+- He overlaps Roga if drill discipline and brotherhood pressure are not kept separate.

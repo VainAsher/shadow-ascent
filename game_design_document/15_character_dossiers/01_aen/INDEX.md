@@ -13,5 +13,7 @@
 - [ ] Failure mode is documented
 
 ## Drift Risks
-- Aen becomes a generic chosen one if his "already whole" truth stops shaping systems
-- Combat expression loses meaning if armed and unarmed play collapse into the same emotional result
+- Aen becomes a generic chosen one if his "already whole" truth stops shaping systems.
+- Lantern Heights loses its job if early movement and combat are not explicitly framed by warmth, friendship, and visible Yin/Yang presence.
+- Recovery becomes abstract if movement unlocks are not tied to support-bearing encounters.
+- The ending flattens if armed pressure and unarmed restraint produce the same emotional read.

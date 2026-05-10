@@ -13,5 +13,7 @@
 - [ ] Failure mode is documented
 
 ## Drift Risks
-- Roga becomes a generic hard mentor if endurance drills and wall-cling mastery are not experiential
-- Difficulty reads as cruelty instead of trained persistence if his presence inside pain is underdefined
+- Roga becomes a generic hard mentor if endurance drills and wall-cling mastery are not experiential.
+- Difficulty reads as cruelty instead of trained persistence if his presence inside pain is underdefined.
+- He overlaps Samson if courage under pressure is not separated from disciplined repetition.
+- He overlaps Marcel if structural toughness is not distinguished from body-and-breath endurance.

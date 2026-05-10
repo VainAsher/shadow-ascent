@@ -13,5 +13,7 @@
 - [ ] Failure mode is documented
 
 ## Drift Risks
-- Yin becomes a vague mood piece if her stillness is not tied to readable player interpretation
-- Her loss loses force if absence, star motifs, and orientation cues do not stay mechanically legible
+- Yin becomes a vague mood piece if her stillness is not tied to readable player interpretation.
+- Her loss loses force if absence, star motifs, and orientation cues do not stay mechanically legible.
+- She overlaps Hazel if warmth and safety are not separated from tenderness and homecoming.
+- She overlaps Sophia if memory and truth cues are not distinguished from navigation logic.
