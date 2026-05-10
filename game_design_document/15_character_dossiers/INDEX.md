@@ -13,19 +13,19 @@
 - `./10_mentor_roga/` - endurance and wall-cling mastery
 
 ## Tier 2 Dossiers
-- `./11_instructor_tai/`
-- `./12_merchant_rilu/`
-- `./13_smith_jenro/`
-- `./14_shade_hermit/`
-- `./15_smith_monk/`
-- `./16_listening_elder/`
-- `./17_advocate/`
-- `./18_hearth_brother/`
-- `./19_brother_kai/`
-- `./20_brother_len/`
-- `./21_brother_ash/`
-- `./22_old_man_riku/`
-- `./23_lantern_kid/`
+- `./11_instructor_tai/` - baseline dojo discipline and early warning against pride
+- `./12_merchant_rilu/` - market witness, shop routing, and community drift
+- `./13_smith_jenro/` - craft rigor, tool-reading, and strength-over-polish framing
+- `./14_shade_hermit/` - survival witness, underworld orientation, and grief without false cure
+- `./15_smith_monk/` - practical support and first movement restoration
+- `./16_listening_elder/` - heard-without-pressure reflection and memory rest
+- `./17_advocate/` - defended dignity and anti-self-blame framing
+- `./18_hearth_brother/` - first monastery welcome and support-hub warmth
+- `./19_brother_kai/` - physical push into motion and breath-through-action training
+- `./20_brother_len/` - timing, patience, and measured technical instruction
+- `./21_brother_ash/` - survivor-support perspective and grief-aware discipline
+- `./22_old_man_riku/` - home memory, old warnings, and pre-wound identity witness
+- `./23_lantern_kid/` - inheritance, innocence, and future shelter motif
 
 ## Authoring Notes
 - Keep `07_characters/` as the summary branch.

@@ -27,5 +27,5 @@ The original scaffold followed the Indie Game Academy structure. The GDD now als
 
 These branches exist so production-useful material has a stable home instead of being forced into the narrower original template.
 
-These `15_character_dossiers/` dossiers exist so the cast is documented by concrete in-play behavior and gameplay consequence, not only by symbolic meaning.
+Use `15_character_dossiers/` to document the cast by in-play behavior and gameplay consequence, not only by symbolic meaning.
 
