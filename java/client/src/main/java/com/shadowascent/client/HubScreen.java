@@ -412,7 +412,7 @@ final class HubScreen implements Screen {
                 yield true;
             }
             case "Quit To Title" -> {
-                appendEventFeedLine("Pause: quit to title unlocks with title flow.");
+                game.showTitleScreen();
                 yield true;
             }
             default -> false;

@@ -9,13 +9,14 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.shadowascent.client.input.GameInputProcessor;
 import com.shadowascent.client.rendering.SpriteWorldRenderer;
+import com.shadowascent.client.screens.TitleScreen;
+import com.shadowascent.client.ui.CraftingOverlayRenderer;
+import com.shadowascent.client.ui.DialogueOverlayRenderer;
 import com.shadowascent.client.ui.HudOverlayRenderer;
 import com.shadowascent.client.ui.InventoryOverlayRenderer;
 import com.shadowascent.client.ui.MinimapOverlayRenderer;
 import com.shadowascent.client.ui.ModalOverlayManager;
 import com.shadowascent.client.ui.PauseMenuOverlayRenderer;
-import com.shadowascent.client.ui.CraftingOverlayRenderer;
-import com.shadowascent.client.ui.DialogueOverlayRenderer;
 import com.shadowascent.client.ui.ShopOverlayRenderer;
 import com.shadowascent.core.GameState;
 import com.shadowascent.core.physics.CollisionWorld;
@@ -24,6 +25,7 @@ import com.shadowascent.core.simulation.GameSimulator;
 import com.shadowascent.core.simulation.SimInventory;
 import com.shadowascent.core.simulation.SimShop;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,20 +33,21 @@ import java.util.List;
 
 public final class ShadowAscentGame extends Game {
 
-    private static final String PLAYER_ID    = "player1";
-    private static final float  FLOOR_Y      = 360f;
-    private static final float  WORLD_WIDTH  = 3500f;
-    private static final String ATLAS_PATH   = "assets/sprites/packed/sprites.atlas";
+    private static final String PLAYER_ID = "player1";
+    private static final float FLOOR_Y = 360f;
+    private static final float WORLD_WIDTH = 3500f;
+    private static final String ATLAS_PATH = "assets/sprites/packed/sprites.atlas";
+    private static final Path RUN_GAME_SAVE_PATH = Path.of("save", "runGame_slot1.sav");
 
-    GameSimulator      simulator;
+    GameSimulator simulator;
     SpriteWorldRenderer spriteRenderer;
     GameInputProcessor inputProcessor;
-    List<TileRect>     worldTiles;
-    AssetManager       assetManager;
-    TextureAtlas       atlas;
-    SpriteBatch        batch;
-    BitmapFont         uiFont;
-    ShapeRenderer      uiShapes;
+    List<TileRect> worldTiles;
+    AssetManager assetManager;
+    TextureAtlas atlas;
+    SpriteBatch batch;
+    BitmapFont uiFont;
+    ShapeRenderer uiShapes;
     HudOverlayRenderer hudOverlayRenderer;
     MinimapOverlayRenderer minimapOverlayRenderer;
     PauseMenuOverlayRenderer pauseMenuOverlayRenderer;
@@ -55,62 +58,66 @@ public final class ShadowAscentGame extends Game {
     ModalOverlayManager overlayManager;
     SaveLoad saveLoad;
     SimShop hubShop;
+    TitleScreen titleScreen;
 
     GameState gameState;
 
     @Override
     public void create() {
-        gameState = new GameState();
-
-        // Stub world geometry — solid floor + one platform
-        List<TileRect> tiles = new ArrayList<>();
-        tiles.add(new TileRect(0f,    FLOOR_Y,        WORLD_WIDTH, 30f,  false));  // solid floor
-        tiles.add(new TileRect(300f,  FLOOR_Y - 120f, 200f,        15f,  true));   // one-way platform
-        worldTiles = Collections.unmodifiableList(tiles);
-
-        CollisionWorld collisionWorld = new CollisionWorld();
-        for (TileRect t : worldTiles) collisionWorld.addTile(t);
-
-        simulator = new GameSimulator();
-        simulator.setCollisionWorld(collisionWorld);
-        simulator.addPlayer(PLAYER_ID, 0, 200f, 280f);
-        simulator.addEnemy("goblin_1", "goblin", 600f, 280f);
-        simulator.addNpc("MERCHANT_RILU", "merchant", 350f, 288f, 350f, 350f);
-        simulator.addNpc("INSTRUCTOR_TAI", "teacher", 520f, 288f, 520f, 520f);
-        seedPlayerInventory(simulator.getPlayer(PLAYER_ID).inventory);
-        hubShop = new SimShop("merchant_npc", 2, 12345L);
-
-        batch        = new SpriteBatch();
-        uiFont       = new BitmapFont();
-        uiShapes     = new ShapeRenderer();
-        overlayManager = new ModalOverlayManager();
-        saveLoad = new SaveLoad(gameState, Path.of("save", "runGame_slot1.sav"));
-        inputProcessor = new GameInputProcessor(simulator, PLAYER_ID, overlayManager);
-        Gdx.input.setInputProcessor(inputProcessor);
+        batch = new SpriteBatch();
+        uiFont = new BitmapFont();
+        uiShapes = new ShapeRenderer();
         assetManager = new AssetManager();
         assetManager.load(ATLAS_PATH, TextureAtlas.class);
         assetManager.finishLoading();
-        atlas          = assetManager.get(ATLAS_PATH, TextureAtlas.class);
+        atlas = assetManager.get(ATLAS_PATH, TextureAtlas.class);
         spriteRenderer = new SpriteWorldRenderer(batch, atlas);
         hudOverlayRenderer = new HudOverlayRenderer(batch, uiFont, uiShapes);
         minimapOverlayRenderer = new MinimapOverlayRenderer(uiShapes);
         pauseMenuOverlayRenderer = new PauseMenuOverlayRenderer();
-        inventoryOverlayRenderer = new InventoryOverlayRenderer(simulator.getPlayer(PLAYER_ID).inventory);
-        shopOverlayRenderer = new ShopOverlayRenderer();
-        craftingOverlayRenderer = new CraftingOverlayRenderer(simulator.getPlayer(PLAYER_ID).inventory);
-        dialogueOverlayRenderer = new DialogueOverlayRenderer();
         Gdx.app.log("ShadowAscentGame", "atlas loaded: " + atlas.getRegions().size + " regions");
 
-        setScreen(new HubScreen(this, gameState));
+        showTitleScreen();
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        if (uiShapes        != null) uiShapes.dispose();
-        if (uiFont          != null) uiFont.dispose();
-        if (batch           != null) batch.dispose();
-        if (assetManager    != null) assetManager.dispose();
+        if (uiShapes != null) uiShapes.dispose();
+        if (uiFont != null) uiFont.dispose();
+        if (batch != null) batch.dispose();
+        if (assetManager != null) assetManager.dispose();
+    }
+
+    public void startNewGame() {
+        createGameplaySession(new GameState());
+        setScreen(new HubScreen(this, gameState));
+    }
+
+    public void continueFromSave() {
+        if (!hasContinueSave()) {
+            startNewGame();
+            return;
+        }
+
+        createGameplaySession(new GameState());
+        try {
+            saveLoad.loadRunGame(simulator, PLAYER_ID);
+        } catch (Exception ex) {
+            Gdx.app.error("ShadowAscentGame", "Continue load failed: " + ex.getMessage(), ex);
+        }
+        setScreen(new HubScreen(this, gameState));
+    }
+
+    public void showTitleScreen() {
+        if (titleScreen == null) {
+            titleScreen = new TitleScreen(this);
+        }
+        setScreen(titleScreen);
+    }
+
+    public boolean hasContinueSave() {
+        return Files.exists(RUN_GAME_SAVE_PATH) && Files.exists(runGameRuntimeSavePath());
     }
 
     String saveRunGameState() {
@@ -134,6 +141,42 @@ public final class ShadowAscentGame extends Game {
         } catch (Exception ex) {
             return "Load failed: " + ex.getMessage();
         }
+    }
+
+    private void createGameplaySession(GameState sessionState) {
+        gameState = sessionState;
+
+        List<TileRect> tiles = new ArrayList<>();
+        tiles.add(new TileRect(0f, FLOOR_Y, WORLD_WIDTH, 30f, false));
+        tiles.add(new TileRect(300f, FLOOR_Y - 120f, 200f, 15f, true));
+        worldTiles = Collections.unmodifiableList(tiles);
+
+        CollisionWorld collisionWorld = new CollisionWorld();
+        for (TileRect tile : worldTiles) {
+            collisionWorld.addTile(tile);
+        }
+
+        simulator = new GameSimulator();
+        simulator.setCollisionWorld(collisionWorld);
+        simulator.addPlayer(PLAYER_ID, 0, 200f, 280f);
+        simulator.addEnemy("goblin_1", "goblin", 600f, 280f);
+        simulator.addNpc("MERCHANT_RILU", "merchant", 350f, 288f, 350f, 350f);
+        simulator.addNpc("INSTRUCTOR_TAI", "teacher", 520f, 288f, 520f, 520f);
+        seedPlayerInventory(simulator.getPlayer(PLAYER_ID).inventory);
+        hubShop = new SimShop("merchant_npc", 2, 12345L);
+
+        overlayManager = new ModalOverlayManager();
+        saveLoad = new SaveLoad(gameState, RUN_GAME_SAVE_PATH);
+        inputProcessor = new GameInputProcessor(simulator, PLAYER_ID, overlayManager);
+        Gdx.input.setInputProcessor(inputProcessor);
+        inventoryOverlayRenderer = new InventoryOverlayRenderer(simulator.getPlayer(PLAYER_ID).inventory);
+        shopOverlayRenderer = new ShopOverlayRenderer();
+        craftingOverlayRenderer = new CraftingOverlayRenderer(simulator.getPlayer(PLAYER_ID).inventory);
+        dialogueOverlayRenderer = new DialogueOverlayRenderer();
+    }
+
+    private static Path runGameRuntimeSavePath() {
+        return RUN_GAME_SAVE_PATH.resolveSibling(RUN_GAME_SAVE_PATH.getFileName().toString() + ".runtime.properties");
     }
 
     private static void seedPlayerInventory(SimInventory inventory) {
