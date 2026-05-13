@@ -4,13 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.shadowascent.client.ui.HudOverlayState;
+import com.shadowascent.client.ui.OverlayType;
+import com.shadowascent.client.ui.UiText;
 import com.shadowascent.core.GameState;
+import com.shadowascent.core.Mission;
+import com.shadowascent.core.StoryState;
 import com.shadowascent.core.physics.TileRect;
 import com.shadowascent.core.simulation.SimEvent;
 import com.shadowascent.core.simulation.SimPlayer;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * LibGDX game screen — ticks GameSimulator, drains events, renders entities via StubWorldRenderer.
@@ -22,10 +29,13 @@ final class HubScreen implements Screen {
     private static final float CAM_LERP    = 0.1f;
     private static final float VIEWPORT_W  = 1280f;
     private static final float VIEWPORT_H  = 720f;
+    private static final int MAX_FEED_LINES = 4;
 
     private final ShadowAscentGame game;
     @SuppressWarnings("unused")
     private final GameState gameState;
+    private final ArrayDeque<String> recentEventFeed = new ArrayDeque<>();
+    private boolean showMinimap = true;
 
     private OrthographicCamera camera;
     private float worldRight;
@@ -54,14 +64,40 @@ final class HubScreen implements Screen {
     public void render(float delta) {
         float dt = Math.min(delta, MAX_DELTA);
 
+        boolean inventoryToggled = game.inputProcessor.consumeInventoryTogglePressed();
+        if (inventoryToggled) {
+            game.overlayManager.toggle(OverlayType.INVENTORY);
+        }
+        if (game.inputProcessor.consumeMinimapTogglePressed()) {
+            showMinimap = !showMinimap;
+        }
+
         game.inputProcessor.submitFrame();
         game.simulator.tick(dt);
 
-        @SuppressWarnings("unused")
         List<SimEvent> events = game.simulator.drainEvents();
+        for (SimEvent event : events) {
+            appendEventFeedLine(formatEventLine(event));
+        }
+        if (game.overlayManager.activeOverlay() == OverlayType.INVENTORY) {
+            if (!inventoryToggled) {
+                handleInventoryNavigation();
+            } else {
+                discardInventoryMenuSignals();
+            }
+            if (game.inputProcessor.consumeCancelPressed()) {
+                game.overlayManager.close();
+            }
+            if (game.inputProcessor.consumeMenuConfirmPressed()) {
+                appendEventFeedLine(game.inventoryOverlayRenderer.useSelected());
+            }
+        } else {
+            discardInventoryMenuSignals();
+        }
 
         // Lerp camera to first alive player
         Collection<SimPlayer> players = game.simulator.getPlayers();
+        SimPlayer hudPlayer = players.isEmpty() ? null : players.iterator().next();
         if (!players.isEmpty()) {
             SimPlayer first = players.iterator().next();
             if (!first.isDead) {
@@ -84,6 +120,23 @@ final class HubScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.spriteRenderer.render(game.simulator, game.worldTiles, camera.combined);
+        HudOverlayState hudState = buildHudState(hudPlayer);
+        game.hudOverlayRenderer.render(hudState, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        game.minimapOverlayRenderer.render(
+                hudState,
+                game.simulator,
+                game.worldTiles,
+                Gdx.graphics.getWidth() - 220f,
+                16f
+        );
+        if (game.overlayManager.activeOverlay() == OverlayType.INVENTORY) {
+            game.inventoryOverlayRenderer.render(
+                    game.batch,
+                    game.uiFont,
+                    Gdx.graphics.getWidth(),
+                    Gdx.graphics.getHeight()
+            );
+        }
     }
 
     @Override
@@ -102,4 +155,83 @@ final class HubScreen implements Screen {
 
     @Override
     public void dispose() {}
+
+    private HudOverlayState buildHudState(SimPlayer player) {
+        StoryState storyState = gameState.getStoryState();
+        String activeMissionId = storyState.getActiveMissionId();
+        Mission activeMission = activeMissionId == null ? null : storyState.getMission(activeMissionId);
+
+        String missionTitle = activeMission == null
+                ? null
+                : activeMission.getDisplayName() + " [" + activeMission.getId() + "]";
+        String objectiveLine = activeMission == null
+                ? null
+                : activeMission.getObjectives().stream()
+                        .filter(objective -> !activeMission.isObjectiveComplete(objective))
+                        .findFirst()
+                        .orElse(activeMission.getDescription());
+
+        String hint = activeMission == null
+                ? "Hub " + UiText.humanizeToken(storyState.getCurrentHubState().name())
+                : "Lanterns: " + storyState.getLanternCount()
+                        + "  |  Abilities: " + storyState.getAbilities().size();
+
+        return new HudOverlayState(
+                UiText.humanizeToken(storyState.getCurrentAct().name()),
+                UiText.humanizeToken(storyState.getCurrentPlateau().name()),
+                missionTitle,
+                objectiveLine,
+                player == null ? 0 : player.health,
+                player == null ? 1 : player.maxHealth,
+                hint,
+                UiText.overlayStatus(game.overlayManager.activeOverlay()),
+                List.copyOf(recentEventFeed),
+                showMinimap
+        );
+    }
+
+    private void appendEventFeedLine(String line) {
+        if (line == null || line.isBlank()) {
+            return;
+        }
+        recentEventFeed.addFirst(line);
+        while (recentEventFeed.size() > MAX_FEED_LINES) {
+            recentEventFeed.removeLast();
+        }
+    }
+
+    private static String formatEventLine(SimEvent event) {
+        String type = event == null ? "" : UiText.humanizeToken(event.type());
+        String entityId = event == null ? "" : event.entityId();
+        Map<String, Object> data = event == null ? Map.of() : event.data();
+
+        if (entityId == null || entityId.isBlank()) {
+            return data.isEmpty() ? type : type + " " + data;
+        }
+        return type + ": " + entityId;
+    }
+
+    private void handleInventoryNavigation() {
+        if (game.inputProcessor.consumeMenuLeftPressed()) {
+            game.inventoryOverlayRenderer.moveLeft();
+        }
+        if (game.inputProcessor.consumeMenuRightPressed()) {
+            game.inventoryOverlayRenderer.moveRight();
+        }
+        if (game.inputProcessor.consumeMenuUpPressed()) {
+            game.inventoryOverlayRenderer.moveUp();
+        }
+        if (game.inputProcessor.consumeMenuDownPressed()) {
+            game.inventoryOverlayRenderer.moveDown();
+        }
+    }
+
+    private void discardInventoryMenuSignals() {
+        game.inputProcessor.consumeMenuLeftPressed();
+        game.inputProcessor.consumeMenuRightPressed();
+        game.inputProcessor.consumeMenuUpPressed();
+        game.inputProcessor.consumeMenuDownPressed();
+        game.inputProcessor.consumeCancelPressed();
+        game.inputProcessor.consumeMenuConfirmPressed();
+    }
 }
