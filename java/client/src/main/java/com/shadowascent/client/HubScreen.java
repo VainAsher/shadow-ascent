@@ -10,9 +10,11 @@ import com.shadowascent.client.ui.ShopOverlayRenderer;
 import com.shadowascent.client.ui.UiText;
 import com.shadowascent.core.GameState;
 import com.shadowascent.core.Mission;
+import com.shadowascent.core.NPC;
 import com.shadowascent.core.StoryState;
 import com.shadowascent.core.physics.TileRect;
 import com.shadowascent.core.simulation.SimEvent;
+import com.shadowascent.core.simulation.SimNPC;
 import com.shadowascent.core.simulation.SimPlayer;
 
 import java.util.ArrayDeque;
@@ -68,21 +70,38 @@ final class HubScreen implements Screen {
         float dt = Math.min(delta, MAX_DELTA);
 
         SimPlayer hudPlayer = firstPlayer();
+        OverlayType activeOverlay = game.overlayManager.activeOverlay();
         boolean inventoryToggled = game.inputProcessor.consumeInventoryTogglePressed();
         boolean craftingToggled = game.inputProcessor.consumeCraftingTogglePressed();
         boolean interactPressed = game.inputProcessor.consumeInteractPressed();
-        if (inventoryToggled) {
+        if (inventoryToggled && (activeOverlay == null || activeOverlay == OverlayType.INVENTORY)) {
             game.overlayManager.toggle(OverlayType.INVENTORY);
+            activeOverlay = game.overlayManager.activeOverlay();
         }
-        if (craftingToggled) {
+        if (craftingToggled && (activeOverlay == null || activeOverlay == OverlayType.CRAFTING)) {
             game.overlayManager.toggle(OverlayType.CRAFTING);
+            activeOverlay = game.overlayManager.activeOverlay();
         }
         boolean openedShopThisFrame = false;
-        if (interactPressed && hudPlayer != null && !game.overlayManager.hasActiveOverlay() && nearMerchant(hudPlayer)) {
-            game.shopOverlayRenderer.open(game.hubShop, hudPlayer.inventory);
-            game.overlayManager.open(OverlayType.SHOP);
-            appendEventFeedLine("Shop: " + game.hubShop.npcId + " opened.");
-            openedShopThisFrame = true;
+        boolean openedDialogueThisFrame = false;
+        if (interactPressed && hudPlayer != null && !game.overlayManager.hasActiveOverlay()) {
+            String npcId = nearbyDialogueNpcId(hudPlayer);
+            if (npcId != null) {
+                NPC npc = gameState.getStoryState().getNPC(npcId);
+                String speakerName = npc == null ? UiText.humanizeToken(npcId) : npc.getDisplayName();
+                String dialogue = gameState.getHubManager().getNPCDialogue(npcId);
+                game.dialogueOverlayRenderer.open(speakerName, List.of(dialogue == null || dialogue.isBlank() ? "..." : dialogue));
+                game.overlayManager.open(OverlayType.DIALOGUE);
+                appendEventFeedLine("Talk: " + speakerName);
+                openedDialogueThisFrame = true;
+                activeOverlay = OverlayType.DIALOGUE;
+            } else if (nearMerchant(hudPlayer)) {
+                game.shopOverlayRenderer.open(game.hubShop, hudPlayer.inventory);
+                game.overlayManager.open(OverlayType.SHOP);
+                appendEventFeedLine("Shop: " + game.hubShop.npcId + " opened.");
+                openedShopThisFrame = true;
+                activeOverlay = OverlayType.SHOP;
+            }
         }
         if (game.inputProcessor.consumeMinimapTogglePressed()) {
             showMinimap = !showMinimap;
@@ -96,7 +115,6 @@ final class HubScreen implements Screen {
             appendEventFeedLine(formatEventLine(event));
         }
 
-        OverlayType activeOverlay = game.overlayManager.activeOverlay();
         if (activeOverlay == OverlayType.INVENTORY) {
             if (inventoryToggled) {
                 discardModalSignals();
@@ -129,6 +147,24 @@ final class HubScreen implements Screen {
                 } else if (game.inputProcessor.consumeMenuConfirmPressed()) {
                     appendEventFeedLine(game.craftingOverlayRenderer.craftSelected());
                 }
+            }
+        } else if (activeOverlay == OverlayType.DIALOGUE) {
+            if (openedDialogueThisFrame) {
+                discardModalSignals();
+            } else if (game.inputProcessor.consumeCancelPressed()) {
+                game.dialogueOverlayRenderer.close();
+                game.overlayManager.close();
+            } else if (game.inputProcessor.consumeMenuConfirmPressed()) {
+                boolean advanced = game.dialogueOverlayRenderer.advance();
+                if (!advanced) {
+                    game.dialogueOverlayRenderer.close();
+                    game.overlayManager.close();
+                }
+            } else {
+                game.inputProcessor.consumeMenuLeftPressed();
+                game.inputProcessor.consumeMenuRightPressed();
+                game.inputProcessor.consumeMenuUpPressed();
+                game.inputProcessor.consumeMenuDownPressed();
             }
         } else {
             discardModalSignals();
@@ -183,6 +219,13 @@ final class HubScreen implements Screen {
             );
         } else if (game.overlayManager.activeOverlay() == OverlayType.CRAFTING) {
             game.craftingOverlayRenderer.render(
+                    game.batch,
+                    game.uiFont,
+                    Gdx.graphics.getWidth(),
+                    Gdx.graphics.getHeight()
+            );
+        } else if (game.overlayManager.activeOverlay() == OverlayType.DIALOGUE) {
+            game.dialogueOverlayRenderer.render(
                     game.batch,
                     game.uiFont,
                     Gdx.graphics.getWidth(),
@@ -323,6 +366,34 @@ final class HubScreen implements Screen {
     private static boolean nearMerchant(SimPlayer player) {
         float centerX = player.physics.x + player.physics.width * 0.5f;
         return Math.abs(centerX - SHOP_NPC_X) <= INTERACT_RADIUS;
+    }
+
+    private String nearbyDialogueNpcId(SimPlayer player) {
+        float playerCenterX = player.physics.x + player.physics.width * 0.5f;
+        float playerCenterY = player.physics.y + player.physics.height * 0.5f;
+        String nearestNpcId = null;
+        float nearestDistanceSq = Float.MAX_VALUE;
+
+        for (SimNPC simNpc : game.simulator.getNpcs()) {
+            if ("MERCHANT_RILU".equals(simNpc.id)) {
+                continue;
+            }
+            NPC storyNpc = gameState.getStoryState().getNPC(simNpc.id);
+            if (storyNpc == null || !storyNpc.isActive()) {
+                continue;
+            }
+
+            float npcCenterX = simNpc.physics.x + simNpc.physics.width * 0.5f;
+            float npcCenterY = simNpc.physics.y + simNpc.physics.height * 0.5f;
+            float dx = playerCenterX - npcCenterX;
+            float dy = playerCenterY - npcCenterY;
+            float distanceSq = dx * dx + dy * dy;
+            if (distanceSq <= INTERACT_RADIUS * INTERACT_RADIUS && distanceSq < nearestDistanceSq) {
+                nearestNpcId = storyNpc.getId();
+                nearestDistanceSq = distanceSq;
+            }
+        }
+        return nearestNpcId;
     }
 
     private SimPlayer firstPlayer() {

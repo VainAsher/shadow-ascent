@@ -14,6 +14,7 @@ import com.shadowascent.client.ui.InventoryOverlayRenderer;
 import com.shadowascent.client.ui.MinimapOverlayRenderer;
 import com.shadowascent.client.ui.ModalOverlayManager;
 import com.shadowascent.client.ui.CraftingOverlayRenderer;
+import com.shadowascent.client.ui.DialogueOverlayRenderer;
 import com.shadowascent.client.ui.ShopOverlayRenderer;
 import com.shadowascent.core.GameState;
 import com.shadowascent.core.physics.CollisionWorld;
@@ -47,6 +48,7 @@ public final class ShadowAscentGame extends Game {
     InventoryOverlayRenderer inventoryOverlayRenderer;
     ShopOverlayRenderer shopOverlayRenderer;
     CraftingOverlayRenderer craftingOverlayRenderer;
+    DialogueOverlayRenderer dialogueOverlayRenderer;
     ModalOverlayManager overlayManager;
     SimShop hubShop;
 
@@ -69,6 +71,8 @@ public final class ShadowAscentGame extends Game {
         simulator.setCollisionWorld(collisionWorld);
         simulator.addPlayer(PLAYER_ID, 0, 200f, 280f);
         simulator.addEnemy("goblin_1", "goblin", 600f, 280f);
+        simulator.addNpc("MERCHANT_RILU", "merchant", 350f, 288f, 350f, 350f);
+        simulator.addNpc("INSTRUCTOR_TAI", "teacher", 520f, 288f, 520f, 520f);
         seedPlayerInventory(simulator.getPlayer(PLAYER_ID).inventory);
         hubShop = new SimShop("merchant_npc", 2, 12345L);
 
@@ -88,6 +92,7 @@ public final class ShadowAscentGame extends Game {
         inventoryOverlayRenderer = new InventoryOverlayRenderer(simulator.getPlayer(PLAYER_ID).inventory);
         shopOverlayRenderer = new ShopOverlayRenderer();
         craftingOverlayRenderer = new CraftingOverlayRenderer(simulator.getPlayer(PLAYER_ID).inventory);
+        dialogueOverlayRenderer = new DialogueOverlayRenderer();
         Gdx.app.log("ShadowAscentGame", "atlas loaded: " + atlas.getRegions().size + " regions");
 
         setScreen(new HubScreen(this, gameState));
