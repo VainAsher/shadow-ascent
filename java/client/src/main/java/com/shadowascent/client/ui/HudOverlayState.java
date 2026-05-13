@@ -12,7 +12,8 @@ public record HudOverlayState(
         String contextualHint,
         String overlayStatus,
         List<String> eventFeedLines,
-        boolean showMinimap
+        boolean showMinimap,
+        String interactionHint
 ) {
     public HudOverlayState {
         eventFeedLines = List.copyOf(eventFeedLines);

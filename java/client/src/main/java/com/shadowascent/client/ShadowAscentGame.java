@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.shadowascent.client.audio.AudioManager;
 import com.shadowascent.client.input.GameInputProcessor;
 import com.shadowascent.client.rendering.SpriteWorldRenderer;
 import com.shadowascent.client.screens.TitleScreen;
@@ -59,6 +60,7 @@ public final class ShadowAscentGame extends Game {
     SaveLoad saveLoad;
     SimShop hubShop;
     TitleScreen titleScreen;
+    AudioManager audioManager;
 
     GameState gameState;
 
@@ -75,6 +77,7 @@ public final class ShadowAscentGame extends Game {
         hudOverlayRenderer = new HudOverlayRenderer(batch, uiFont, uiShapes);
         minimapOverlayRenderer = new MinimapOverlayRenderer(uiShapes);
         pauseMenuOverlayRenderer = new PauseMenuOverlayRenderer();
+        audioManager = new AudioManager();
         Gdx.app.log("ShadowAscentGame", "atlas loaded: " + atlas.getRegions().size + " regions");
 
         showTitleScreen();

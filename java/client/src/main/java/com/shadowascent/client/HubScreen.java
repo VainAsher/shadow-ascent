@@ -128,6 +128,7 @@ final class HubScreen implements Screen {
             game.inputProcessor.submitFrame();
             game.simulator.tick(dt);
             events = game.simulator.drainEvents();
+            game.audioManager.processEvents(events);
         }
         for (SimEvent event : events) {
             appendEventFeedLine(formatEventLine(event));
@@ -306,6 +307,9 @@ final class HubScreen implements Screen {
                 ? "Hub " + UiText.humanizeToken(storyState.getCurrentHubState().name())
                 : "Lanterns: " + storyState.getLanternCount()
                         + "  |  Abilities: " + storyState.getAbilities().size();
+        String interactionHint = player == null
+                ? "Explore east through traversal rooms."
+                : resolveInteractionHint(player);
 
         return new HudOverlayState(
                 UiText.humanizeToken(storyState.getCurrentAct().name()),
@@ -317,7 +321,8 @@ final class HubScreen implements Screen {
                 hint,
                 UiText.overlayStatus(game.overlayManager.activeOverlay()),
                 List.copyOf(recentEventFeed),
-                showMinimap
+                showMinimap,
+                interactionHint
         );
     }
 
@@ -432,6 +437,19 @@ final class HubScreen implements Screen {
     private static boolean nearMerchant(SimPlayer player) {
         float centerX = player.physics.x + player.physics.width * 0.5f;
         return Math.abs(centerX - SHOP_NPC_X) <= INTERACT_RADIUS;
+    }
+
+    private String resolveInteractionHint(SimPlayer player) {
+        String npcId = nearbyDialogueNpcId(player);
+        if (npcId != null) {
+            NPC npc = gameState.getStoryState().getNPC(npcId);
+            String name = npc == null ? UiText.humanizeToken(npcId) : npc.getDisplayName();
+            return "[E] Talk to " + name;
+        }
+        if (nearMerchant(player)) {
+            return "[E] Open merchant stock";
+        }
+        return "Explore east through traversal rooms.";
     }
 
     private String nearbyDialogueNpcId(SimPlayer player) {

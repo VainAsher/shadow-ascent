@@ -26,7 +26,7 @@ public final class HudOverlayRenderer {
         shapes.setProjectionMatrix(shapeProjection);
         batch.setProjectionMatrix(textProjection);
 
-        float statusHeight = 170f;
+        float statusHeight = 190f;
         float statusX = UiPalette.PANEL_PADDING;
         float statusY = UiPalette.PANEL_PADDING;
         float feedX = UiPalette.PANEL_PADDING;
@@ -78,6 +78,10 @@ public final class HudOverlayRenderer {
         lineY -= UiPalette.LINE_HEIGHT;
         font.setColor(UiPalette.WARNING);
         font.draw(batch, UiText.contextualHint(state.contextualHint()), textX, lineY);
+
+        lineY -= UiPalette.LINE_HEIGHT;
+        font.setColor(UiPalette.TEXT);
+        font.draw(batch, UiText.contextualHint(state.interactionHint()), textX, lineY);
 
         lineY -= UiPalette.LINE_HEIGHT;
         font.setColor(UiPalette.TEXT_MUTED);

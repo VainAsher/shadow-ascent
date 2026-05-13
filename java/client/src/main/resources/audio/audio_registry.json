@@ -1,0 +1,10 @@
+{
+  "sfx": {
+    "player_hurt": "audio/sfx/player_hurt.ogg",
+    "enemy_defeated": "audio/sfx/enemy_defeated.ogg",
+    "portal_activate": "audio/sfx/portal_activate.ogg"
+  },
+  "music": {
+    "hub": "audio/music/hub.ogg"
+  }
+}

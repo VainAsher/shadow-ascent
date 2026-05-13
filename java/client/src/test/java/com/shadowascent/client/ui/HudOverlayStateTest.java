@@ -24,7 +24,8 @@ final class HudOverlayStateTest {
                 "Hint line",
                 "Overlay status",
                 List.of("line1", "line2"),
-                true
+                true,
+                "[E] Talk"
         );
 
         assertEquals("ACT_1", state.actId());
@@ -47,7 +48,8 @@ final class HudOverlayStateTest {
                 "Hint line",
                 "Overlay status",
                 feedLines,
-                true
+                true,
+                "[E] Talk"
         );
 
         feedLines.add("line3");
@@ -68,7 +70,8 @@ final class HudOverlayStateTest {
                 "Hint line",
                 UiText.overlayStatus(null),
                 List.of("newest", "older", "oldest"),
-                true
+                true,
+                "[E] Talk"
         );
 
         assertEquals("newest", state.eventFeedLines().getFirst());
@@ -77,10 +80,29 @@ final class HudOverlayStateTest {
 
     @Test
     void minimapVisibilityFlagTracksHudToggleState() {
-        HudOverlayState shown = new HudOverlayState("A", "P", "M", "O", 3, 3, "H", "S", List.of(), true);
-        HudOverlayState hidden = new HudOverlayState("A", "P", "M", "O", 3, 3, "H", "S", List.of(), false);
+        HudOverlayState shown = new HudOverlayState("A", "P", "M", "O", 3, 3, "H", "S", List.of(), true, "I");
+        HudOverlayState hidden = new HudOverlayState("A", "P", "M", "O", 3, 3, "H", "S", List.of(), false, "I");
 
         assertTrue(shown.showMinimap());
         assertFalse(hidden.showMinimap());
+    }
+
+    @Test
+    void hudStateCarriesInteractionHintIndependentlyFromContextualHint() {
+        HudOverlayState state = new HudOverlayState(
+                "Act I",
+                "Lantern Heights",
+                "Mission",
+                "Objective",
+                3,
+                3,
+                "Context",
+                "Overlay: none",
+                List.of(),
+                true,
+                "[E] Talk to Merchant Rilu"
+        );
+
+        assertEquals("[E] Talk to Merchant Rilu", state.interactionHint());
     }
 }
