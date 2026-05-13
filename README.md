@@ -9,13 +9,16 @@ This repository is the canonical build destination for the game vision, using pr
 - `indie-ninja-adventures` is the primary engineering donor (simulation, worldgen, validation patterns).
 - `shadow_ascent_integrated_package` is the primary narrative/data-contract donor (plateaus, beats, flags, quest-chain semantics).
 
-## Current Truth (2026-05-06)
+## Current Truth (2026-05-13)
 
-- **M0 Foundation:** completed (scaffold, module boundaries, initial docs).
-- **M1 Act I QA Gate:** in progress (objective-driven mission runtime is implemented; route hardening remains).
-- **M2 Campaign Spine:** in progress (data contracts validate and resolve beats; canonical + side-quest mission templates are contract-backed).
-- **M3 Stability:** active prep (save v2 migration path, CI fail-fast contract gate).
-- **Playable Client:** MVP interactive client now exists (`runPlayableClient`); donor-grade player/physics import is active with first collision-complexity geometry and minimap overlays landed.
+- **M0 Foundation:** completed.
+- **M1 Act I QA Gate:** completed.
+- **M2 Campaign Spine:** completed.
+- **M3 Stability:** completed.
+- **M4 Campaign Completion and Content Scale:** active.
+- **M5 Systemic World Simulation Foundation:** completed.
+- **M6 Open-World Runtime Expansion:** active.
+- **Production Client:** LibGDX `runGame` now includes a title/new-game/continue flow, persistent HUD, toggleable minimap, dialogue modal, pause/save/load flow, modal inventory/shop/crafting overlays, event-driven audio key resolution, and contextual interaction hints on top of the atlas-backed placeholder rendering path; `runPlayableClient` remains the main QA route surface.
 
 ## Repository Structure
 
@@ -33,7 +36,10 @@ From repository root:
 ./gradlew runRegressionTests
 ./gradlew runDataContractDiagnostics
 ./gradlew runWorldgenDiagnostics
+./gradlew packSprites
+./gradlew :client:test
 ./gradlew runPlayableClient
+./gradlew runGame
 ```
 
 `runRegressionTests` includes deterministic playable-controller checks (run/jump/double-jump/coyote/dash/wall-exhaustion gating), save v2/v1/legacy compatibility checks, and donor-parity worldgen checks.
@@ -54,5 +60,6 @@ Start with:
 
 - `docs/INDEX.md`
 - `docs/CURRENT_STATE.md`
+- `docs/PLAYABLE_TRUTH.md`
 - `docs/ROADMAP.md`
 - `docs/MIGRATION_MAP.md`

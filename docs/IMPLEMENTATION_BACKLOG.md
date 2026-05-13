@@ -127,6 +127,14 @@ Reference: `docs/MIGRATION_MAP.md`
 - [x] Echo puzzle room in PlaytestClient (2026-05-09): `echo_puzzle_sentinel` encounter in Room 4; `EchoPuzzleSolution.ofKills("summit_echo_room_1", 1)`; `checkEchoPuzzle()` on sentinel clear; `PUZZLE_PASSED`/`PUZZLE_FAILED` emitted; `echo_puzzle_summit_cleared` flag set; 53/53 pass.
 - [x] Faction tension mutation floor (2026-05-09): `WorldSimulationTick.maxFactionTensionForPlateau()` + `Math.max(region.factionTension(), maxContractTension)`; veil_covenant (tension=0.73) floors HOLLOW_DEPTHS ≥ 0.65 → `FACTION_CONFLICT`; 53/53 pass.
 - [x] LibGDX production client scaffold (2026-05-09): libgdx 1.12.1 deps + `runGame` Gradle task; `DesktopLauncher.java` + `ShadowAscentGame.java` + `HubScreen.java`; GL clear at 60fps; CI green; 53/53 pass.
+- [x] P3 asset pipeline + state-backed placeholder rendering (2026-05-10): root `packSprites` Gradle task runs `SpritePackerTool`; packed placeholder atlas emitted to `assets/sprites/packed/`; `ShadowAscentGame` loads `sprites.atlas` through `AssetManager`; `SpriteWorldRenderer` replaces rectangle-only runtime rendering and maps player/enemy states onto distinct placeholder regions; `:client:test` covers atlas generation and region-selection behavior.
+- [x] Bounded LibGDX visual follow-up (2026-05-10): enemy patrol rendering now distinguishes `goblin`, `bat`, `slime`, `skeleton`, and `wolf` with separate placeholder atlas regions; shared alert/attack/stun state colors remain in place to avoid scope expansion into full animation work.
+- [x] LibGDX HUD + minimap overlay foundation (2026-05-13): `HudOverlayRenderer`, `HudOverlayState`, `MinimapOverlayRenderer`, `UiPalette`, `UiText`, and `ModalOverlayManager` now drive a persistent HUD plus one-active-modal model in `runGame`; `GameInputProcessor` routes shared UI toggle/cancel/confirm signals and suppresses gameplay input while a modal is open.
+- [x] LibGDX inventory/shop/crafting modal overlays (2026-05-13): inventory (`I`), shop (`E` near merchant fixture), and crafting (`T`) are now live on the production-client path with shared close semantics (`Esc`), event-feed feedback, and state tests covering modal replacement, inventory navigation/use, shop focus toggling, and crafting selection movement.
+- [x] LibGDX dialogue modal (2026-05-13): `DialogueOverlayRenderer` plus `HubScreen` wiring now surfaces NPC dialogue in `runGame`, prefers nearby NPC talk over merchant fallback, and closes cleanly through the shared modal path.
+- [x] LibGDX pause/save/load flow (2026-05-13): `PauseMenuOverlayRenderer`, `GameInputProcessor` one-frame pause/save/load signals, paused simulation freeze, and `SaveLoad` runtime snapshot persistence are now live in `runGame`.
+- [x] LibGDX title/new-game/continue routing (2026-05-13): `TitleScreen` plus explicit `ShadowAscentGame.startNewGame()` / `continueFromSave()` entry points now own `runGame` screen flow; pause-menu quit-to-title routes back through that surface.
+- [x] LibGDX audio + interaction hint routing (2026-05-13): `AudioManager` resolves stable sound keys from drained `SimEvent`s and `HudOverlayState` now carries explicit interaction hints separate from contextual status.
 
 - [x] Echo puzzle evaluation logic (2026-05-08): `EchoPuzzleSolution` record (`puzzleId`, `minActionPresses`, `maxTicks`, `requireCompletion`) + `EchoPuzzleEvaluator.evaluate(SimEcho, EchoPuzzleSolution)` in `core.simulation`; rising-edge press counting by walking replay tick sequence; `Result(passed, trace, actionPressCounts)` with per-rule trace lines; 5-sub-test regression section `testEchoPuzzleEvaluator`; 50/50 regression tests pass.
 - [x] M6 Echo combat integration (2026-05-08): `SimEcho` gains `W=20/H=28/ATTACK_REACH=14/ECHO_DAMAGE=1` constants, `attackedThisTick`/`prevAttackInput`/`echoKillCount` fields; `step()` computes attack rising-edge; `GameSimulator.tickEchoes()` AABB-tests live enemies on `attackedThisTick`, emits `ECHO_COMBAT_HIT` on hit and `ENEMY_DAMAGED` on kill, increments `echoKillCount`; `EchoPuzzleSolution` gains `minEchoKills` field + `ofKills()` factory; `EchoPuzzleEvaluator` checks kill count; 3-sub-test `testEchoCombatIntegration`; 51/51 regression tests pass.
@@ -138,8 +146,8 @@ Reference: `docs/MIGRATION_MAP.md`
 
 ## 5) Documentation Integrity (always active)
 
-- [ ] Update `docs/CURRENT_STATE.md` after each meaningful code milestone.
-- [ ] Keep roadmap and backlog status synchronized.
+- [x] Update `docs/CURRENT_STATE.md` after each meaningful code milestone.
+- [x] Keep roadmap and backlog status synchronized.
 - [ ] Archive superseded claims instead of silently overwriting history.
 
 ## 6) Playable Client Track (new high priority)

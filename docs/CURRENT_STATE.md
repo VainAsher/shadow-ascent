@@ -2,7 +2,7 @@
 doc_type: current_state
 status: living
 owner: core-team
-last_updated: 2026-05-09
+last_updated: 2026-05-13
 version_anchor: 0.0.1
 ---
 # Current State
@@ -183,6 +183,27 @@ Canonical runtime and execution snapshot for the clean-start repository.
   - `CollisionWorld.resolveX(PhysicsState p, float prevX)`: solid tiles block horizontal movement; sets `onWall`/`wallDir`; platforms skipped (one-way vertical only); wired into `GameSimulator.tickPlayers()` before `resolveY`,
   - Camera world-bounds clamping: `HubScreen.show()` derives `worldRight`/`worldBottom` from `game.worldTiles` extents; camera position clamped after each lerp so visible area never extends past tile geometry,
   - Regression: 54/54 pass (new section: `testCollisionWorldXResolution` — right-wall, left-wall, platform pass-through).
+- LibGDX P3 asset pipeline + state presentation (2026-05-10):
+  - root `packSprites` Gradle task now generates deterministic placeholder assets at `assets/sprites/packed/sprites.png` + `sprites.atlas` via `SpritePackerTool`,
+  - `ShadowAscentGame.create()` loads the packed atlas through `AssetManager` and routes render work to `SpriteWorldRenderer`,
+  - `SpriteWorldRenderer` now draws tiles, players, enemies, and NPCs from atlas regions instead of active rectangle rendering,
+  - placeholder presentation now maps visible runtime state onto distinct sprites: player idle/run/jump/dash/attack/dead and enemy patrol/alerted/attack/stunned,
+  - enemy patrol presentation now distinguishes the current donor-imported runtime types (`goblin`, `bat`, `slime`, `skeleton`, `wolf`) with separate placeholder silhouettes/colors,
+  - entity facing now flips sprite presentation left/right without changing simulation coordinates,
+  - `StubWorldRenderer` remains available as the rectangle fallback implementation, but the active `runGame` path is atlas-backed.
+- LibGDX UI overlay port (2026-05-13):
+  - `runGame` now renders a persistent top-left HUD status block, bottom-left event feed, and docked minimap through `HudOverlayRenderer`, `HudOverlayState`, and `MinimapOverlayRenderer`,
+  - shared modal lifecycle is now owned by `ModalOverlayManager` + `HubScreen`, with `GameInputProcessor` suppressing gameplay input while overlays are active and exposing one-frame UI signals for toggles, confirm, cancel, interact, and directional menu input,
+  - inventory overlay is now live in LibGDX: `I` toggles it, arrow/WASD navigation is edge-triggered, `Enter` uses/equips items through the real player `SimInventory`, and feedback is appended to the HUD event feed,
+  - merchant shop overlay is now live in LibGDX: `E` near the hub merchant fixture opens a `SimShop("merchant_npc", 2, 12345L)` modal, left/right swap buy-sell focus, up/down move selection, `Enter` executes one-item trades, and the result is surfaced in the event feed,
+  - crafting overlay is now live in LibGDX: `T` toggles a recipe list backed by `RecipeBook`, up/down changes recipe selection, `Enter` crafts the selected recipe against the real player inventory, and feedback persists through the feed,
+  - `ShadowAscentGame` now seeds a bounded starter inventory/currency set for the production-client slice so inventory, shop, and crafting are testable in `runGame`,
+  - dialogue interaction is now live in LibGDX: `E` prefers nearby NPC dialogue before merchant fallback, opens a dedicated dialogue modal, and advances/closes on `Enter`/`Esc`,
+  - pause/save/load is now live in LibGDX: `Esc` opens a pause modal when no other overlay is active, simulation time freezes while paused, `F5`/`F9` expose direct one-frame save/load signals, and the `runGame` runtime now persists a bounded player/enemy snapshot sidecar in addition to story state,
+  - title/new-game/continue routing is now live in LibGDX: `ShadowAscentGame` exposes explicit `startNewGame()` / `continueFromSave()` entry points, `TitleScreen` is the default `runGame` entry surface, and pause-menu quit-to-title now routes back through that screen flow,
+  - first-pass audio routing is now live in LibGDX: `AudioManager` resolves key simulation events like `PLAYER_DAMAGED`, `ENEMY_DEFEATED`, and `PORTAL_ACTIVATED` into stable sound keys, with playback intentionally left as a safe no-op until asset binding lands,
+  - HUD interaction hinting is now richer in LibGDX: the HUD separates long-lived contextual status from immediate interaction prompts like NPC talk and merchant access,
+  - `Esc` now closes any active modal without leaking stale UI signals into later frames; modal replacement semantics are test-backed for inventory/shop/crafting transitions.
 - M4 SUMMIT_SHRINE content authoring (2026-05-09):
   - 5 critical narrative beats in `narrative_beats.json` (`beat_empty_hub_only_maiden` → `beat_aen_hollowed`, route_order 100–140),
   - NPC registry entries (YIN, YANG, VEIL_MAIDEN, SIREN_OF_MASKS with role/eligibility); SIREN_OF_MASKS encounter block (scripted_loss, force-loss at tick 510, 4-event timeline),
@@ -223,11 +244,52 @@ Canonical runtime and execution snapshot for the clean-start repository.
 - ~~**PlaytestClient decomposition**~~ — resolved 2026-05-09. `InputHandler` (key bindings + 16 queue flags), `RoomGeometry` (boundary constants + region resolver), `SaveLoad` (persistence I/O + `LoadResult` record) all extracted; `PlaytestClient` delegates fully to all three.
 - ~~**Stub physics floor (P2)**~~ — resolved 2026-05-09. `CollisionWorld` injected into `GameSimulator`; `resolveX` + `resolveY` called each tick; spawnY stub is the fallback only when `collisionWorld == null` (regression tests unaffected).
 - ~~**LibGDX world geometry**~~ — resolved 2026-05-09. `StubWorldRenderer` accepts `List<TileRect>`; solid floor and platform drawn as coloured rects; `ShadowAscentGame` builds and passes stub tile geometry.
-- **P3 asset pipeline**: no `TexturePacker` Gradle task; no `TextureAtlas` loaded; `StubWorldRenderer` still uses `ShapeRenderer` rectangles. Next: `packSprites` task + placeholder PNG sprites + `SpriteWorldRenderer`.
+- **Next LibGDX production-client follow-up**: the HUD/overlay stack is now in place, but `runGame` still needs broader authored geometry, deeper animation coverage, and more authored interaction points before it becomes the main QA surface.
 
 ## Verification Evidence
 
-Latest gate (2026-05-09) — LibGDX P2: CollisionWorld.resolveX, camera bounds clamping, Y-axis orientation fix; 54/54 regression sections:
+Latest gate (2026-05-13) — LibGDX production-client parity tranche on top of the production-client render path:
+
+```text
+.\gradlew.bat :client:test --tests "com.shadowascent.client.ui.DialogueOverlayRendererStateTest"
+BUILD SUCCESSFUL
+
+.\gradlew.bat :client:test --tests "com.shadowascent.client.ui.PauseMenuOverlayRendererStateTest" --tests "com.shadowascent.client.input.GameInputProcessorUiRoutingTest" --tests "com.shadowascent.client.SaveLoadRuntimeStateTest"
+BUILD SUCCESSFUL
+
+.\gradlew.bat :client:test --tests "com.shadowascent.client.ShadowAscentGameStructureTest"
+BUILD SUCCESSFUL
+
+.\gradlew.bat :client:test --tests "com.shadowascent.client.audio.AudioManagerEventRoutingTest" --tests "com.shadowascent.client.ui.HudOverlayStateTest"
+BUILD SUCCESSFUL
+
+.\gradlew.bat clean :client:compileJava
+BUILD SUCCESSFUL
+
+.\gradlew.bat packSprites
+BUILD SUCCESSFUL
+  wrote assets/sprites/packed/sprites.png
+  wrote assets/sprites/packed/sprites.atlas
+
+.\gradlew.bat runRegressionTests
+exit code 0
+```
+
+Previous gate (2026-05-10) — LibGDX P3 asset pipeline + state-driven placeholder rendering:
+
+```text
+.\gradlew.bat :client:test
+BUILD SUCCESSFUL in 43s
+3 tests completed, 0 failed
+  verifies: atlas generation, state-region selection, enemy-type placeholder selection, single-page atlas parse
+
+.\gradlew.bat packSprites
+BUILD SUCCESSFUL
+  wrote assets/sprites/packed/sprites.png
+  wrote assets/sprites/packed/sprites.atlas
+```
+
+Previous gate (2026-05-09) — LibGDX P2: CollisionWorld.resolveX, camera bounds clamping, Y-axis orientation fix; 54/54 regression sections:
 
 ```text
 .\gradlew.bat :core:compileJava :client:compileJava runRegressionTests
@@ -280,4 +342,4 @@ Historical gate evidence is in `docs/handover/CODEX_*.md` files (one per deliver
 5. ~~**Co-op collision model (M6)**~~ — resolved 2026-05-08. `tickCoopCollisions()` in `GameSimulator`; pairwise AABB separation with MSA push; `PLAYER_COLLISION` event; dead players excluded.
 6. ~~**P2: `core.physics.CollisionWorld`**~~ — closed 2026-05-09. `resolveX` + `resolveY` both wired; `GameSimulator.tickPlayers()` uses real AABB resolution; spawnY stub is fallback only when no `CollisionWorld` injected.
 7. ~~**LibGDX world geometry rendering**~~ — closed 2026-05-09. `StubWorldRenderer` renders tile geometry; `ShadowAscentGame` builds and passes stub tile list; camera bounds derived from tile extents.
-8. **P3 asset pipeline** — set up `packSprites` Gradle task; create placeholder PNG sprites for each entity type; load `TextureAtlas` in `ShadowAscentGame.create()`; create `SpriteWorldRenderer` to replace `StubWorldRenderer`.
+8. **Next LibGDX follow-up** — expand authored production-client geometry/state fidelity now that the HUD/modal overlay stack is in place, without broadening into full art migration.

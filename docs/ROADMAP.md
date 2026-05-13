@@ -2,7 +2,7 @@
 doc_type: roadmap
 status: living
 owner: core-team
-last_updated: 2026-05-08
+last_updated: 2026-05-13
 version_anchor: 0.0.1
 ---
 # Shadow Ascent Clean Start Roadmap
@@ -190,4 +190,6 @@ Delivered in this lane (2026-05-08):
 - ~~M6 remaining: co-op collision model.~~ Resolved 2026-05-08. `tickCoopCollisions()` pairwise AABB separation; `PLAYER_COLLISION` event; 51/51 pass.
 - ~~**P1 LibGDX bootstrap**~~ — complete 2026-05-09. `DesktopLauncher` + `ShadowAscentGame` + `HubScreen` + `runGame` task; `GameInputProcessor` (full key bindings); `StubWorldRenderer` (tile + entity rects); `GameSimulator` wired with stub geometry + `CollisionWorld` injection.
 - ~~**P2 collision + camera**~~ — complete 2026-05-09. `CollisionWorld.resolveX` + `resolveY` wired in `GameSimulator.tickPlayers()`; Y-axis camera orientation fixed (`setToOrtho(true)`); camera world-bounds clamping from tile extents; 54/54 regression pass.
-- **P3 asset pipeline**: `TexturePacker` Gradle task + placeholder PNG sprites + `TextureAtlas` loading + `SpriteWorldRenderer` replacing `StubWorldRenderer`.
+- **P3 asset pipeline** — complete 2026-05-10. Deterministic `packSprites` task, generated placeholder atlas, `TextureAtlas` loading in `ShadowAscentGame`, and atlas-backed `SpriteWorldRenderer` are all landed and client-test-backed.
+- **P4 HUD + overlay port** — complete 2026-05-13. `runGame` now has a persistent HUD, docked toggleable minimap, shared modal lifecycle, first-pass inventory/shop/crafting overlays, dialogue interaction, pause/save/load flow, title/new-game/continue routing, audio event-key resolution, and explicit HUD interaction hints driven directly from the production-client runtime.
+- **Next LibGDX production-client follow-up**: keep the lane bounded to authored geometry, animation/state fidelity, and deeper production-client interaction polish that can be validated in `runGame` without turning into full art migration.
