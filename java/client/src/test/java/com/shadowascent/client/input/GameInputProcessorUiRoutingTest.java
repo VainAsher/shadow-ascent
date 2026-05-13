@@ -149,6 +149,23 @@ final class GameInputProcessorUiRoutingTest {
         assertFalse(input.consumeMenuDownPressed());
     }
 
+    @Test
+    void pauseSaveAndLoadAreExposedAsOneFrameUiSignals() {
+        GameInputProcessor input = new GameInputProcessor(new GameSimulator(), "player1", new ModalOverlayManager());
+
+        assertTrue(input.keyDown(Keys.ESCAPE));
+        assertTrue(input.consumePausePressed());
+        assertFalse(input.consumePausePressed());
+
+        assertTrue(input.keyDown(Keys.F5));
+        assertTrue(input.consumeSavePressed());
+        assertFalse(input.consumeSavePressed());
+
+        assertTrue(input.keyDown(Keys.F9));
+        assertTrue(input.consumeLoadPressed());
+        assertFalse(input.consumeLoadPressed());
+    }
+
     private static void setCommandFlag(GameInputProcessor input, String fieldName, boolean value)
             throws ReflectiveOperationException {
         Field cmdField = GameInputProcessor.class.getDeclaredField("cmd");

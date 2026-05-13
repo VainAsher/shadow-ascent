@@ -71,9 +71,19 @@ final class HubScreen implements Screen {
 
         SimPlayer hudPlayer = firstPlayer();
         OverlayType activeOverlay = game.overlayManager.activeOverlay();
+        boolean pausePressed = game.inputProcessor.consumePausePressed();
+        boolean savePressed = game.inputProcessor.consumeSavePressed();
+        boolean loadPressed = game.inputProcessor.consumeLoadPressed();
         boolean inventoryToggled = game.inputProcessor.consumeInventoryTogglePressed();
         boolean craftingToggled = game.inputProcessor.consumeCraftingTogglePressed();
         boolean interactPressed = game.inputProcessor.consumeInteractPressed();
+        boolean openedPauseThisFrame = false;
+        if (pausePressed && activeOverlay == null) {
+            game.pauseMenuOverlayRenderer.resetSelection();
+            game.overlayManager.open(OverlayType.PAUSE);
+            activeOverlay = OverlayType.PAUSE;
+            openedPauseThisFrame = true;
+        }
         if (inventoryToggled && (activeOverlay == null || activeOverlay == OverlayType.INVENTORY)) {
             game.overlayManager.toggle(OverlayType.INVENTORY);
             activeOverlay = game.overlayManager.activeOverlay();
@@ -106,16 +116,35 @@ final class HubScreen implements Screen {
         if (game.inputProcessor.consumeMinimapTogglePressed()) {
             showMinimap = !showMinimap;
         }
+        if (savePressed) {
+            appendEventFeedLine(game.saveRunGameState());
+        }
+        if (loadPressed) {
+            appendEventFeedLine(game.loadRunGameState());
+        }
 
-        game.inputProcessor.submitFrame();
-        game.simulator.tick(dt);
-
-        List<SimEvent> events = game.simulator.drainEvents();
+        List<SimEvent> events = List.of();
+        if (activeOverlay != OverlayType.PAUSE) {
+            game.inputProcessor.submitFrame();
+            game.simulator.tick(dt);
+            events = game.simulator.drainEvents();
+        }
         for (SimEvent event : events) {
             appendEventFeedLine(formatEventLine(event));
         }
 
-        if (activeOverlay == OverlayType.INVENTORY) {
+        if (activeOverlay == OverlayType.PAUSE) {
+            if (openedPauseThisFrame) {
+                discardModalSignals();
+            } else {
+                handlePauseNavigation();
+                if (game.inputProcessor.consumeCancelPressed()) {
+                    game.overlayManager.close();
+                } else if (game.inputProcessor.consumeMenuConfirmPressed() && handlePauseMenuSelection()) {
+                    game.overlayManager.close();
+                }
+            }
+        } else if (activeOverlay == OverlayType.INVENTORY) {
             if (inventoryToggled) {
                 discardModalSignals();
             } else {
@@ -203,7 +232,14 @@ final class HubScreen implements Screen {
                 Gdx.graphics.getWidth() - 220f,
                 16f
         );
-        if (game.overlayManager.activeOverlay() == OverlayType.INVENTORY) {
+        if (game.overlayManager.activeOverlay() == OverlayType.PAUSE) {
+            game.pauseMenuOverlayRenderer.render(
+                    game.batch,
+                    game.uiFont,
+                    Gdx.graphics.getWidth(),
+                    Gdx.graphics.getHeight()
+            );
+        } else if (game.overlayManager.activeOverlay() == OverlayType.INVENTORY) {
             game.inventoryOverlayRenderer.render(
                     game.batch,
                     game.uiFont,
@@ -333,6 +369,17 @@ final class HubScreen implements Screen {
         }
     }
 
+    private void handlePauseNavigation() {
+        game.inputProcessor.consumeMenuLeftPressed();
+        game.inputProcessor.consumeMenuRightPressed();
+        if (game.inputProcessor.consumeMenuUpPressed()) {
+            game.pauseMenuOverlayRenderer.moveUp();
+        }
+        if (game.inputProcessor.consumeMenuDownPressed()) {
+            game.pauseMenuOverlayRenderer.moveDown();
+        }
+    }
+
     private void handleCraftingNavigation() {
         game.inputProcessor.consumeMenuLeftPressed();
         game.inputProcessor.consumeMenuRightPressed();
@@ -351,6 +398,25 @@ final class HubScreen implements Screen {
         game.inputProcessor.consumeMenuDownPressed();
         game.inputProcessor.consumeCancelPressed();
         game.inputProcessor.consumeMenuConfirmPressed();
+    }
+
+    private boolean handlePauseMenuSelection() {
+        return switch (game.pauseMenuOverlayRenderer.selectedOption()) {
+            case "Resume" -> true;
+            case "Save" -> {
+                appendEventFeedLine(game.saveRunGameState());
+                yield true;
+            }
+            case "Load" -> {
+                appendEventFeedLine(game.loadRunGameState());
+                yield true;
+            }
+            case "Quit To Title" -> {
+                appendEventFeedLine("Pause: quit to title unlocks with title flow.");
+                yield true;
+            }
+            default -> false;
+        };
     }
 
     private void appendTradeResult(ShopOverlayRenderer.TradeRequest tradeRequest) {

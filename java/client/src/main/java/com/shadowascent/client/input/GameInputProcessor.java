@@ -23,6 +23,9 @@ public final class GameInputProcessor extends InputAdapter {
     private boolean inventoryTogglePressed;
     private boolean craftingTogglePressed;
     private boolean minimapTogglePressed;
+    private boolean pausePressed;
+    private boolean savePressed;
+    private boolean loadPressed;
     private boolean cancelPressed;
     private boolean menuConfirmPressed;
     private boolean menuLeftPressed;
@@ -81,6 +84,24 @@ public final class GameInputProcessor extends InputAdapter {
     public boolean consumeCancelPressed() {
         boolean pressed = cancelPressed;
         cancelPressed = false;
+        return pressed;
+    }
+
+    public boolean consumePausePressed() {
+        boolean pressed = pausePressed;
+        pausePressed = false;
+        return pressed;
+    }
+
+    public boolean consumeSavePressed() {
+        boolean pressed = savePressed;
+        savePressed = false;
+        return pressed;
+    }
+
+    public boolean consumeLoadPressed() {
+        boolean pressed = loadPressed;
+        loadPressed = false;
         return pressed;
     }
 
@@ -192,8 +213,21 @@ public final class GameInputProcessor extends InputAdapter {
             case Keys.ESCAPE -> {
                 if (pressed) {
                     cancelPressed = true;
+                    pausePressed = true;
                 }
                 cmd.menuBack = pressed;
+                return true;
+            }
+            case Keys.F5 -> {
+                if (pressed) {
+                    savePressed = true;
+                }
+                return true;
+            }
+            case Keys.F9 -> {
+                if (pressed) {
+                    loadPressed = true;
+                }
                 return true;
             }
             case Keys.ENTER -> {

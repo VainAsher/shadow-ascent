@@ -13,6 +13,7 @@ import com.shadowascent.client.ui.HudOverlayRenderer;
 import com.shadowascent.client.ui.InventoryOverlayRenderer;
 import com.shadowascent.client.ui.MinimapOverlayRenderer;
 import com.shadowascent.client.ui.ModalOverlayManager;
+import com.shadowascent.client.ui.PauseMenuOverlayRenderer;
 import com.shadowascent.client.ui.CraftingOverlayRenderer;
 import com.shadowascent.client.ui.DialogueOverlayRenderer;
 import com.shadowascent.client.ui.ShopOverlayRenderer;
@@ -23,6 +24,7 @@ import com.shadowascent.core.simulation.GameSimulator;
 import com.shadowascent.core.simulation.SimInventory;
 import com.shadowascent.core.simulation.SimShop;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -45,11 +47,13 @@ public final class ShadowAscentGame extends Game {
     ShapeRenderer      uiShapes;
     HudOverlayRenderer hudOverlayRenderer;
     MinimapOverlayRenderer minimapOverlayRenderer;
+    PauseMenuOverlayRenderer pauseMenuOverlayRenderer;
     InventoryOverlayRenderer inventoryOverlayRenderer;
     ShopOverlayRenderer shopOverlayRenderer;
     CraftingOverlayRenderer craftingOverlayRenderer;
     DialogueOverlayRenderer dialogueOverlayRenderer;
     ModalOverlayManager overlayManager;
+    SaveLoad saveLoad;
     SimShop hubShop;
 
     GameState gameState;
@@ -80,6 +84,7 @@ public final class ShadowAscentGame extends Game {
         uiFont       = new BitmapFont();
         uiShapes     = new ShapeRenderer();
         overlayManager = new ModalOverlayManager();
+        saveLoad = new SaveLoad(gameState, Path.of("save", "runGame_slot1.sav"));
         inputProcessor = new GameInputProcessor(simulator, PLAYER_ID, overlayManager);
         Gdx.input.setInputProcessor(inputProcessor);
         assetManager = new AssetManager();
@@ -89,6 +94,7 @@ public final class ShadowAscentGame extends Game {
         spriteRenderer = new SpriteWorldRenderer(batch, atlas);
         hudOverlayRenderer = new HudOverlayRenderer(batch, uiFont, uiShapes);
         minimapOverlayRenderer = new MinimapOverlayRenderer(uiShapes);
+        pauseMenuOverlayRenderer = new PauseMenuOverlayRenderer();
         inventoryOverlayRenderer = new InventoryOverlayRenderer(simulator.getPlayer(PLAYER_ID).inventory);
         shopOverlayRenderer = new ShopOverlayRenderer();
         craftingOverlayRenderer = new CraftingOverlayRenderer(simulator.getPlayer(PLAYER_ID).inventory);
@@ -105,6 +111,29 @@ public final class ShadowAscentGame extends Game {
         if (uiFont          != null) uiFont.dispose();
         if (batch           != null) batch.dispose();
         if (assetManager    != null) assetManager.dispose();
+    }
+
+    String saveRunGameState() {
+        try {
+            saveLoad.saveRunGame(simulator, PLAYER_ID);
+            return "System: saved to " + saveLoad.savePath().toAbsolutePath();
+        } catch (Exception ex) {
+            return "Save failed: " + ex.getMessage();
+        }
+    }
+
+    String loadRunGameState() {
+        if (!saveLoad.hasRunGameSave()) {
+            return "Load failed: no save at " + saveLoad.savePath().toAbsolutePath();
+        }
+        try {
+            if (!saveLoad.loadRunGame(simulator, PLAYER_ID)) {
+                return "Load failed: runtime snapshot unavailable.";
+            }
+            return "System: loaded from " + saveLoad.savePath().toAbsolutePath();
+        } catch (Exception ex) {
+            return "Load failed: " + ex.getMessage();
+        }
     }
 
     private static void seedPlayerInventory(SimInventory inventory) {
