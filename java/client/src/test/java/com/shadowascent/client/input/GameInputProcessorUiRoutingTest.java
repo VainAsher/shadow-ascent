@@ -120,6 +120,10 @@ final class GameInputProcessorUiRoutingTest {
         assertTrue(input.consumeMinimapTogglePressed());
         assertFalse(input.consumeMinimapTogglePressed());
 
+        assertTrue(input.keyDown(Keys.E));
+        assertTrue(input.consumeInteractPressed());
+        assertFalse(input.consumeInteractPressed());
+
         assertTrue(input.keyDown(Keys.ESCAPE));
         assertTrue(input.consumeCancelPressed());
         assertFalse(input.consumeCancelPressed());

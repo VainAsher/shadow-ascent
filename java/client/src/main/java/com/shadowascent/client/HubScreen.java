@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.shadowascent.client.ui.HudOverlayState;
 import com.shadowascent.client.ui.OverlayType;
+import com.shadowascent.client.ui.ShopOverlayRenderer;
 import com.shadowascent.client.ui.UiText;
 import com.shadowascent.core.GameState;
 import com.shadowascent.core.Mission;
@@ -29,6 +30,8 @@ final class HubScreen implements Screen {
     private static final float CAM_LERP    = 0.1f;
     private static final float VIEWPORT_W  = 1280f;
     private static final float VIEWPORT_H  = 720f;
+    private static final float INTERACT_RADIUS = 70f;
+    private static final float SHOP_NPC_X = 350f;
     private static final int MAX_FEED_LINES = 4;
 
     private final ShadowAscentGame game;
@@ -64,9 +67,22 @@ final class HubScreen implements Screen {
     public void render(float delta) {
         float dt = Math.min(delta, MAX_DELTA);
 
+        SimPlayer hudPlayer = firstPlayer();
         boolean inventoryToggled = game.inputProcessor.consumeInventoryTogglePressed();
+        boolean craftingToggled = game.inputProcessor.consumeCraftingTogglePressed();
+        boolean interactPressed = game.inputProcessor.consumeInteractPressed();
         if (inventoryToggled) {
             game.overlayManager.toggle(OverlayType.INVENTORY);
+        }
+        if (craftingToggled) {
+            game.overlayManager.toggle(OverlayType.CRAFTING);
+        }
+        boolean openedShopThisFrame = false;
+        if (interactPressed && hudPlayer != null && !game.overlayManager.hasActiveOverlay() && nearMerchant(hudPlayer)) {
+            game.shopOverlayRenderer.open(game.hubShop, hudPlayer.inventory);
+            game.overlayManager.open(OverlayType.SHOP);
+            appendEventFeedLine("Shop: " + game.hubShop.npcId + " opened.");
+            openedShopThisFrame = true;
         }
         if (game.inputProcessor.consumeMinimapTogglePressed()) {
             showMinimap = !showMinimap;
@@ -79,25 +95,47 @@ final class HubScreen implements Screen {
         for (SimEvent event : events) {
             appendEventFeedLine(formatEventLine(event));
         }
-        if (game.overlayManager.activeOverlay() == OverlayType.INVENTORY) {
-            if (!inventoryToggled) {
-                handleInventoryNavigation();
+
+        OverlayType activeOverlay = game.overlayManager.activeOverlay();
+        if (activeOverlay == OverlayType.INVENTORY) {
+            if (inventoryToggled) {
+                discardModalSignals();
             } else {
-                discardInventoryMenuSignals();
+                handleInventoryNavigation();
+                if (game.inputProcessor.consumeCancelPressed()) {
+                    game.overlayManager.close();
+                } else if (game.inputProcessor.consumeMenuConfirmPressed()) {
+                    appendEventFeedLine(game.inventoryOverlayRenderer.useSelected());
+                }
             }
-            if (game.inputProcessor.consumeCancelPressed()) {
-                game.overlayManager.close();
+        } else if (activeOverlay == OverlayType.SHOP) {
+            if (openedShopThisFrame) {
+                discardModalSignals();
+            } else {
+                handleShopNavigation();
+                if (game.inputProcessor.consumeCancelPressed()) {
+                    game.overlayManager.close();
+                } else if (game.inputProcessor.consumeMenuConfirmPressed()) {
+                    appendTradeResult(game.shopOverlayRenderer.performAction());
+                }
             }
-            if (game.inputProcessor.consumeMenuConfirmPressed()) {
-                appendEventFeedLine(game.inventoryOverlayRenderer.useSelected());
+        } else if (activeOverlay == OverlayType.CRAFTING) {
+            if (craftingToggled) {
+                discardModalSignals();
+            } else {
+                handleCraftingNavigation();
+                if (game.inputProcessor.consumeCancelPressed()) {
+                    game.overlayManager.close();
+                } else if (game.inputProcessor.consumeMenuConfirmPressed()) {
+                    appendEventFeedLine(game.craftingOverlayRenderer.craftSelected());
+                }
             }
         } else {
-            discardInventoryMenuSignals();
+            discardModalSignals();
         }
 
         // Lerp camera to first alive player
         Collection<SimPlayer> players = game.simulator.getPlayers();
-        SimPlayer hudPlayer = players.isEmpty() ? null : players.iterator().next();
         if (!players.isEmpty()) {
             SimPlayer first = players.iterator().next();
             if (!first.isDead) {
@@ -131,6 +169,20 @@ final class HubScreen implements Screen {
         );
         if (game.overlayManager.activeOverlay() == OverlayType.INVENTORY) {
             game.inventoryOverlayRenderer.render(
+                    game.batch,
+                    game.uiFont,
+                    Gdx.graphics.getWidth(),
+                    Gdx.graphics.getHeight()
+            );
+        } else if (game.overlayManager.activeOverlay() == OverlayType.SHOP) {
+            game.shopOverlayRenderer.render(
+                    game.batch,
+                    game.uiFont,
+                    Gdx.graphics.getWidth(),
+                    Gdx.graphics.getHeight()
+            );
+        } else if (game.overlayManager.activeOverlay() == OverlayType.CRAFTING) {
+            game.craftingOverlayRenderer.render(
                     game.batch,
                     game.uiFont,
                     Gdx.graphics.getWidth(),
@@ -226,12 +278,55 @@ final class HubScreen implements Screen {
         }
     }
 
-    private void discardInventoryMenuSignals() {
+    private void handleShopNavigation() {
+        if (game.inputProcessor.consumeMenuLeftPressed() || game.inputProcessor.consumeMenuRightPressed()) {
+            game.shopOverlayRenderer.toggleFocus();
+        }
+        if (game.inputProcessor.consumeMenuUpPressed()) {
+            game.shopOverlayRenderer.moveUp();
+        }
+        if (game.inputProcessor.consumeMenuDownPressed()) {
+            game.shopOverlayRenderer.moveDown();
+        }
+    }
+
+    private void handleCraftingNavigation() {
+        game.inputProcessor.consumeMenuLeftPressed();
+        game.inputProcessor.consumeMenuRightPressed();
+        if (game.inputProcessor.consumeMenuUpPressed()) {
+            game.craftingOverlayRenderer.moveUp();
+        }
+        if (game.inputProcessor.consumeMenuDownPressed()) {
+            game.craftingOverlayRenderer.moveDown();
+        }
+    }
+
+    private void discardModalSignals() {
         game.inputProcessor.consumeMenuLeftPressed();
         game.inputProcessor.consumeMenuRightPressed();
         game.inputProcessor.consumeMenuUpPressed();
         game.inputProcessor.consumeMenuDownPressed();
         game.inputProcessor.consumeCancelPressed();
         game.inputProcessor.consumeMenuConfirmPressed();
+    }
+
+    private void appendTradeResult(ShopOverlayRenderer.TradeRequest tradeRequest) {
+        if (tradeRequest == null) {
+            appendEventFeedLine("Shop: trade unavailable.");
+            return;
+        }
+        appendEventFeedLine(
+                "Shop: " + (tradeRequest.isBuy() ? "bought " : "sold ") + UiText.itemName(tradeRequest.itemId())
+        );
+    }
+
+    private static boolean nearMerchant(SimPlayer player) {
+        float centerX = player.physics.x + player.physics.width * 0.5f;
+        return Math.abs(centerX - SHOP_NPC_X) <= INTERACT_RADIUS;
+    }
+
+    private SimPlayer firstPlayer() {
+        Collection<SimPlayer> players = game.simulator.getPlayers();
+        return players.isEmpty() ? null : players.iterator().next();
     }
 }

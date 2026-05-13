@@ -1,5 +1,7 @@
 package com.shadowascent.client.ui;
 
+import com.shadowascent.core.simulation.ItemDatabase;
+
 import java.util.Locale;
 
 public final class UiText {
@@ -53,6 +55,14 @@ public final class UiText {
 
     public static String healthLine(int health, int maxHealth) {
         return "Health: " + Math.max(0, health) + "/" + Math.max(1, maxHealth);
+    }
+
+    public static String itemName(String itemId) {
+        if (!hasText(itemId)) {
+            return "Unknown item";
+        }
+        ItemDatabase.ItemDef def = ItemDatabase.get(itemId);
+        return def == null ? humanizeToken(itemId) : def.name();
     }
 
     private static boolean hasText(String value) {

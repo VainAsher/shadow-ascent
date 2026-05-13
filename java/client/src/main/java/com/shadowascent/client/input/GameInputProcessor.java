@@ -29,6 +29,7 @@ public final class GameInputProcessor extends InputAdapter {
     private boolean menuRightPressed;
     private boolean menuUpPressed;
     private boolean menuDownPressed;
+    private boolean interactPressed;
     private int frame = 0;
 
     public GameInputProcessor(GameSimulator simulator, String playerId, ModalOverlayManager overlays) {
@@ -113,6 +114,12 @@ public final class GameInputProcessor extends InputAdapter {
         return pressed;
     }
 
+    public boolean consumeInteractPressed() {
+        boolean pressed = interactPressed;
+        interactPressed = false;
+        return pressed;
+    }
+
     private boolean apply(int keycode, boolean pressed) {
         switch (keycode) {
             case Keys.LEFT, Keys.A -> {
@@ -156,6 +163,9 @@ public final class GameInputProcessor extends InputAdapter {
                 return true;
             }
             case Keys.E -> {
+                if (pressed) {
+                    interactPressed = true;
+                }
                 cmd.interact = pressed;
                 return true;
             }

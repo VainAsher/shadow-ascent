@@ -13,10 +13,14 @@ import com.shadowascent.client.ui.HudOverlayRenderer;
 import com.shadowascent.client.ui.InventoryOverlayRenderer;
 import com.shadowascent.client.ui.MinimapOverlayRenderer;
 import com.shadowascent.client.ui.ModalOverlayManager;
+import com.shadowascent.client.ui.CraftingOverlayRenderer;
+import com.shadowascent.client.ui.ShopOverlayRenderer;
 import com.shadowascent.core.GameState;
 import com.shadowascent.core.physics.CollisionWorld;
 import com.shadowascent.core.physics.TileRect;
 import com.shadowascent.core.simulation.GameSimulator;
+import com.shadowascent.core.simulation.SimInventory;
+import com.shadowascent.core.simulation.SimShop;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +45,10 @@ public final class ShadowAscentGame extends Game {
     HudOverlayRenderer hudOverlayRenderer;
     MinimapOverlayRenderer minimapOverlayRenderer;
     InventoryOverlayRenderer inventoryOverlayRenderer;
+    ShopOverlayRenderer shopOverlayRenderer;
+    CraftingOverlayRenderer craftingOverlayRenderer;
     ModalOverlayManager overlayManager;
+    SimShop hubShop;
 
     GameState gameState;
 
@@ -62,6 +69,8 @@ public final class ShadowAscentGame extends Game {
         simulator.setCollisionWorld(collisionWorld);
         simulator.addPlayer(PLAYER_ID, 0, 200f, 280f);
         simulator.addEnemy("goblin_1", "goblin", 600f, 280f);
+        seedPlayerInventory(simulator.getPlayer(PLAYER_ID).inventory);
+        hubShop = new SimShop("merchant_npc", 2, 12345L);
 
         batch        = new SpriteBatch();
         uiFont       = new BitmapFont();
@@ -77,6 +86,8 @@ public final class ShadowAscentGame extends Game {
         hudOverlayRenderer = new HudOverlayRenderer(batch, uiFont, uiShapes);
         minimapOverlayRenderer = new MinimapOverlayRenderer(uiShapes);
         inventoryOverlayRenderer = new InventoryOverlayRenderer(simulator.getPlayer(PLAYER_ID).inventory);
+        shopOverlayRenderer = new ShopOverlayRenderer();
+        craftingOverlayRenderer = new CraftingOverlayRenderer(simulator.getPlayer(PLAYER_ID).inventory);
         Gdx.app.log("ShadowAscentGame", "atlas loaded: " + atlas.getRegions().size + " regions");
 
         setScreen(new HubScreen(this, gameState));
@@ -89,5 +100,14 @@ public final class ShadowAscentGame extends Game {
         if (uiFont          != null) uiFont.dispose();
         if (batch           != null) batch.dispose();
         if (assetManager    != null) assetManager.dispose();
+    }
+
+    private static void seedPlayerInventory(SimInventory inventory) {
+        inventory.addCurrency(100);
+        inventory.addItem("weapon_dagger", 1);
+        inventory.addItem("health_potion", 3);
+        inventory.addItem("material_iron", 4);
+        inventory.addItem("material_cloth", 2);
+        inventory.addItem("material_leather", 1);
     }
 }

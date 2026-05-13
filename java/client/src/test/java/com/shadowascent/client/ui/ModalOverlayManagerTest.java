@@ -51,6 +51,26 @@ final class ModalOverlayManagerTest {
     }
 
     @Test
+    void shopOpenReplacesInventoryModal() {
+        ModalOverlayManager manager = new ModalOverlayManager();
+
+        manager.open(OverlayType.INVENTORY);
+        manager.open(OverlayType.SHOP);
+
+        assertEquals(OverlayType.SHOP, manager.activeOverlay());
+    }
+
+    @Test
+    void closeClearsActiveOverlayRegardlessOfType() {
+        ModalOverlayManager manager = new ModalOverlayManager();
+
+        manager.open(OverlayType.SHOP);
+        manager.close();
+
+        assertFalse(manager.hasActiveOverlay());
+    }
+
+    @Test
     void rejectsNullOverlayTypeForOpenAndToggle() {
         ModalOverlayManager manager = new ModalOverlayManager();
 
