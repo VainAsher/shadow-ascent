@@ -1,11 +1,14 @@
 package com.shadowascent.client.rendering;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.shadowascent.core.physics.TileRect;
 import com.shadowascent.core.simulation.GameSimulator;
+import com.shadowascent.core.simulation.EnemyAIState;
+import com.shadowascent.core.simulation.EnemyAwarenessState;
 import com.shadowascent.core.simulation.SimEnemy;
 import com.shadowascent.core.simulation.SimNPC;
 import com.shadowascent.core.simulation.SimPlayer;
@@ -27,11 +30,32 @@ import java.util.List;
 public final class SpriteWorldRenderer {
 
     private static final String REGION_PLAYER_IDLE     = "player_idle";
+    private static final String REGION_PLAYER_RUN      = "player_run";
+    private static final String REGION_PLAYER_JUMP     = "player_jump";
+    private static final String REGION_PLAYER_DASH     = "player_dash";
+    private static final String REGION_PLAYER_ATTACK   = "player_attack";
     private static final String REGION_PLAYER_DEAD     = "player_dead";
-    private static final String REGION_ENEMY_WALK      = "enemy_walk";
+    private static final String REGION_ENEMY_PATROL    = "enemy_patrol";
+    private static final String REGION_ENEMY_ALERTED   = "enemy_alerted";
+    private static final String REGION_ENEMY_ATTACK    = "enemy_attack";
+    private static final String REGION_ENEMY_STUNNED   = "enemy_stunned";
+    private static final String REGION_ENEMY_GOBLIN    = "enemy_goblin_patrol";
+    private static final String REGION_ENEMY_BAT       = "enemy_bat_patrol";
+    private static final String REGION_ENEMY_SLIME     = "enemy_slime_patrol";
+    private static final String REGION_ENEMY_SKELETON  = "enemy_skeleton_patrol";
+    private static final String REGION_ENEMY_WOLF      = "enemy_wolf_patrol";
     private static final String REGION_NPC_IDLE        = "npc_idle";
     private static final String REGION_TILE_GROUND     = "tile_ground";
     private static final String REGION_TILE_PLATFORM   = "tile_platform";
+    private static final Color COLOR_DEFAULT           = new Color(1f, 1f, 1f, 1f);
+    private static final Color COLOR_PLAYER_ATTACK     = new Color(1f, 0.88f, 0.68f, 1f);
+    private static final Color COLOR_PLAYER_DASH       = new Color(0.68f, 0.92f, 1f, 1f);
+    private static final Color COLOR_PLAYER_HURT       = new Color(1f, 0.60f, 0.60f, 1f);
+    private static final Color COLOR_PLAYER_BLOCK      = new Color(0.76f, 0.82f, 1f, 1f);
+    private static final Color COLOR_PLAYER_WALL       = new Color(0.86f, 0.86f, 1f, 1f);
+    private static final Color COLOR_ENEMY_ALERTED     = new Color(1f, 0.88f, 0.56f, 1f);
+    private static final Color COLOR_ENEMY_ATTACK      = new Color(1f, 0.70f, 0.58f, 1f);
+    private static final Color COLOR_ENEMY_STUNNED     = new Color(0.70f, 0.82f, 1f, 1f);
 
     private final SpriteBatch    batch;
     private final TextureAtlas   atlas;
@@ -51,26 +75,120 @@ public final class SpriteWorldRenderer {
         }
 
         for (SimPlayer p : simulator.getPlayers()) {
-            TextureRegion r = region(p.isDead ? REGION_PLAYER_DEAD : REGION_PLAYER_IDLE);
-            batch.draw(r, p.physics.x, p.physics.y, p.physics.width, p.physics.height);
+            batch.setColor(selectPlayerTint(p));
+            draw(region(selectPlayerRegionName(p)), p.physics.x, p.physics.y,
+                p.physics.width, p.physics.height, p.facing < 0);
         }
 
         for (SimEnemy e : simulator.getEnemies()) {
             if (!e.isAlive()) continue;
-            batch.draw(region(REGION_ENEMY_WALK), e.physics.x, e.physics.y,
-                       e.physics.width, e.physics.height);
+            batch.setColor(selectEnemyTint(e));
+            draw(region(selectEnemyRegionName(e)), e.physics.x, e.physics.y,
+                e.physics.width, e.physics.height, !e.facingRight);
         }
 
         for (SimNPC npc : simulator.getNpcs()) {
-            batch.draw(region(REGION_NPC_IDLE), npc.physics.x, npc.physics.y,
-                       npc.physics.width, npc.physics.height);
+            batch.setColor(COLOR_DEFAULT);
+            draw(region(REGION_NPC_IDLE), npc.physics.x, npc.physics.y,
+                npc.physics.width, npc.physics.height, npc.facing < 0);
         }
 
+        batch.setColor(COLOR_DEFAULT);
         batch.end();
+    }
+
+    private void draw(TextureRegion region, float x, float y, float width, float height, boolean faceLeft) {
+        if (faceLeft) {
+            batch.draw(region, x + width, y, -width, height);
+            return;
+        }
+        batch.draw(region, x, y, width, height);
     }
 
     private TextureRegion region(String name) {
         TextureRegion r = atlas.findRegion(name);
         return r != null ? r : atlas.findRegion(REGION_TILE_GROUND);
+    }
+
+    private static String selectPlayerRegionName(SimPlayer player) {
+        if (player.isDead) {
+            return REGION_PLAYER_DEAD;
+        }
+        if (player.isAttacking) {
+            return REGION_PLAYER_ATTACK;
+        }
+        if (player.isDashing) {
+            return REGION_PLAYER_DASH;
+        }
+        if (!player.physics.onGround) {
+            return REGION_PLAYER_JUMP;
+        }
+        if (Math.abs(player.physics.vx) > 1f) {
+            return REGION_PLAYER_RUN;
+        }
+        return REGION_PLAYER_IDLE;
+    }
+
+    private static Color selectPlayerTint(SimPlayer player) {
+        if (player.isDead) {
+            return COLOR_DEFAULT;
+        }
+        if (player.invincibilityTicks > 0) {
+            return COLOR_PLAYER_HURT;
+        }
+        if (player.isDashing) {
+            return COLOR_PLAYER_DASH;
+        }
+        if (player.isAttacking || player.isThrowing) {
+            return COLOR_PLAYER_ATTACK;
+        }
+        if (player.isBlocking) {
+            return COLOR_PLAYER_BLOCK;
+        }
+        if (player.isWallSliding || player.isClimbing || player.isOnLedge) {
+            return COLOR_PLAYER_WALL;
+        }
+        return COLOR_DEFAULT;
+    }
+
+    private static String selectEnemyRegionName(SimEnemy enemy) {
+        if (enemy.aiState == EnemyAIState.STUNNED) {
+            return REGION_ENEMY_STUNNED;
+        }
+        if (enemy.aiState == EnemyAIState.ATTACK) {
+            return REGION_ENEMY_ATTACK;
+        }
+        if (enemy.awarenessState == EnemyAwarenessState.ALERTED
+            || enemy.awarenessState == EnemyAwarenessState.SEARCHING
+            || enemy.awarenessState == EnemyAwarenessState.SUSPICIOUS) {
+            return REGION_ENEMY_ALERTED;
+        }
+        return selectEnemyBaseRegionName(enemy);
+    }
+
+    private static Color selectEnemyTint(SimEnemy enemy) {
+        if (enemy.aiState == EnemyAIState.STUNNED) {
+            return COLOR_ENEMY_STUNNED;
+        }
+        if (enemy.aiState == EnemyAIState.ATTACK) {
+            return COLOR_ENEMY_ATTACK;
+        }
+        if (enemy.awarenessState == EnemyAwarenessState.ALERTED
+                || enemy.awarenessState == EnemyAwarenessState.SEARCHING
+                || enemy.awarenessState == EnemyAwarenessState.SUSPICIOUS) {
+            return COLOR_ENEMY_ALERTED;
+        }
+        return COLOR_DEFAULT;
+    }
+
+    private static String selectEnemyBaseRegionName(SimEnemy enemy) {
+        return switch (enemy.enemyType) {
+            case "goblin" -> REGION_ENEMY_GOBLIN;
+            case "bat" -> REGION_ENEMY_BAT;
+            case "slime" -> REGION_ENEMY_SLIME;
+            case "skeleton" -> REGION_ENEMY_SKELETON;
+            case "wolf" -> REGION_ENEMY_WOLF;
+            default -> REGION_ENEMY_PATROL;
+        };
     }
 }

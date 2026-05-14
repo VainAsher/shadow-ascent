@@ -17,6 +17,7 @@ final class HudOverlayStateTest {
         HudOverlayState state = new HudOverlayState(
                 "ACT_1",
                 "LANTERN_HUB",
+                "area_lantern_heights_hub",
                 "mission_intro",
                 "Reach the east gate",
                 2,
@@ -41,6 +42,7 @@ final class HudOverlayStateTest {
         HudOverlayState state = new HudOverlayState(
                 "ACT_1",
                 "LANTERN_HUB",
+                "area_lantern_heights_hub",
                 "mission_intro",
                 "Reach the east gate",
                 2,
@@ -63,6 +65,7 @@ final class HudOverlayStateTest {
         HudOverlayState state = new HudOverlayState(
                 "ACT_1",
                 "LANTERN_HUB",
+                "area_lantern_heights_hub",
                 "mission_intro",
                 "Reach the east gate",
                 2,
@@ -80,8 +83,8 @@ final class HudOverlayStateTest {
 
     @Test
     void minimapVisibilityFlagTracksHudToggleState() {
-        HudOverlayState shown = new HudOverlayState("A", "P", "M", "O", 3, 3, "H", "S", List.of(), true, "I");
-        HudOverlayState hidden = new HudOverlayState("A", "P", "M", "O", 3, 3, "H", "S", List.of(), false, "I");
+        HudOverlayState shown = new HudOverlayState("A", "P", "area", "M", "O", 3, 3, "H", "S", List.of(), true, "I");
+        HudOverlayState hidden = new HudOverlayState("A", "P", "area", "M", "O", 3, 3, "H", "S", List.of(), false, "I");
 
         assertTrue(shown.showMinimap());
         assertFalse(hidden.showMinimap());
@@ -92,6 +95,7 @@ final class HudOverlayStateTest {
         HudOverlayState state = new HudOverlayState(
                 "Act I",
                 "Lantern Heights",
+                "area_lantern_heights_hub",
                 "Mission",
                 "Objective",
                 3,
@@ -104,5 +108,25 @@ final class HudOverlayStateTest {
         );
 
         assertEquals("[E] Talk to Merchant Rilu", state.interactionHint());
+    }
+
+    @Test
+    void hudStateCarriesAuthoredAreaIdentity() {
+        HudOverlayState state = new HudOverlayState(
+                "Act I",
+                "Lantern Heights",
+                "area_hollow_depths_camp",
+                "Mission",
+                "Objective",
+                3,
+                3,
+                "Context",
+                "Overlay: none",
+                List.of(),
+                true,
+                "[E] Talk"
+        );
+
+        assertEquals("area_hollow_depths_camp", state.areaId());
     }
 }

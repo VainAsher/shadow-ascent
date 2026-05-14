@@ -372,6 +372,7 @@ public final class PlayerInputController {
             sp.isAttacking       = true;
             sp.attackActiveTicks = SimPlayer.MELEE_ACTIVE_TICKS;
             sp.attackCooldown    = SimPlayer.MELEE_COOLDOWN;
+            sp.meleeHitConsumed  = false;
             sp.lastMeaningfulActionTimer = FLOW_RECENCY_WINDOW;
             emitNoise(sp, NOISE_ATTACK_MELEE);
         }

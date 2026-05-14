@@ -1,10 +1,18 @@
-﻿# Documentation Index
+---
+doc_type: index
+status: living
+owner: core-team
+last_updated: 2026-05-14
+version_anchor: 0.0.1
+---
+# Documentation Index
 
 Canonical routing for the clean-start repository.
 
 ## Core Canonical
 
 - `docs/CURRENT_STATE.md` - runtime and milestone truth snapshot.
+- `docs/PLAYABLE_TRUTH.md` - honest playable and feedback scope snapshot.
 - `docs/ROADMAP.md` - milestone sequence and status.
 - `docs/START_TO_FINISH_GAME_PLAN.md` - product vision and campaign scope.
 - `docs/PLAYABLE_CLIENT_PLAN.md` - phased plan for human-playtest client and donor mechanics import.
@@ -12,10 +20,16 @@ Canonical routing for the clean-start repository.
 - `docs/MIGRATION_MAP.md` - file-by-file donor import strategy.
 - `docs/CANONICAL_ARCHITECTURE_PLAN.md` - target architecture and integration layers.
 - `docs/NORTH_STAR_EXECUTION_MATRIX.md` - north-star to executable milestone mapping and acceptance gates (M1-M6).
+- `docs/superpowers/plans/2026-05-14-authored-content-and-production-client-advancement-implementation.md` - current execution plan for authored plateau/runtime deepening.
+- `game_design_document/INDEX.md` - living GDD index for plateau, dungeon, narrative, audio, and production-scope source material.
 
 ## QA and Validation
 
 - `docs/ACT_I_QA_ROUTE.md` - first-session route and QA gate criteria.
+
+## Workflows
+
+- `docs/workflows/INDEX.md` - canonical execution and documentation-governance workflows.
 
 ## Data Contracts
 

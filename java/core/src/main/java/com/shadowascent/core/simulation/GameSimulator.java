@@ -132,6 +132,7 @@ public final class GameSimulator {
         SimEnemy target = findEnemy(enemyId);
         if (target == null) return;
         boolean died = target.takeDamage(damage);
+        emit("ENEMY_DAMAGED", enemyId, Map.of("source", "player_melee", "playerId", playerId, "dmg", damage));
         if (died) {
             emit("ENEMY_DEFEATED", enemyId, Map.of("killedBy", playerId));
         }
@@ -201,7 +202,41 @@ public final class GameSimulator {
                         p.physics.onGround = false;
                     }
                 }
+                resolvePlayerMeleeAttack(p);
             }
+        }
+    }
+
+    private void resolvePlayerMeleeAttack(SimPlayer player) {
+        if (!player.isAttacking || player.meleeHitConsumed) {
+            return;
+        }
+
+        float hitboxX = player.facing >= 0
+                ? player.physics.x + player.physics.width
+                : player.physics.x - SimPlayer.MELEE_REACH;
+        float hitboxY = player.physics.y + Math.max(0f, (player.physics.height - SimPlayer.MELEE_HEIGHT) * 0.5f);
+        int damage = SimPlayer.MELEE_DAMAGE + Math.max(0, player.inventory.totalAttackBonus());
+
+        for (SimEnemy enemy : enemies) {
+            if (!enemy.isAlive()) {
+                continue;
+            }
+            if (!overlaps(hitboxX, hitboxY, SimPlayer.MELEE_REACH, SimPlayer.MELEE_HEIGHT,
+                    enemy.physics.x, enemy.physics.y, enemy.physics.width, enemy.physics.height)) {
+                continue;
+            }
+
+            player.meleeHitConsumed = true;
+            boolean died = enemy.takeDamage(damage);
+            emit("ENEMY_DAMAGED", enemy.enemyId,
+                    Map.of("source", "player_melee", "playerId", player.playerId, "dmg", damage));
+            emit("PLAYER_MELEE_HIT", player.playerId,
+                    Map.of("enemyId", enemy.enemyId, "dmg", damage));
+            if (died) {
+                emit("ENEMY_DEFEATED", enemy.enemyId, Map.of("killedBy", player.playerId));
+            }
+            break;
         }
     }
 

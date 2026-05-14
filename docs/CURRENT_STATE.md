@@ -2,7 +2,7 @@
 doc_type: current_state
 status: living
 owner: core-team
-last_updated: 2026-05-13
+last_updated: 2026-05-14
 version_anchor: 0.0.1
 ---
 # Current State
@@ -18,7 +18,7 @@ Canonical runtime and execution snapshot for the clean-start repository.
   - M1 Act I QA gate: complete (2026-05-07).
   - M2 campaign spine integration: complete (2026-05-07) — contract-backed mission/hub runtime exit criteria met; multi-act content authoring is M4 scope.
   - M3 stability/release: complete (2026-05-08). Gate evidence: `docs/M3_RELEASE_GATE.md`.
-  - M4 campaign completion/content scale: queued.
+  - M4 campaign completion/content scale: active and partially delivered.
   - M5 systemic world simulation foundation: complete (2026-05-07) — all three exit criteria met; QuestEcologyEngine closes first M6 task.
   - M6 open-world runtime expansion: active.
 
@@ -236,7 +236,7 @@ Canonical runtime and execution snapshot for the clean-start repository.
 ## Open Issues / Remaining Work
 
 - ~~**M3 exit criteria not fully defined**~~ — resolved 2026-05-08. Formal gate checklist defined and all 12 criteria confirmed green; gate doc at `docs/M3_RELEASE_GATE.md`; M3 promoted to complete.
-- ~~**M4 campaign content**~~ — resolved 2026-05-09. SUMMIT_SHRINE (5 critical beats, NPCs, chunk grammar, 3 elastic templates, quest policy) and HOLLOW_DEPTHS (4 side quest chains, 9 completion flags, NPC registry, dialogue) fully authored; gate: beats=45, critical_flags=69, validation issues: none.
+- **M4 campaign content** — active. `SUMMIT_SHRINE` and `HOLLOW_DEPTHS` are authored and validated, but later plateau runtime delivery still needs broader authored geometry, authored NPC placement, and mission/UI surfacing before campaign coverage can be treated as complete.
 - ~~**Chunk-streaming geometry**~~ — resolved 2026-05-08. All 3 region fragment JSONs now carry authored world-space tile geometry; `RegionLoader` sources static tiles from fragment data; stub fallback retained only for missing fragments; dead `addSolidTile`/`addPlatformTile` helpers removed.
 - ~~**Echo puzzle evaluation**~~ — resolved 2026-05-08. `EchoPuzzleSolution` + `EchoPuzzleEvaluator` in `core.simulation`; rising-edge press counting; completion/tick/action-minimum checks with per-rule trace; 51/51 pass.
 - ~~**Echo / enemy / player collision**~~ — resolved 2026-05-08. `SimEcho` AABB-tests live enemies on `attackedThisTick`; emits `ECHO_COMBAT_HIT` / `ENEMY_DAMAGED`; `echoKillCount` tracked; `EchoPuzzleSolution.ofKills()` evaluates echo kills; 51/51 pass.
@@ -244,7 +244,7 @@ Canonical runtime and execution snapshot for the clean-start repository.
 - ~~**PlaytestClient decomposition**~~ — resolved 2026-05-09. `InputHandler` (key bindings + 16 queue flags), `RoomGeometry` (boundary constants + region resolver), `SaveLoad` (persistence I/O + `LoadResult` record) all extracted; `PlaytestClient` delegates fully to all three.
 - ~~**Stub physics floor (P2)**~~ — resolved 2026-05-09. `CollisionWorld` injected into `GameSimulator`; `resolveX` + `resolveY` called each tick; spawnY stub is the fallback only when `collisionWorld == null` (regression tests unaffected).
 - ~~**LibGDX world geometry**~~ — resolved 2026-05-09. `StubWorldRenderer` accepts `List<TileRect>`; solid floor and platform drawn as coloured rects; `ShadowAscentGame` builds and passes stub tile geometry.
-- **Next LibGDX production-client follow-up**: the HUD/overlay stack is now in place, but `runGame` still needs broader authored geometry, deeper animation coverage, and more authored interaction points before it becomes the main QA surface.
+- **Next LibGDX production-client follow-up**: the HUD/overlay stack is now in place, but `runGame` still needs broader authored geometry, authored NPC/world placement, deeper animation coverage, and more authored interaction points before it becomes the main QA surface.
 
 ## Verification Evidence
 
@@ -335,11 +335,11 @@ Historical gate evidence is in `docs/handover/CODEX_*.md` files (one per deliver
 ## Next Actions
 
 1. ~~**M3 exit criteria**~~ — closed 2026-05-08. Gate doc: `docs/M3_RELEASE_GATE.md`.
-2. ~~**M4 campaign content**~~ — closed 2026-05-09. SUMMIT_SHRINE + HOLLOW_DEPTHS fully authored; gate: critical_flags=69, validation issues: none.
+2. **M4 campaign content** — continue from the authored `SUMMIT_SHRINE` + `HOLLOW_DEPTHS` base into later plateau runtime delivery (`EMBER_MONASTERY`, `WINDING_SKYROAD`, `MIRROR_SUMMIT`, `BEACON_CLIFF`) with explicit area bootstrap, NPC placement, and mission surfacing.
 3. ~~**Chunk-streaming geometry (M6)**~~ — resolved 2026-05-08. `RegionFragmentData.tiles` + `RegionLoader` parse path; all 3 region fragment JSONs authored; `addSolidTile`/`addPlatformTile` removed.
 3a. ~~**Mutation visibility evidence (M6)**~~ — resolved 2026-05-08. HUD overlay line (amber when active), `MUTATION_OVERLAY_SAVE`/`LOAD` evidence lines, `refreshOverlayHud()` wired at init/transition/load.
 4. ~~**Echo puzzle evaluation (M6)**~~ — resolved 2026-05-08. `EchoPuzzleSolution` + `EchoPuzzleEvaluator` wired; first authored echo puzzle room (summit_echo_room_1, minKills=1) in PlaytestClient Room 4; PUZZLE_PASSED/PUZZLE_FAILED emitted.
 5. ~~**Co-op collision model (M6)**~~ — resolved 2026-05-08. `tickCoopCollisions()` in `GameSimulator`; pairwise AABB separation with MSA push; `PLAYER_COLLISION` event; dead players excluded.
 6. ~~**P2: `core.physics.CollisionWorld`**~~ — closed 2026-05-09. `resolveX` + `resolveY` both wired; `GameSimulator.tickPlayers()` uses real AABB resolution; spawnY stub is fallback only when no `CollisionWorld` injected.
 7. ~~**LibGDX world geometry rendering**~~ — closed 2026-05-09. `StubWorldRenderer` renders tile geometry; `ShadowAscentGame` builds and passes stub tile list; camera bounds derived from tile extents.
-8. **Next LibGDX follow-up** — expand authored production-client geometry/state fidelity now that the HUD/modal overlay stack is in place, without broadening into full art migration.
+8. **Next LibGDX follow-up** — expand authored production-client geometry, authored placement, and state fidelity now that the HUD/modal overlay stack is in place, without broadening into full art migration.

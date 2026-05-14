@@ -26,6 +26,10 @@ subprojects {
             languageVersion.set(JavaLanguageVersion.of(21))
         }
     }
+
+    tasks.withType<Test>().configureEach {
+        useJUnitPlatform()
+    }
 }
 
 fun Project.mainSourceSet() = extensions.getByType(SourceSetContainer::class.java).getByName("main")
@@ -119,6 +123,8 @@ project(":core") {
     dependencies {
         implementation("org.apache.commons:commons-lang3:3.13.0")
         implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
+        testImplementation(platform("org.junit:junit-bom:5.10.2"))
+        testImplementation("org.junit.jupiter:junit-jupiter")
     }
 }
 
@@ -128,6 +134,8 @@ project(":client") {
         implementation("com.badlogicgames.gdx:gdx:1.12.1")
         implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:1.12.1")
         runtimeOnly("com.badlogicgames.gdx:gdx-platform:1.12.1:natives-desktop")
+        testImplementation(platform("org.junit:junit-bom:5.10.2"))
+        testImplementation("org.junit.jupiter:junit-jupiter")
     }
 }
 

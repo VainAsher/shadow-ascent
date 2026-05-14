@@ -12,6 +12,7 @@ import com.shadowascent.core.GameState;
 import com.shadowascent.core.Mission;
 import com.shadowascent.core.NPC;
 import com.shadowascent.core.StoryState;
+import com.shadowascent.core.data.BeatDefinition;
 import com.shadowascent.core.physics.TileRect;
 import com.shadowascent.core.simulation.SimEvent;
 import com.shadowascent.core.simulation.SimNPC;
@@ -33,7 +34,6 @@ final class HubScreen implements Screen {
     private static final float VIEWPORT_W  = 1280f;
     private static final float VIEWPORT_H  = 720f;
     private static final float INTERACT_RADIUS = 70f;
-    private static final float SHOP_NPC_X = 350f;
     private static final int MAX_FEED_LINES = 4;
 
     private final ShadowAscentGame game;
@@ -97,6 +97,11 @@ final class HubScreen implements Screen {
         if (interactPressed && hudPlayer != null && !game.overlayManager.hasActiveOverlay()) {
             String npcId = nearbyDialogueNpcId(hudPlayer);
             if (npcId != null) {
+                RunGameMissionInteraction.InteractionResult interactionResult =
+                        RunGameMissionInteraction.applyNpcInteraction(gameState, npcId);
+                for (String line : interactionResult.feedLines()) {
+                    appendEventFeedLine(line);
+                }
                 NPC npc = gameState.getStoryState().getNPC(npcId);
                 String speakerName = npc == null ? UiText.humanizeToken(npcId) : npc.getDisplayName();
                 String dialogue = gameState.getHubManager().getNPCDialogue(npcId);
@@ -292,21 +297,30 @@ final class HubScreen implements Screen {
         StoryState storyState = gameState.getStoryState();
         String activeMissionId = storyState.getActiveMissionId();
         Mission activeMission = activeMissionId == null ? null : storyState.getMission(activeMissionId);
+        BeatDefinition nextBeat = gameState.getDataContracts().nextCriticalBeat(storyState).orElse(null);
+        Mission recommendedMission = activeMission == null
+                ? gameState.getMissionManager().getAvailableMissions().stream().findFirst().orElse(null)
+                : null;
+        String areaId = game.contentProfile == null ? null : game.contentProfile.areaId();
 
-        String missionTitle = activeMission == null
-                ? null
-                : activeMission.getDisplayName() + " [" + activeMission.getId() + "]";
-        String objectiveLine = activeMission == null
-                ? null
-                : activeMission.getObjectives().stream()
-                        .filter(objective -> !activeMission.isObjectiveComplete(objective))
-                        .findFirst()
-                        .orElse(activeMission.getDescription());
+        String missionTitle;
+        String objectiveLine;
+        if (activeMission != null) {
+            missionTitle = activeMission.getDisplayName() + " [" + activeMission.getId() + "]";
+            objectiveLine = activeMission.getObjectives().stream()
+                    .filter(objective -> !activeMission.isObjectiveComplete(objective))
+                    .map(UiText::objectiveToken)
+                    .findFirst()
+                    .orElse(activeMission.getDescription());
+        } else if (recommendedMission != null) {
+            missionTitle = "Available: " + recommendedMission.getDisplayName() + " [" + recommendedMission.getId() + "]";
+            objectiveLine = recommendedMission.getDescription();
+        } else {
+            missionTitle = nextBeat == null ? null : nextBeat.title();
+            objectiveLine = nextBeat == null ? null : nextBeat.objectivePrompt();
+        }
 
-        String hint = activeMission == null
-                ? "Hub " + UiText.humanizeToken(storyState.getCurrentHubState().name())
-                : "Lanterns: " + storyState.getLanternCount()
-                        + "  |  Abilities: " + storyState.getAbilities().size();
+        String hint = resolveContextualHint(activeMission, recommendedMission, nextBeat, areaId, storyState);
         String interactionHint = player == null
                 ? "Explore east through traversal rooms."
                 : resolveInteractionHint(player);
@@ -314,6 +328,7 @@ final class HubScreen implements Screen {
         return new HudOverlayState(
                 UiText.humanizeToken(storyState.getCurrentAct().name()),
                 UiText.humanizeToken(storyState.getCurrentPlateau().name()),
+                areaId,
                 missionTitle,
                 objectiveLine,
                 player == null ? 0 : player.health,
@@ -340,6 +355,14 @@ final class HubScreen implements Screen {
         String type = event == null ? "" : UiText.humanizeToken(event.type());
         String entityId = event == null ? "" : event.entityId();
         Map<String, Object> data = event == null ? Map.of() : event.data();
+
+        if ("PLAYER_MELEE_HIT".equals(event == null ? null : event.type())) {
+            return "Hit " + UiText.humanizeToken(stringValue(data.get("enemyId")))
+                    + " for " + stringValue(data.get("dmg"));
+        }
+        if ("ENEMY_DAMAGED".equals(event == null ? null : event.type()) && "player_melee".equals(stringValue(data.get("source")))) {
+            return "Enemy damaged: " + UiText.humanizeToken(entityId);
+        }
 
         if (entityId == null || entityId.isBlank()) {
             return data.isEmpty() ? type : type + " " + data;
@@ -434,9 +457,31 @@ final class HubScreen implements Screen {
         );
     }
 
-    private static boolean nearMerchant(SimPlayer player) {
-        float centerX = player.physics.x + player.physics.width * 0.5f;
-        return Math.abs(centerX - SHOP_NPC_X) <= INTERACT_RADIUS;
+    private boolean nearMerchant(SimPlayer player) {
+        return merchantNpc(player) != null;
+    }
+
+    private SimNPC merchantNpc(SimPlayer player) {
+        String merchantNpcId = game.contentProfile == null ? null : game.contentProfile.merchantNpcId();
+        if (merchantNpcId == null || merchantNpcId.isBlank()) {
+            return null;
+        }
+
+        float playerCenterX = player.physics.x + player.physics.width * 0.5f;
+        float playerCenterY = player.physics.y + player.physics.height * 0.5f;
+        for (SimNPC simNpc : game.simulator.getNpcs()) {
+            if (!merchantNpcId.equals(simNpc.id)) {
+                continue;
+            }
+            float npcCenterX = simNpc.physics.x + simNpc.physics.width * 0.5f;
+            float npcCenterY = simNpc.physics.y + simNpc.physics.height * 0.5f;
+            float dx = playerCenterX - npcCenterX;
+            float dy = playerCenterY - npcCenterY;
+            if ((dx * dx + dy * dy) <= INTERACT_RADIUS * INTERACT_RADIUS) {
+                return simNpc;
+            }
+        }
+        return null;
     }
 
     private String resolveInteractionHint(SimPlayer player) {
@@ -444,12 +489,94 @@ final class HubScreen implements Screen {
         if (npcId != null) {
             NPC npc = gameState.getStoryState().getNPC(npcId);
             String name = npc == null ? UiText.humanizeToken(npcId) : npc.getDisplayName();
-            return "[E] Talk to " + name;
+            return RunGameMissionInteraction.interactionPrompt(gameState, npcId, name);
         }
         if (nearMerchant(player)) {
             return "[E] Open merchant stock";
         }
         return "Explore east through traversal rooms.";
+    }
+
+    private String resolveContextualHint(
+            Mission activeMission,
+            Mission recommendedMission,
+            BeatDefinition nextBeat,
+            String areaId,
+            StoryState storyState) {
+        String areaName = UiText.areaName(areaId);
+        String routeHint = resolveRouteHint(activeMission, recommendedMission, nextBeat, areaId);
+        return "Area " + areaName
+                + "  |  " + routeHint
+                + "  |  Lanterns: " + storyState.getLanternCount()
+                + "  |  Abilities: " + storyState.getAbilities().size();
+    }
+
+    private String resolveRouteHint(Mission activeMission, Mission recommendedMission, BeatDefinition nextBeat, String areaId) {
+        if (activeMission != null) {
+            String missionPrompt = missionRoutePrompt(activeMission, areaId);
+            if (missionPrompt != null) {
+                return missionPrompt;
+            }
+        }
+        if (recommendedMission != null) {
+            List<String> missionNpcIds = RunGameMissionInteraction.orderedRelevantNpcIds(gameState);
+            if (!missionNpcIds.isEmpty()) {
+                return "Speak to " + displayNameForNpc(missionNpcIds.getFirst()) + " to begin " + recommendedMission.getDisplayName();
+            }
+            return "Start " + recommendedMission.getDisplayName();
+        }
+        if (nextBeat != null) {
+            if (nextBeat.areaId() != null && !nextBeat.areaId().isBlank() && !nextBeat.areaId().equals(areaId)) {
+                return "Route to " + UiText.areaName(nextBeat.areaId()) + " for " + nextBeat.title();
+            }
+            if (!nextBeat.npcIds().isEmpty()) {
+                return "Speak to " + displayNameForNpc(nextBeat.npcIds().getFirst()) + " for " + nextBeat.title();
+            }
+            return UiText.objectiveLine(nextBeat.objectivePrompt());
+        }
+        return "Hub " + UiText.humanizeToken(gameState.getStoryState().getCurrentHubState().name());
+    }
+
+    private String missionRoutePrompt(Mission mission, String areaId) {
+        if (mission == null) {
+            return null;
+        }
+        return switch (mission.getId()) {
+            case "village_bonds" -> "Speak to " + displayNameForFirstIncompleteVillageNpc(mission);
+            case "dojo_practice" -> "Speak to Instructor Tai in " + UiText.areaName(areaId);
+            case "veil_request" -> "Speak to Veil Maiden in " + UiText.areaName(areaId);
+            case "mistwood_beast" -> "Push east toward the mission route";
+            case "hollow_descent" -> "Cross toward Hollow Depths objectives";
+            case "lantern_restoration" -> "Collect lantern pieces, then restore them";
+            case "monastery_arrival" -> "Climb toward the Ember Monastery gate";
+            case "yin_yang_balance" -> "Return to Sophia and follow the skyroad lead";
+            default -> null;
+        };
+    }
+
+    private String displayNameForFirstIncompleteVillageNpc(Mission mission) {
+        if (!mission.isObjectiveComplete("talk_to_samson")) {
+            return displayNameForNpc("SAMSON");
+        }
+        if (!mission.isObjectiveComplete("talk_to_sophia")) {
+            return displayNameForNpc("SOPHIA");
+        }
+        if (!mission.isObjectiveComplete("talk_to_marcel")) {
+            return displayNameForNpc("MARCEL");
+        }
+        if (!mission.isObjectiveComplete("talk_to_hazel")) {
+            return displayNameForNpc("HAZEL");
+        }
+        return "the villagers";
+    }
+
+    private String displayNameForNpc(String npcId) {
+        NPC npc = gameState.getStoryState().getNPC(npcId);
+        return npc == null ? UiText.humanizeToken(npcId) : npc.getDisplayName();
+    }
+
+    private static String stringValue(Object value) {
+        return value == null ? "" : String.valueOf(value);
     }
 
     private String nearbyDialogueNpcId(SimPlayer player) {

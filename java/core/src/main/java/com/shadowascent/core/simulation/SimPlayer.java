@@ -61,6 +61,7 @@ public final class SimPlayer {
     public boolean isAttacking       = false;
     public int     attackActiveTicks = 0;
     public float   attackCooldown    = 0f;
+    public boolean meleeHitConsumed  = false;
     public boolean prevAttack        = false;
     public boolean pendingShuriken   = false;
     public boolean isBlocking        = false;

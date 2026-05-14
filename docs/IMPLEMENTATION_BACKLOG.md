@@ -10,6 +10,26 @@ This backlog is the operational companion to `docs/ROADMAP.md` and `docs/CURRENT
 
 ## Active Workstreams
 
+## 0) Campaign Spine and Production-Client Deepening (M4 / active)
+
+### Current Focus
+
+- `SUMMIT_SHRINE` and `HOLLOW_DEPTHS` authoring are landed and validated.
+- Remaining M4 work is no longer "write more beats in the abstract." It is:
+  - making later plateau coverage explicit,
+  - surfacing authored content clearly in `runGame`,
+  - and moving production-client runtime away from fixture-only bootstrap behavior.
+
+### Next
+
+- [ ] Normalize milestone truth across `ROADMAP`, `CURRENT_STATE`, `PLAYABLE_TRUTH`, and `INDEX` when M4/M6 scope changes.
+- [ ] Define the remaining M4 plateau spine and checkpoint sequence explicitly in implementation-facing docs.
+- [ ] Build a source-backed content ledger covering repo data, integrated donor data, and GDD plateau/dungeon sources.
+- [ ] Replace fixture world bootstrap behavior in `runGame` with authored area bootstrap.
+- [ ] Replace fixture NPC placement with authored runtime placement keyed by plateau/beat/area state.
+- [ ] Deepen mission/objective/interaction surfacing in `runGame` from actual quest/beat/dialogue data.
+- [ ] Decide explicitly when `runGame` becomes the primary forward QA surface.
+
 ## 1) Data Contract Runtime Integration (M1/M2)
 
 ### Delivered
@@ -192,7 +212,7 @@ Reference: `docs/NORTH_STAR_EXECUTION_MATRIX.md`
 - [x] Add diagnostics command for world-state contract validity and cross-reference checks.
 - [x] Integrate simulation event stream into mission/side-quest availability scoring with traceability output.
 
-## 8) M6 Open-World Runtime Expansion (queued)
+## 8) M6 Open-World Runtime Expansion (active)
 
 Reference: `docs/NORTH_STAR_EXECUTION_MATRIX.md`
 

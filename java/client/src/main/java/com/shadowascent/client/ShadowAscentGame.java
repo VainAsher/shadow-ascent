@@ -19,6 +19,8 @@ import com.shadowascent.client.ui.MinimapOverlayRenderer;
 import com.shadowascent.client.ui.ModalOverlayManager;
 import com.shadowascent.client.ui.PauseMenuOverlayRenderer;
 import com.shadowascent.client.ui.ShopOverlayRenderer;
+import com.shadowascent.client.world.AuthoringWorldBootstrap;
+import com.shadowascent.client.world.RunGameContentProfile;
 import com.shadowascent.core.GameState;
 import com.shadowascent.core.physics.CollisionWorld;
 import com.shadowascent.core.physics.TileRect;
@@ -28,15 +30,12 @@ import com.shadowascent.core.simulation.SimShop;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public final class ShadowAscentGame extends Game {
 
     private static final String PLAYER_ID = "player1";
-    private static final float FLOOR_Y = 360f;
-    private static final float WORLD_WIDTH = 3500f;
     private static final String ATLAS_PATH = "assets/sprites/packed/sprites.atlas";
     private static final Path RUN_GAME_SAVE_PATH = Path.of("save", "runGame_slot1.sav");
 
@@ -61,6 +60,7 @@ public final class ShadowAscentGame extends Game {
     SimShop hubShop;
     TitleScreen titleScreen;
     AudioManager audioManager;
+    RunGameContentProfile contentProfile;
 
     GameState gameState;
 
@@ -148,11 +148,8 @@ public final class ShadowAscentGame extends Game {
 
     private void createGameplaySession(GameState sessionState) {
         gameState = sessionState;
-
-        List<TileRect> tiles = new ArrayList<>();
-        tiles.add(new TileRect(0f, FLOOR_Y, WORLD_WIDTH, 30f, false));
-        tiles.add(new TileRect(300f, FLOOR_Y - 120f, 200f, 15f, true));
-        worldTiles = Collections.unmodifiableList(tiles);
+        contentProfile = new AuthoringWorldBootstrap().bootstrap(gameState);
+        worldTiles = Collections.unmodifiableList(contentProfile.worldTiles());
 
         CollisionWorld collisionWorld = new CollisionWorld();
         for (TileRect tile : worldTiles) {
@@ -161,10 +158,23 @@ public final class ShadowAscentGame extends Game {
 
         simulator = new GameSimulator();
         simulator.setCollisionWorld(collisionWorld);
-        simulator.addPlayer(PLAYER_ID, 0, 200f, 280f);
-        simulator.addEnemy("goblin_1", "goblin", 600f, 280f);
-        simulator.addNpc("MERCHANT_RILU", "merchant", 350f, 288f, 350f, 350f);
-        simulator.addNpc("INSTRUCTOR_TAI", "teacher", 520f, 288f, 520f, 520f);
+        simulator.addPlayer(PLAYER_ID, 0, contentProfile.playerSpawnX(), contentProfile.playerSpawnY());
+        for (RunGameContentProfile.EnemyPlacement enemyPlacement : contentProfile.enemyPlacements()) {
+            simulator.addEnemy(
+                    enemyPlacement.enemyId(),
+                    enemyPlacement.enemyType(),
+                    enemyPlacement.x(),
+                    enemyPlacement.y());
+        }
+        for (RunGameContentProfile.NpcPlacement npcPlacement : contentProfile.npcPlacements()) {
+            simulator.addNpc(
+                    npcPlacement.npcId(),
+                    npcPlacement.role(),
+                    npcPlacement.x(),
+                    npcPlacement.y(),
+                    npcPlacement.patrolMinX(),
+                    npcPlacement.patrolMaxX());
+        }
         seedPlayerInventory(simulator.getPlayer(PLAYER_ID).inventory);
         hubShop = new SimShop("merchant_npc", 2, 12345L);
 

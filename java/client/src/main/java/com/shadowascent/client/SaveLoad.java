@@ -179,6 +179,7 @@ final class SaveLoad {
         player.isAttacking = false;
         player.attackActiveTicks = 0;
         player.attackCooldown = 0f;
+        player.meleeHitConsumed = false;
         player.isDashing = false;
         player.dashTimer = 0f;
         player.prevAttack = false;

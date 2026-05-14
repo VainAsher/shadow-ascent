@@ -30,6 +30,10 @@ final class SaveLoadRuntimeStateTest {
         player.physics.x = 412f;
         player.physics.y = 255f;
         player.health = 3;
+        player.isAttacking = true;
+        player.attackActiveTicks = 4;
+        player.attackCooldown = 0.3f;
+        player.meleeHitConsumed = true;
         player.inventory.addCurrency(50);
         player.inventory.addItem("health_potion", 2);
 
@@ -55,6 +59,10 @@ final class SaveLoadRuntimeStateTest {
         assertEquals(3, player.health);
         assertEquals(50, player.inventory.currency);
         assertEquals(2, player.inventory.countItem("health_potion"));
+        assertFalse(player.isAttacking);
+        assertEquals(0, player.attackActiveTicks);
+        assertEquals(0f, player.attackCooldown);
+        assertFalse(player.meleeHitConsumed);
         assertEquals(640f, enemy.physics.x);
         assertEquals(1, enemy.hp);
         assertFalse(enemy.removed);

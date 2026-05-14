@@ -2,7 +2,7 @@
 doc_type: migration_map
 status: living
 owner: core-team
-last_updated: 2026-05-09
+last_updated: 2026-05-14
 version_anchor: 0.0.1
 ---
 # File-by-File Migration Map
@@ -144,6 +144,23 @@ This map defines **exact first imports** from donor repos into `shadow_ascent_cl
 | clean-start (new) | n/a | `java/client/.../PlaytestClient.java` (RegionLoader wiring) | `buildPlaytestProgressionGraph` + `initializeCollisionLayout` + `buildAllDynamicTiles` + `refreshCollisionHashFromRegions` | M | Medium | done |
 | clean-start (new) | n/a | `java/core/.../data/OverlayPayloadCodec.java` + SAVE_V3 envelope + v2→v3 migrator | overlay mutation persistence in save envelope with SHA-256 checksum | M | Medium | done |
 | clean-start (new) | n/a | `data/worldgen/sections/lantern_region_hub.json` + `lantern_hub.json` + `hollow_dungeon.json` | authored section templates covering 3 previously stub-only biome/kind combos | S | Low | done |
+
+## Narrative And Content Source Surfaces
+
+These are not "import this whole folder" directives. They are the bounded source surfaces future M4 and production-client work should consult first.
+
+| Source Repo | Source Path | Target Consumer | Purpose | Status |
+|---|---|---|---|---|
+| clean-start | `data/plateaus.json` | `core` progression + client authored bootstrap | canonical plateau order, emotional/mechanical stage rules | canonical |
+| clean-start | `data/narrative_beats.json` | `core` story progression + client objective surfacing | authored beat sequence, area IDs, objective prompts | canonical |
+| clean-start | `data/area_catalog.json` | future `runGame` area bootstrap and placement layers | area families, mood, sample areas, beat-to-area mapping | canonical |
+| clean-start | `data/npc_registry.json` | hub/runtime NPC scheduling and future placement rules | NPC eligibility, role identity, plateau availability | canonical |
+| clean-start | `data/dialogue.json` | dialogue modal + mission/UI surfacing | beat and plateau dialogue content | canonical |
+| clean-start | `data/quests.json` | mission runtime + side-quest surfacing | quest chains, rewards, side-content anchors | canonical |
+| integrated | `data/elastic_chunk_templates.json` | content design inspiration, not direct runtime import | plateau-local optional-content and room-intent ideas | reference |
+| integrated | `docs/PLAYABLE_SLICE_ROADMAP.md` | roadmap/planning | campaign-first scope framing and donor-intent rationale | reference |
+| GDD | `game_design_document/09_level_and_content_plan/` | M4 planning and authored-content implementation | plateau structure, dungeon matrix, room-intent framing | reference |
+| GDD | `game_design_document/15_character_dossiers/` | NPC/dialogue/mission handoff design | role-state and emotional/mechanical behavior guidance | reference |
 
 ## Explicit Non-Import List
 

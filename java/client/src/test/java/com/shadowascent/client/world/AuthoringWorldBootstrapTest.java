@@ -1,0 +1,41 @@
+package com.shadowascent.client.world;
+
+import com.shadowascent.core.GameState;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+final class AuthoringWorldBootstrapTest {
+
+    @Test
+    void bootstrapUsesAuthoredBeatAreaForDefaultStoryState() {
+        GameState gameState = new GameState();
+
+        RunGameContentProfile profile = new AuthoringWorldBootstrap().bootstrap(gameState);
+
+        assertEquals("area_lantern_heights_balcony", profile.areaId());
+        assertEquals("LANTERN_HEIGHTS", profile.plateauId());
+        assertFalse(profile.worldTiles().isEmpty());
+        assertTrue(profile.npcPlacements().stream().anyMatch(npc -> "INSTRUCTOR_TAI".equals(npc.npcId())));
+        assertTrue(profile.npcPlacements().stream().anyMatch(npc -> "MERCHANT_RILU".equals(npc.npcId()) && npc.x() == 350f));
+    }
+
+    @Test
+    void bootstrapFollowsPlateauSpecificAreaWhenStoryAdvances() {
+        GameState gameState = new GameState();
+        gameState.getStoryState().setFlag("act2_unlocked");
+        gameState.getStoryState().setPlateau(com.shadowascent.core.StoryState.Plateau.HOLLOW_DEPTHS);
+        gameState.getHubManager().updateHubState();
+
+        RunGameContentProfile profile = new AuthoringWorldBootstrap().bootstrap(gameState);
+
+        assertEquals("area_hollow_depths_camp", profile.areaId());
+        assertEquals("HOLLOW_DEPTHS", profile.plateauId());
+        assertNotNull(profile.worldTiles());
+        assertTrue(profile.enemyPlacements().stream().anyMatch(enemy -> "goblin".equals(enemy.enemyType())));
+        assertTrue(profile.npcPlacements().stream().anyMatch(npc -> "SHADE_HERMIT".equals(npc.npcId()) && npc.x() == 360f));
+    }
+}

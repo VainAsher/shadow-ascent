@@ -5,6 +5,7 @@ import java.util.List;
 public record HudOverlayState(
         String actId,
         String plateauId,
+        String areaId,
         String missionTitle,
         String objectiveLine,
         int playerHealth,

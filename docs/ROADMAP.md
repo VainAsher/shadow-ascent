@@ -2,7 +2,7 @@
 doc_type: roadmap
 status: living
 owner: core-team
-last_updated: 2026-05-13
+last_updated: 2026-05-14
 version_anchor: 0.0.1
 ---
 # Shadow Ascent Clean Start Roadmap
@@ -107,10 +107,22 @@ Target:
 - Integrate optional plateau content while preserving campaign truth.
 - Deepen emotional mechanics and hub evolution outcomes.
 
+Already delivered in this lane:
+
+- `SUMMIT_SHRINE` authored critical route and quest-policy/chunk-grammar support.
+- `HOLLOW_DEPTHS` authored critical route plus four side-quest chains and supporting NPC/dialogue data.
+- LibGDX `runGame` production-client slice now supports the HUD/modal/title/dialogue/pause/save/load path needed to carry broader authored content.
+
 Exit criteria:
 
 - Act coverage expands beyond current scaffold with validated transitions.
 - Optional content does not violate critical story constraints.
+- Remaining authored campaign spine is explicitly represented and runtime-legible through:
+  - `EMBER_MONASTERY`
+  - `WINDING_SKYROAD`
+  - `MIRROR_SUMMIT`
+  - `BEACON_CLIFF`
+- `runGame` can present authored area identity, authored NPC placement, and authored mission prompts instead of relying only on fixture/bounded bootstrap behavior.
 
 ### M5 — Systemic World Simulation Foundation (`completed`)
 
@@ -183,7 +195,7 @@ Delivered in this lane (2026-05-08):
 ### Next open items
 
 - ~~M3 exit criteria.~~ Closed 2026-05-08 — gate doc at `docs/M3_RELEASE_GATE.md`; M3 promoted to complete.
-- M4 campaign content: authored act coverage expansion, optional plateau content with worldgen gates. Unblocked but blocked on SUMMIT_SHRINE narrative decisions — see backlog item `[AUTHORING DECISION REQUIRED]`.
+- M4 campaign content remains active: authored `SUMMIT_SHRINE` and `HOLLOW_DEPTHS` are landed, while `EMBER_MONASTERY` through `BEACON_CLIFF` still need broader runtime-facing authored coverage and validation gates.
 - ~~M6 remaining: authored chunk-streaming geometry.~~ Resolved 2026-05-08. Region fragment JSONs carry world-space tile geometry; `RegionLoader` sources static tiles from fragment data.
 - ~~M6 remaining: echo puzzle evaluation logic.~~ Resolved 2026-05-09. `EchoPuzzleSolution` + `EchoPuzzleEvaluator` in `core.simulation`; first authored puzzle room in PlaytestClient Room 4.
 - ~~M6 remaining: mutation visibility evidence.~~ Resolved 2026-05-08. `overlayStatusLine` in HUD; `MUTATION_OVERLAY_SAVE`/`LOAD` evidence lines; `refreshOverlayHud()` wired.
@@ -193,3 +205,4 @@ Delivered in this lane (2026-05-08):
 - **P3 asset pipeline** — complete 2026-05-10. Deterministic `packSprites` task, generated placeholder atlas, `TextureAtlas` loading in `ShadowAscentGame`, and atlas-backed `SpriteWorldRenderer` are all landed and client-test-backed.
 - **P4 HUD + overlay port** — complete 2026-05-13. `runGame` now has a persistent HUD, docked toggleable minimap, shared modal lifecycle, first-pass inventory/shop/crafting overlays, dialogue interaction, pause/save/load flow, title/new-game/continue routing, audio event-key resolution, and explicit HUD interaction hints driven directly from the production-client runtime.
 - **Next LibGDX production-client follow-up**: keep the lane bounded to authored geometry, animation/state fidelity, and deeper production-client interaction polish that can be validated in `runGame` without turning into full art migration.
+- **Current M4 follow-up**: translate authored plateau/beat/area/NPC contracts into runtime-visible area bootstrap, NPC placement, and mission surfacing so `runGame` can carry the next campaign-content tranche without relying on fixture geometry.

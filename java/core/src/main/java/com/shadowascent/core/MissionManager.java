@@ -439,6 +439,10 @@ public class MissionManager {
             .toList();
     }
 
+    public java.util.Optional<SideQuestStepDefinition> sideQuestStep(String missionId) {
+        return missionTemplateCatalog.sideQuestStep(missionId);
+    }
+
     public String availabilityTraceForMission(String missionId) {
         if (missionId == null || missionId.isBlank()) {
             return "";

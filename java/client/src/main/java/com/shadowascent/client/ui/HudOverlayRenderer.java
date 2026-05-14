@@ -26,7 +26,7 @@ public final class HudOverlayRenderer {
         shapes.setProjectionMatrix(shapeProjection);
         batch.setProjectionMatrix(textProjection);
 
-        float statusHeight = 190f;
+        float statusHeight = 210f;
         float statusX = UiPalette.PANEL_PADDING;
         float statusY = UiPalette.PANEL_PADDING;
         float feedX = UiPalette.PANEL_PADDING;
@@ -63,6 +63,9 @@ public final class HudOverlayRenderer {
         lineY -= UiPalette.LINE_HEIGHT;
         font.setColor(UiPalette.TEXT_MUTED);
         font.draw(batch, "Act: " + state.actId() + "  |  Plateau: " + state.plateauId(), textX, lineY);
+
+        lineY -= UiPalette.LINE_HEIGHT;
+        font.draw(batch, "Area: " + UiText.areaName(state.areaId()), textX, lineY);
 
         lineY -= UiPalette.LINE_HEIGHT;
         font.setColor(state.playerHealth() <= 1 ? UiPalette.DANGER : UiPalette.ACCENT);

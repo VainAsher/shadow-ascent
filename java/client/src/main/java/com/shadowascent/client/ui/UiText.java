@@ -35,12 +35,24 @@ public final class UiText {
         return builder.toString();
     }
 
+    public static String areaName(String areaId) {
+        return hasText(areaId) ? humanizeToken(areaId) : "Unknown Area";
+    }
+
     public static String missionTitle(String missionTitle) {
         return hasText(missionTitle) ? missionTitle.trim() : DEFAULT_MISSION_TITLE;
     }
 
     public static String objectiveLine(String objectiveLine) {
         return hasText(objectiveLine) ? objectiveLine.trim() : DEFAULT_OBJECTIVE;
+    }
+
+    public static String objectiveToken(String objectiveIdOrText) {
+        if (!hasText(objectiveIdOrText)) {
+            return DEFAULT_OBJECTIVE;
+        }
+        String trimmed = objectiveIdOrText.trim();
+        return trimmed.contains("_") ? humanizeToken(trimmed) : trimmed;
     }
 
     public static String contextualHint(String hint) {
@@ -63,6 +75,10 @@ public final class UiText {
         }
         ItemDatabase.ItemDef def = ItemDatabase.get(itemId);
         return def == null ? humanizeToken(itemId) : def.name();
+    }
+
+    public static String compactEventName(String eventId) {
+        return hasText(eventId) ? humanizeToken(eventId) : "Event";
     }
 
     private static boolean hasText(String value) {
