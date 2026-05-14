@@ -15,7 +15,7 @@ This is a **quality gate**, not the product boundary.
 
 ## Current Reality
 
-The route is runnable with objective-driven mission completion. Hub transitions are progression-bound, save/load uses a versioned envelope with legacy compatibility, and session evidence logs are now captured per run. Remaining gate work is manual movement-feel sign-off and repeatable QA notes for milestone closure.
+The route is runnable with objective-driven mission completion. Hub transitions are progression-bound, save/load uses a versioned envelope with legacy compatibility, and session evidence logs are now captured per run. Historical movement-feel sign-off was captured in `runPlayableClient`, but forward route validation should now be executed in `runGame` unless a task explicitly targets the legacy Swing surface.
 
 ## Approved Evidence Route
 

@@ -16,8 +16,8 @@ Read this before running a playtest. Read this before giving feedback. Read this
 - Version: `0.0.1`
 - Platform: local desktop developer runtime
 - Audience: internal development and controlled QA only
-- Primary runtime: `runPlayableClient`
-- Secondary runtime: `runGame` for production-client parity and authored-geometry/client-flow validation
+- Primary runtime: `runGame`
+- Secondary runtime: `runPlayableClient` as a legacy Swing prototype/reference layer and possible future intermediary/editor surface
 - Product direction: full campaign narrative Metroidvania, with the current runtime serving as a bounded validation slice rather than a content-complete game
 
 ## The One Approved QA Route
@@ -26,7 +26,7 @@ Use [ACT_I_QA_ROUTE.md](ACT_I_QA_ROUTE.md) as the repeatable first-session route
 
 Current approved focus:
 
-1. Launch the playable client.
+1. Launch `runGame`.
 2. Verify the opening hub is readable.
 3. Progress through the first social mission path.
 4. Confirm objective updates, hub-state changes, and save/load continuity.
@@ -52,7 +52,7 @@ Pass criteria live in [ACT_I_QA_ROUTE.md](ACT_I_QA_ROUTE.md).
 | --- | --- | --- |
 | Campaign content breadth | Partial | Runtime spine exists, but content scale is not the current proof target |
 | Combat depth | Partial | The bounded encounter loop is present, but not yet representative of the full intended combat game |
-| LibGDX production client | Partial but strategically important | `runGame` now renders atlas-backed placeholder sprites plus a title/new-game/continue flow, persistent HUD, toggleable minimap, dialogue modal, pause/save/load flow, modal inventory/shop/crafting overlays, audio event-key routing, and explicit interaction hints. It is the right surface for authored-geometry, authored-placement, and production-client interaction validation, but it is not yet the sole broad QA route |
+| LibGDX production client | Active primary surface | `runGame` now renders atlas-backed placeholder sprites plus a title/new-game/continue flow, persistent HUD, toggleable minimap, dialogue modal, pause/save/load flow, modal inventory/shop/crafting overlays, registry-backed audio event routing, deeper Hollow Depths authored bootstrap, and explicit interaction hints. It is now the correct forward QA surface, even though content density and authored geometry breadth are still expanding |
 | Open-world systemic simulation | Active expansion lane | M6 is active, but it should be judged as foundation work, not finished player-facing design |
 
 ## What Is Scaffolded Or Experimental

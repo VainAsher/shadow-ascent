@@ -123,6 +123,7 @@ Exit criteria:
   - `MIRROR_SUMMIT`
   - `BEACON_CLIFF`
 - `runGame` can present authored area identity, authored NPC placement, and authored mission prompts instead of relying only on fixture/bounded bootstrap behavior.
+- `runGame` is the primary forward QA surface, with `HOLLOW_DEPTHS` used as the current authored-runtime deepening slice before `EMBER_MONASTERY` expansion.
 
 ### M5 — Systemic World Simulation Foundation (`completed`)
 
@@ -205,4 +206,4 @@ Delivered in this lane (2026-05-08):
 - **P3 asset pipeline** — complete 2026-05-10. Deterministic `packSprites` task, generated placeholder atlas, `TextureAtlas` loading in `ShadowAscentGame`, and atlas-backed `SpriteWorldRenderer` are all landed and client-test-backed.
 - **P4 HUD + overlay port** — complete 2026-05-13. `runGame` now has a persistent HUD, docked toggleable minimap, shared modal lifecycle, first-pass inventory/shop/crafting overlays, dialogue interaction, pause/save/load flow, title/new-game/continue routing, audio event-key resolution, and explicit HUD interaction hints driven directly from the production-client runtime.
 - **Next LibGDX production-client follow-up**: keep the lane bounded to authored geometry, animation/state fidelity, and deeper production-client interaction polish that can be validated in `runGame` without turning into full art migration.
-- **Current M4 follow-up**: translate authored plateau/beat/area/NPC contracts into runtime-visible area bootstrap, NPC placement, and mission surfacing so `runGame` can carry the next campaign-content tranche without relying on fixture geometry.
+- **Current M4 follow-up**: finish the `HOLLOW_DEPTHS` runtime-facing slice first by deepening authored bootstrap, NPC placement, combat readability, and mission surfacing in `runGame`, then use that path as the pattern for `EMBER_MONASTERY`.

@@ -14,6 +14,7 @@ Canonical routing for the clean-start repository.
 - `docs/CURRENT_STATE.md` - runtime and milestone truth snapshot.
 - `docs/PLAYABLE_TRUTH.md` - honest playable and feedback scope snapshot.
 - `docs/ROADMAP.md` - milestone sequence and status.
+- `docs/ACT_I_QA_ROUTE.md` - repeatable first-session gate; historical Swing evidence remains useful, but forward QA should now be performed in `runGame`.
 - `docs/START_TO_FINISH_GAME_PLAN.md` - product vision and campaign scope.
 - `docs/PLAYABLE_CLIENT_PLAN.md` - phased plan for human-playtest client and donor mechanics import.
 - `docs/IMPLEMENTATION_BACKLOG.md` - execution tasks and active checklist.

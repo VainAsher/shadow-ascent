@@ -18,7 +18,7 @@ public final class AreaPlacementResolver {
         GameDataContracts contracts = gameState.getDataContracts();
         StoryState storyState = gameState.getStoryState();
         Optional<BeatDefinition> plateauBeat = contracts.beatsForPlateau(storyState.getCurrentPlateau().name()).stream()
-                .filter(BeatDefinition::isCriticalPathBeat)
+                .filter(AreaPlacementResolver::isRuntimeAreaBeat)
                 .filter(beat -> beat.requiredFlags().stream().allMatch(storyState::hasFlag))
                 .filter(beat -> beat.setFlags().isEmpty() || beat.setFlags().stream().anyMatch(flag -> !storyState.hasFlag(flag)))
                 .filter(beat -> !beat.areaId().isBlank())
@@ -40,5 +40,16 @@ public final class AreaPlacementResolver {
                 .min(Comparator.comparingInt(BeatDefinition::routeOrder).thenComparing(BeatDefinition::id))
                 .map(BeatDefinition::areaId)
                 .orElse("area_lantern_heights_hub");
+    }
+
+    private static boolean isRuntimeAreaBeat(BeatDefinition beat) {
+        if (beat == null) {
+            return false;
+        }
+        String beatType = beat.beatType() == null ? "" : beat.beatType().trim().toLowerCase();
+        return beat.isCriticalPathBeat() || switch (beatType) {
+            case "adaptable_authored", "authored_support", "recovery", "unlock" -> true;
+            default -> false;
+        };
     }
 }

@@ -20,7 +20,9 @@ import com.shadowascent.core.simulation.SimPlayer;
 
 import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -297,9 +299,9 @@ final class HubScreen implements Screen {
         StoryState storyState = gameState.getStoryState();
         String activeMissionId = storyState.getActiveMissionId();
         Mission activeMission = activeMissionId == null ? null : storyState.getMission(activeMissionId);
-        BeatDefinition nextBeat = gameState.getDataContracts().nextCriticalBeat(storyState).orElse(null);
+        BeatDefinition nextBeat = nextRuntimeBeat(storyState);
         Mission recommendedMission = activeMission == null
-                ? gameState.getMissionManager().getAvailableMissions().stream().findFirst().orElse(null)
+                ? recommendedMissionForPlateau(storyState)
                 : null;
         String areaId = game.contentProfile == null ? null : game.contentProfile.areaId();
 
@@ -339,6 +341,27 @@ final class HubScreen implements Screen {
                 showMinimap,
                 interactionHint
         );
+    }
+
+    private Mission recommendedMissionForPlateau(StoryState storyState) {
+        String currentPlateau = storyState == null ? "" : storyState.getCurrentPlateau().name();
+        return gameState.getMissionManager().getAvailableMissions().stream()
+                .filter(mission -> currentPlateau.equals(plateauForMission(mission)))
+                .findFirst()
+                .orElseGet(() -> gameState.getMissionManager().getAvailableMissions().stream().findFirst().orElse(null));
+    }
+
+    private BeatDefinition nextRuntimeBeat(StoryState storyState) {
+        if (storyState == null) {
+            return null;
+        }
+        return gameState.getDataContracts().beatsForPlateau(storyState.getCurrentPlateau().name()).stream()
+                .filter(HubScreen::isRuntimeHudBeat)
+                .filter(beat -> beat.requiredFlags().stream().allMatch(storyState::hasFlag))
+                .filter(beat -> beat.setFlags().isEmpty() || beat.setFlags().stream().anyMatch(flag -> !storyState.hasFlag(flag)))
+                .filter(beat -> beat.areaId() != null && !beat.areaId().isBlank())
+                .min(Comparator.comparingInt(BeatDefinition::routeOrder).thenComparing(BeatDefinition::id))
+                .orElseGet(() -> gameState.getDataContracts().nextCriticalBeat(storyState).orElse(null));
     }
 
     private void appendEventFeedLine(String line) {
@@ -577,6 +600,32 @@ final class HubScreen implements Screen {
 
     private static String stringValue(Object value) {
         return value == null ? "" : String.valueOf(value);
+    }
+
+    private static boolean isRuntimeHudBeat(BeatDefinition beat) {
+        if (beat == null) {
+            return false;
+        }
+        String beatType = beat.beatType() == null ? "" : beat.beatType().trim().toLowerCase(Locale.ROOT);
+        return beat.isCriticalPathBeat() || switch (beatType) {
+            case "adaptable_authored", "authored_support", "recovery", "unlock" -> true;
+            default -> false;
+        };
+    }
+
+    private static String plateauForMission(Mission mission) {
+        if (mission == null || mission.getRegion() == null) {
+            return "";
+        }
+        return switch (mission.getRegion().trim().toLowerCase(Locale.ROOT)) {
+            case "town", "forest", "summit" -> "LANTERN_HEIGHTS";
+            case "caves" -> "HOLLOW_DEPTHS";
+            case "mountain", "monastery" -> "EMBER_MONASTERY";
+            case "skyroad" -> "WINDING_SKYROAD";
+            case "mirror" -> "MIRROR_SUMMIT";
+            case "beacon" -> "BEACON_CLIFF";
+            default -> "";
+        };
     }
 
     private String nearbyDialogueNpcId(SimPlayer player) {

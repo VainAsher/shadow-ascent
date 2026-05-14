@@ -18,6 +18,7 @@ This backlog is the operational companion to `docs/ROADMAP.md` and `docs/CURRENT
 - Remaining M4 work is no longer "write more beats in the abstract." It is:
   - making later plateau coverage explicit,
   - surfacing authored content clearly in `runGame`,
+  - finishing the `HOLLOW_DEPTHS` runtime-facing slice as the first deep production-client plateau,
   - and moving production-client runtime away from fixture-only bootstrap behavior.
 
 ### Next
@@ -26,9 +27,10 @@ This backlog is the operational companion to `docs/ROADMAP.md` and `docs/CURRENT
 - [ ] Define the remaining M4 plateau spine and checkpoint sequence explicitly in implementation-facing docs.
 - [ ] Build a source-backed content ledger covering repo data, integrated donor data, and GDD plateau/dungeon sources.
 - [ ] Replace fixture world bootstrap behavior in `runGame` with authored area bootstrap.
-- [ ] Replace fixture NPC placement with authored runtime placement keyed by plateau/beat/area state.
+- [ ] Replace remaining fallback NPC placement heuristics with authored runtime placement keyed by plateau/beat/area state.
 - [ ] Deepen mission/objective/interaction surfacing in `runGame` from actual quest/beat/dialogue data.
-- [ ] Decide explicitly when `runGame` becomes the primary forward QA surface.
+- [x] Decide explicitly when `runGame` becomes the primary forward QA surface.
+- [ ] Finish the current `HOLLOW_DEPTHS` runtime slice before opening the main `EMBER_MONASTERY` tranche.
 
 ## 1) Data Contract Runtime Integration (M1/M2)
 

@@ -204,6 +204,12 @@ Canonical runtime and execution snapshot for the clean-start repository.
   - first-pass audio routing is now live in LibGDX: `AudioManager` resolves key simulation events like `PLAYER_DAMAGED`, `ENEMY_DEFEATED`, and `PORTAL_ACTIVATED` into stable sound keys, with playback intentionally left as a safe no-op until asset binding lands,
   - HUD interaction hinting is now richer in LibGDX: the HUD separates long-lived contextual status from immediate interaction prompts like NPC talk and merchant access,
   - `Esc` now closes any active modal without leaking stale UI signals into later frames; modal replacement semantics are test-backed for inventory/shop/crafting transitions.
+- LibGDX authored-runtime deepening (2026-05-14):
+  - `AudioManager` is now registry-backed rather than key-only: `audio/audio_registry.json` is loaded at runtime, event sounds resolve to concrete asset paths, and playback requests degrade safely when assets are absent or not yet mounted in LibGDX,
+  - `runGame` authored area resolution now follows unresolved plateau-authored beats, not only the strict critical subset, which allows `HOLLOW_DEPTHS` to advance from camp into caves/arena/support areas as story flags move forward,
+  - `AuthoringWorldBootstrap` now exposes a broader Hollow Depths slice with area-specific geometry, spawn points, NPC anchor placement, and enemy placement for `area_hollow_depths_camp`, `area_hollow_depths_caves`, `area_echo_galleries`, `area_weightbound_mines_arena`, `area_hollow_hub_first_sparks`, `area_shatter_moth_nest`, `area_fractured_contact_high_winds`, `area_stone_judge_maze`, and `area_abyssal_gate`,
+  - `runGame` HUD mission surfacing now prefers plateau-relevant available missions and unresolved authored plateau beats over cross-plateau generic availability when no mission is active,
+  - `runGame` is now the primary forward QA surface; `runPlayableClient` is retained as a legacy Swing prototype/reference layer rather than the lead play surface.
 - M4 SUMMIT_SHRINE content authoring (2026-05-09):
   - 5 critical narrative beats in `narrative_beats.json` (`beat_empty_hub_only_maiden` → `beat_aen_hollowed`, route_order 100–140),
   - NPC registry entries (YIN, YANG, VEIL_MAIDEN, SIREN_OF_MASKS with role/eligibility); SIREN_OF_MASKS encounter block (scripted_loss, force-loss at tick 510, 4-event timeline),
@@ -244,11 +250,24 @@ Canonical runtime and execution snapshot for the clean-start repository.
 - ~~**PlaytestClient decomposition**~~ — resolved 2026-05-09. `InputHandler` (key bindings + 16 queue flags), `RoomGeometry` (boundary constants + region resolver), `SaveLoad` (persistence I/O + `LoadResult` record) all extracted; `PlaytestClient` delegates fully to all three.
 - ~~**Stub physics floor (P2)**~~ — resolved 2026-05-09. `CollisionWorld` injected into `GameSimulator`; `resolveX` + `resolveY` called each tick; spawnY stub is the fallback only when `collisionWorld == null` (regression tests unaffected).
 - ~~**LibGDX world geometry**~~ — resolved 2026-05-09. `StubWorldRenderer` accepts `List<TileRect>`; solid floor and platform drawn as coloured rects; `ShadowAscentGame` builds and passes stub tile geometry.
-- **Next LibGDX production-client follow-up**: the HUD/overlay stack is now in place, but `runGame` still needs broader authored geometry, authored NPC/world placement, deeper animation coverage, and more authored interaction points before it becomes the main QA surface.
+- **Next LibGDX production-client follow-up**: `runGame` is now the main QA surface, but it still needs broader authored geometry density, richer authored transition/gate behavior, deeper animation coverage, and more direct content-complete encounter scripting before it can fully retire the older prototype path.
 
 ## Verification Evidence
 
-Latest gate (2026-05-13) — LibGDX production-client parity tranche on top of the production-client render path:
+Latest focused gate (2026-05-14) — LibGDX authored-runtime and audio-routing deepening:
+
+```text
+.\gradlew.bat :client:test --tests "com.shadowascent.client.audio.AudioManagerEventRoutingTest"
+BUILD SUCCESSFUL
+
+.\gradlew.bat :client:test --tests "com.shadowascent.client.world.AuthoringWorldBootstrapTest"
+BUILD SUCCESSFUL
+
+.\gradlew.bat :client:compileJava
+BUILD SUCCESSFUL
+```
+
+Previous gate (2026-05-13) — LibGDX production-client parity tranche on top of the production-client render path:
 
 ```text
 .\gradlew.bat :client:test --tests "com.shadowascent.client.ui.DialogueOverlayRendererStateTest"
@@ -335,11 +354,11 @@ Historical gate evidence is in `docs/handover/CODEX_*.md` files (one per deliver
 ## Next Actions
 
 1. ~~**M3 exit criteria**~~ — closed 2026-05-08. Gate doc: `docs/M3_RELEASE_GATE.md`.
-2. **M4 campaign content** — continue from the authored `SUMMIT_SHRINE` + `HOLLOW_DEPTHS` base into later plateau runtime delivery (`EMBER_MONASTERY`, `WINDING_SKYROAD`, `MIRROR_SUMMIT`, `BEACON_CLIFF`) with explicit area bootstrap, NPC placement, and mission surfacing.
+2. **M4 campaign content** — continue from the authored `SUMMIT_SHRINE` + `HOLLOW_DEPTHS` base by finishing the `HOLLOW_DEPTHS` runtime slice first, then move into later plateau delivery (`EMBER_MONASTERY`, `WINDING_SKYROAD`, `MIRROR_SUMMIT`, `BEACON_CLIFF`) with explicit area bootstrap, NPC placement, and mission surfacing.
 3. ~~**Chunk-streaming geometry (M6)**~~ — resolved 2026-05-08. `RegionFragmentData.tiles` + `RegionLoader` parse path; all 3 region fragment JSONs authored; `addSolidTile`/`addPlatformTile` removed.
 3a. ~~**Mutation visibility evidence (M6)**~~ — resolved 2026-05-08. HUD overlay line (amber when active), `MUTATION_OVERLAY_SAVE`/`LOAD` evidence lines, `refreshOverlayHud()` wired at init/transition/load.
 4. ~~**Echo puzzle evaluation (M6)**~~ — resolved 2026-05-08. `EchoPuzzleSolution` + `EchoPuzzleEvaluator` wired; first authored echo puzzle room (summit_echo_room_1, minKills=1) in PlaytestClient Room 4; PUZZLE_PASSED/PUZZLE_FAILED emitted.
 5. ~~**Co-op collision model (M6)**~~ — resolved 2026-05-08. `tickCoopCollisions()` in `GameSimulator`; pairwise AABB separation with MSA push; `PLAYER_COLLISION` event; dead players excluded.
 6. ~~**P2: `core.physics.CollisionWorld`**~~ — closed 2026-05-09. `resolveX` + `resolveY` both wired; `GameSimulator.tickPlayers()` uses real AABB resolution; spawnY stub is fallback only when no `CollisionWorld` injected.
 7. ~~**LibGDX world geometry rendering**~~ — closed 2026-05-09. `StubWorldRenderer` renders tile geometry; `ShadowAscentGame` builds and passes stub tile list; camera bounds derived from tile extents.
-8. **Next LibGDX follow-up** — expand authored production-client geometry, authored placement, and state fidelity now that the HUD/modal overlay stack is in place, without broadening into full art migration.
+8. **Next LibGDX follow-up** — keep expanding authored production-client geometry, authored placement, content-complete interaction flow, and state fidelity in `runGame`, without broadening into full art migration.

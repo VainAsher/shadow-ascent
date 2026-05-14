@@ -86,6 +86,7 @@ public final class ShadowAscentGame extends Game {
     @Override
     public void dispose() {
         super.dispose();
+        if (audioManager != null) audioManager.dispose();
         if (uiShapes != null) uiShapes.dispose();
         if (uiFont != null) uiFont.dispose();
         if (batch != null) batch.dispose();
