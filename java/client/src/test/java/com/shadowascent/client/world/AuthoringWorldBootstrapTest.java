@@ -51,6 +51,8 @@ final class AuthoringWorldBootstrapTest {
 
         assertEquals("area_hollow_depths_caves", profile.areaId());
         assertTrue(profile.enemyPlacements().stream().anyMatch(enemy -> "bat".equals(enemy.enemyType())));
+        assertTrue(profile.npcPlacements().stream().anyMatch(npc -> "SHADE_HERMIT".equals(npc.npcId())));
+        assertFalse(profile.npcPlacements().stream().anyMatch(npc -> "ADVOCATE".equals(npc.npcId())));
     }
 
     @Test
@@ -66,5 +68,23 @@ final class AuthoringWorldBootstrapTest {
 
         assertEquals("area_weightbound_mines_arena", profile.areaId());
         assertTrue(profile.enemyPlacements().stream().anyMatch(enemy -> "ogre".equals(enemy.enemyType())));
+    }
+
+    @Test
+    void firstSparksAreaFocusesOnSmithMonkInsteadOfWholePlateauRoster() {
+        GameState gameState = new GameState();
+        gameState.getStoryState().setFlag("act2_unlocked");
+        gameState.getStoryState().setFlag("awoke_in_depths");
+        gameState.getStoryState().setFlag("hollow_weight_understood");
+        gameState.getStoryState().setFlag("weightbound_ogre_defeated");
+        gameState.getStoryState().setPlateau(com.shadowascent.core.StoryState.Plateau.HOLLOW_DEPTHS);
+        gameState.getHubManager().updateHubState();
+
+        RunGameContentProfile profile = new AuthoringWorldBootstrap().bootstrap(gameState);
+
+        assertEquals("area_hollow_hub_first_sparks", profile.areaId());
+        assertTrue(profile.npcPlacements().stream().anyMatch(npc -> "SMITH_MONK".equals(npc.npcId())));
+        assertFalse(profile.npcPlacements().stream().anyMatch(npc -> "LISTENING_ELDER".equals(npc.npcId())));
+        assertFalse(profile.npcPlacements().stream().anyMatch(npc -> "ADVOCATE".equals(npc.npcId())));
     }
 }

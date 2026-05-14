@@ -18,7 +18,7 @@ This repository is the canonical build destination for the game vision, using pr
 - **M4 Campaign Completion and Content Scale:** active.
 - **M5 Systemic World Simulation Foundation:** completed.
 - **M6 Open-World Runtime Expansion:** active.
-- **Production Client:** LibGDX `runGame` is now the primary forward runtime and QA surface. It includes a title/new-game/continue flow, persistent HUD, toggleable minimap, dialogue modal, pause/save/load flow, modal inventory/shop/crafting overlays, registry-backed audio event routing, contextual interaction hints, and a deeper authored Hollow Depths bootstrap path on top of the atlas-backed placeholder rendering route. `runPlayableClient` is retained as a legacy Swing reference/intermediary layer, not the main forward play surface.
+- **Production Client:** LibGDX `runGame` is now the primary forward runtime and QA surface. It includes a title/new-game/continue flow, persistent HUD, toggleable minimap, dialogue modal, pause/save/load flow, modal inventory/shop/crafting overlays, audible placeholder SFX/music via the runtime audio registry, contextual interaction hints, and a deeper authored Hollow Depths bootstrap path with area-specific NPC presence on top of the atlas-backed placeholder rendering route. `runPlayableClient` is retained as a legacy Swing reference/intermediary layer, not the main forward play surface.
 
 ## Repository Structure
 

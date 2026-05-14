@@ -210,6 +210,10 @@ Canonical runtime and execution snapshot for the clean-start repository.
   - `AuthoringWorldBootstrap` now exposes a broader Hollow Depths slice with area-specific geometry, spawn points, NPC anchor placement, and enemy placement for `area_hollow_depths_camp`, `area_hollow_depths_caves`, `area_echo_galleries`, `area_weightbound_mines_arena`, `area_hollow_hub_first_sparks`, `area_shatter_moth_nest`, `area_fractured_contact_high_winds`, `area_stone_judge_maze`, and `area_abyssal_gate`,
   - `runGame` HUD mission surfacing now prefers plateau-relevant available missions and unresolved authored plateau beats over cross-plateau generic availability when no mission is active,
   - `runGame` is now the primary forward QA surface; `runPlayableClient` is retained as a legacy Swing prototype/reference layer rather than the lead play surface.
+- LibGDX audio and authored-area presence follow-up (2026-05-14):
+  - runtime placeholder WAV assets now ship in `java/client/src/main/resources/audio/`, which makes the existing audio routing audible in `runGame` for title, Lantern Heights, Hollow Depths, Ember Monastery, player hurt, enemy defeat, and portal activation events,
+  - `AudioManager` now selects title music and plateau-aware gameplay music keys rather than treating music as a single fallback slot,
+  - Hollow authored area placement is now stricter about which NPCs belong in which room-sized slice, so areas like `area_hollow_hub_first_sparks` and `area_hollow_depths_caves` stop inheriting the whole active plateau roster when the authored beat implies a smaller cast.
 - M4 SUMMIT_SHRINE content authoring (2026-05-09):
   - 5 critical narrative beats in `narrative_beats.json` (`beat_empty_hub_only_maiden` → `beat_aen_hollowed`, route_order 100–140),
   - NPC registry entries (YIN, YANG, VEIL_MAIDEN, SIREN_OF_MASKS with role/eligibility); SIREN_OF_MASKS encounter block (scripted_loss, force-loss at tick 510, 4-event timeline),

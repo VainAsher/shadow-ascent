@@ -147,9 +147,14 @@ public final class ShadowAscentGame extends Game {
         }
     }
 
+    public void activateTitleMusic() {
+        audioManager.activateTitleMusic();
+    }
+
     private void createGameplaySession(GameState sessionState) {
         gameState = sessionState;
         contentProfile = new AuthoringWorldBootstrap().bootstrap(gameState);
+        audioManager.activatePlateauMusic(contentProfile.plateauId());
         worldTiles = Collections.unmodifiableList(contentProfile.worldTiles());
 
         CollisionWorld collisionWorld = new CollisionWorld();

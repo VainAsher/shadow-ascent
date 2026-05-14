@@ -8,8 +8,10 @@ import com.shadowascent.core.physics.TileRect;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public final class AuthoringWorldBootstrap {
     private static final float FLOOR_Y = 360f;
@@ -146,6 +148,7 @@ public final class AuthoringWorldBootstrap {
             String areaId,
             String plateauId) {
         List<String> orderedNpcIds = orderedNpcIdsForCurrentBeat(gameState);
+        Set<String> areaNpcFilter = areaNpcFilter(areaId);
         List<RunGameContentProfile.NpcPlacement> placements = new ArrayList<>();
 
         Map<String, Float> preferredX = preferredNpcX(areaId);
@@ -165,7 +168,13 @@ public final class AuthoringWorldBootstrap {
         int index = 0;
         for (String npcId : orderedNpcIds) {
             NPC npc = gameState.getStoryState().getNPC(npcId);
-            if (npc == null || !npc.isActive()) {
+            if (npc == null) {
+                continue;
+            }
+            if (!areaNpcFilter.isEmpty() && !areaNpcFilter.contains(npc.getId())) {
+                continue;
+            }
+            if (!npc.isActive() && areaNpcFilter.isEmpty()) {
                 continue;
             }
             String role = npc.getAllowedRoles().stream().sorted().findFirst().orElse("npc");
@@ -192,8 +201,11 @@ public final class AuthoringWorldBootstrap {
                 orderedIds.add(npcId);
             }
         });
-        gameState.getDataContracts().nextCriticalBeat(gameState.getStoryState())
-                .ifPresent(beat -> orderedIds.addAll(beat.npcIds()));
+        runtimeOrderedBeatNpcs(gameState).forEach(npcId -> {
+            if (!orderedIds.contains(npcId)) {
+                orderedIds.add(npcId);
+            }
+        });
 
         gameState.getStoryState().getAllNPCs().values().stream()
                 .filter(NPC::isActive)
@@ -205,6 +217,41 @@ public final class AuthoringWorldBootstrap {
                     }
                 });
         return List.copyOf(orderedIds);
+    }
+
+    private static List<String> runtimeOrderedBeatNpcs(GameState gameState) {
+        if (gameState == null) {
+            return List.of();
+        }
+        Set<String> ordered = new LinkedHashSet<>();
+        gameState.getDataContracts().beatsForPlateau(gameState.getStoryState().getCurrentPlateau().name()).stream()
+                .filter(beat -> {
+                    String beatType = beat.beatType() == null ? "" : beat.beatType().trim().toLowerCase();
+                    return beat.isCriticalPathBeat() || switch (beatType) {
+                        case "adaptable_authored", "authored_support", "recovery", "unlock" -> true;
+                        default -> false;
+                    };
+                })
+                .filter(beat -> beat.requiredFlags().stream().allMatch(gameState.getStoryState()::hasFlag))
+                .filter(beat -> beat.setFlags().isEmpty()
+                        || beat.setFlags().stream().anyMatch(flag -> !gameState.getStoryState().hasFlag(flag)))
+                .sorted(Comparator.comparingInt(com.shadowascent.core.data.BeatDefinition::routeOrder)
+                        .thenComparing(com.shadowascent.core.data.BeatDefinition::id))
+                .findFirst()
+                .ifPresent(beat -> ordered.addAll(beat.npcIds()));
+        return List.copyOf(ordered);
+    }
+
+    private static Set<String> areaNpcFilter(String areaId) {
+        return switch (areaId) {
+            case "area_hollow_depths_caves" -> Set.of("SHADE_HERMIT", "LISTENING_ELDER");
+            case "area_weightbound_mines_arena" -> Set.of("SHADE_HERMIT");
+            case "area_hollow_hub_first_sparks" -> Set.of("SMITH_MONK");
+            case "area_shatter_moth_nest" -> Set.of("SHADE_HERMIT");
+            case "area_stone_judge_maze" -> Set.of("ADVOCATE");
+            case "area_abyssal_gate" -> Set.of("SHADE_HERMIT", "ADVOCATE");
+            default -> Set.of();
+        };
     }
 
     private static Map<String, Float> preferredNpcX(String areaId) {

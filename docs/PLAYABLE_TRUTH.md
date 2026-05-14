@@ -52,7 +52,7 @@ Pass criteria live in [ACT_I_QA_ROUTE.md](ACT_I_QA_ROUTE.md).
 | --- | --- | --- |
 | Campaign content breadth | Partial | Runtime spine exists, but content scale is not the current proof target |
 | Combat depth | Partial | The bounded encounter loop is present, but not yet representative of the full intended combat game |
-| LibGDX production client | Active primary surface | `runGame` now renders atlas-backed placeholder sprites plus a title/new-game/continue flow, persistent HUD, toggleable minimap, dialogue modal, pause/save/load flow, modal inventory/shop/crafting overlays, registry-backed audio event routing, deeper Hollow Depths authored bootstrap, and explicit interaction hints. It is now the correct forward QA surface, even though content density and authored geometry breadth are still expanding |
+| LibGDX production client | Active primary surface | `runGame` now renders atlas-backed placeholder sprites plus a title/new-game/continue flow, persistent HUD, toggleable minimap, dialogue modal, pause/save/load flow, modal inventory/shop/crafting overlays, audible placeholder audio, deeper Hollow Depths authored bootstrap, tighter area-authored NPC presence, and explicit interaction hints. It is now the correct forward QA surface, even though content density and authored geometry breadth are still expanding |
 | Open-world systemic simulation | Active expansion lane | M6 is active, but it should be judged as foundation work, not finished player-facing design |
 
 ## What Is Scaffolded Or Experimental

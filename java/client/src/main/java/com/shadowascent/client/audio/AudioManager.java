@@ -1,6 +1,7 @@
 package com.shadowascent.client.audio;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.shadowascent.core.simulation.SimEvent;
 
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,9 +22,12 @@ public final class AudioManager {
     private final Map<String, String> soundPaths;
     private final Map<String, String> musicPaths;
     private final Map<String, Sound> cachedSounds = new LinkedHashMap<>();
+    private Music activeMusic;
 
     private String lastResolvedSoundKey;
     private String lastResolvedSoundPath;
+    private String lastResolvedMusicKey;
+    private String lastResolvedMusicPath;
 
     public AudioManager() {
         Registry registry = loadRegistry();
@@ -62,6 +67,14 @@ public final class AudioManager {
         return lastResolvedSoundPath;
     }
 
+    public String lastResolvedMusicKey() {
+        return lastResolvedMusicKey;
+    }
+
+    public String lastResolvedMusicPath() {
+        return lastResolvedMusicPath;
+    }
+
     public void processEvents(List<SimEvent> events) {
         String soundKey = resolveSoundKey(events);
         if (soundKey != null) {
@@ -71,7 +84,39 @@ public final class AudioManager {
         }
     }
 
+    public String selectMusicKeyForTitle() {
+        return "title";
+    }
+
+    public String selectMusicKeyForPlateau(String plateauId) {
+        if (plateauId == null || plateauId.isBlank()) {
+            return "lantern_heights";
+        }
+        return switch (plateauId.trim().toUpperCase(Locale.ROOT)) {
+            case "HOLLOW_DEPTHS" -> "hollow_depths";
+            case "EMBER_MONASTERY" -> "ember_monastery";
+            default -> "lantern_heights";
+        };
+    }
+
+    public void activateTitleMusic() {
+        activateMusic(selectMusicKeyForTitle());
+    }
+
+    public void activatePlateauMusic(String plateauId) {
+        activateMusic(selectMusicKeyForPlateau(plateauId));
+    }
+
+    public void stopMusic() {
+        if (activeMusic != null) {
+            activeMusic.stop();
+            activeMusic.dispose();
+            activeMusic = null;
+        }
+    }
+
     public void dispose() {
+        stopMusic();
         for (Sound sound : cachedSounds.values()) {
             sound.dispose();
         }
@@ -92,6 +137,31 @@ public final class AudioManager {
         Sound sound = cachedSounds.computeIfAbsent(soundKey,
                 ignored -> Gdx.audio.newSound(Gdx.files.internal(soundPath)));
         sound.play(0.45f);
+    }
+
+    private void activateMusic(String musicKey) {
+        String previousKey = lastResolvedMusicKey;
+        String resolvedPath = resolveMusicPath(musicKey);
+        lastResolvedMusicKey = musicKey;
+        lastResolvedMusicPath = resolvedPath;
+        if (musicKey == null || musicKey.isBlank() || resolvedPath == null || resolvedPath.isBlank()) {
+            return;
+        }
+        if (musicKey.equals(previousKey) && activeMusic != null) {
+            return;
+        }
+        if (Gdx.app == null || Gdx.audio == null || Gdx.files == null) {
+            return;
+        }
+        if (!Gdx.files.internal(resolvedPath).exists()) {
+            return;
+        }
+
+        stopMusic();
+        activeMusic = Gdx.audio.newMusic(Gdx.files.internal(resolvedPath));
+        activeMusic.setLooping(true);
+        activeMusic.setVolume(0.35f);
+        activeMusic.play();
     }
 
     private static Registry loadRegistry() {

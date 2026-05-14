@@ -22,6 +22,7 @@ public final class TitleScreen extends ScreenAdapter {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(null);
+        game.activateTitleMusic();
     }
 
     @Override

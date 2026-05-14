@@ -1,10 +1,13 @@
 {
   "sfx": {
-    "player_hurt": "audio/sfx/player_hurt.ogg",
-    "enemy_defeated": "audio/sfx/enemy_defeated.ogg",
-    "portal_activate": "audio/sfx/portal_activate.ogg"
+    "player_hurt": "audio/sfx/player_hurt.wav",
+    "enemy_defeated": "audio/sfx/enemy_defeated.wav",
+    "portal_activate": "audio/sfx/portal_activate.wav"
   },
   "music": {
-    "hub": "audio/music/hub.ogg"
+    "title": "audio/music/title.wav",
+    "lantern_heights": "audio/music/lantern_heights.wav",
+    "hollow_depths": "audio/music/hollow_depths.wav",
+    "ember_monastery": "audio/music/ember_monastery.wav"
   }
 }
