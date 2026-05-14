@@ -62,6 +62,12 @@ public final class SimPlayer {
     public int     attackActiveTicks = 0;
     public float   attackCooldown    = 0f;
     public boolean meleeHitConsumed  = false;
+    public int     attackAimX        = 1;
+    public int     attackAimY        = 0;
+    public int     comboStep         = 0;
+    public boolean comboQueued       = false;
+    public int     queuedAttackAimX  = 1;
+    public int     queuedAttackAimY  = 0;
     public boolean prevAttack        = false;
     public boolean pendingShuriken   = false;
     public boolean isBlocking        = false;
@@ -85,6 +91,7 @@ public final class SimPlayer {
     public static final float MELEE_COOLDOWN       = 0.4f;
     public static final float MELEE_REACH          = 48f;
     public static final float MELEE_HEIGHT         = 40f;
+    public static final int   MAX_COMBO_STEPS      = 2;
     public static final float SHURIKEN_SPEED       = 10f;
     public static final float SHURIKEN_COOLDOWN    = 0.35f;
     public static final int   SHURIKEN_DAMAGE      = 1;

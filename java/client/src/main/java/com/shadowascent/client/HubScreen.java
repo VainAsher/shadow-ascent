@@ -24,6 +24,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * LibGDX game screen — ticks GameSimulator, drains events, renders entities via StubWorldRenderer.
@@ -118,6 +119,16 @@ final class HubScreen implements Screen {
                 appendEventFeedLine("Shop: " + game.hubShop.npcId + " opened.");
                 openedShopThisFrame = true;
                 activeOverlay = OverlayType.SHOP;
+            } else {
+                RunGameAreaTransition.TraversalResult traversalResult =
+                        RunGameAreaTransition.tryTraverse(gameState, game.contentProfile, hudPlayer);
+                if (traversalResult.feedLine() != null) {
+                    appendEventFeedLine(traversalResult.feedLine());
+                }
+                if (traversalResult.transitioned()) {
+                    game.refreshGameplaySession();
+                    return;
+                }
             }
         }
         if (game.inputProcessor.consumeMinimapTogglePressed()) {
@@ -516,6 +527,12 @@ final class HubScreen implements Screen {
         }
         if (nearMerchant(player)) {
             return "[E] Open merchant stock";
+        }
+        if (game.contentProfile != null) {
+            Optional<String> gatePrompt = RunGameAreaTransition.describeNearbyGate(gameState, game.contentProfile, player);
+            if (gatePrompt.isPresent()) {
+                return gatePrompt.get();
+            }
         }
         return "Explore east through traversal rooms.";
     }

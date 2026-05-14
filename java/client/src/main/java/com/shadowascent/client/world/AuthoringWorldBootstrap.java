@@ -33,6 +33,7 @@ public final class AuthoringWorldBootstrap {
         List<TileRect> worldTiles = buildTilesForArea(areaId, plateauId);
         List<RunGameContentProfile.NpcPlacement> npcPlacements = buildNpcPlacements(gameState, areaId, plateauId);
         List<RunGameContentProfile.EnemyPlacement> enemyPlacements = buildEnemyPlacements(areaId, plateauId);
+        List<RunGameContentProfile.AreaGate> areaGates = buildAreaGates(areaId, plateauId);
         String merchantNpcId = npcPlacements.stream()
                 .map(RunGameContentProfile.NpcPlacement::npcId)
                 .filter("MERCHANT_RILU"::equals)
@@ -65,7 +66,8 @@ public final class AuthoringWorldBootstrap {
                 List.copyOf(worldTiles),
                 List.copyOf(npcPlacements),
                 List.copyOf(enemyPlacements),
-                merchantNpcId);
+                merchantNpcId,
+                List.copyOf(areaGates));
     }
 
     private static List<TileRect> buildTilesForArea(String areaId, String plateauId) {
@@ -346,5 +348,54 @@ public final class AuthoringWorldBootstrap {
             enemies.add(new RunGameContentProfile.EnemyPlacement("goblin_1", "goblin", 600f, 280f));
         }
         return enemies;
+    }
+
+    private static List<RunGameContentProfile.AreaGate> buildAreaGates(String areaId, String plateauId) {
+        if (!"HOLLOW_DEPTHS".equals(plateauId)) {
+            return List.of();
+        }
+
+        return switch (areaId) {
+            case "area_hollow_depths_camp" -> List.of(
+                    gate("gate_hollow_camp_descent", "Descend to Hollow Caves", 1500f, 1680f,
+                            "area_hollow_depths_caves", List.of("act2_unlocked"), List.of("awoke_in_depths"))
+            );
+            case "area_hollow_depths_caves" -> List.of(
+                    gate("gate_hollow_caves_weight", "Push to Weightbound Arena", 1480f, 1660f,
+                            "area_weightbound_mines_arena", List.of("awoke_in_depths"), List.of("hollow_weight_understood"))
+            );
+            case "area_weightbound_mines_arena" -> List.of(
+                    gate("gate_weightbound_first_sparks", "Reach First Sparks", 1340f, 1520f,
+                            "area_hollow_hub_first_sparks", List.of("hollow_weight_understood"), List.of("weightbound_ogre_defeated"))
+            );
+            case "area_hollow_hub_first_sparks" -> List.of(
+                    gate("gate_first_sparks_shatter", "Dash into Shatter Moth Nest", 1260f, 1440f,
+                            "area_shatter_moth_nest", List.of("weightbound_ogre_defeated"), List.of("dash_restored"))
+            );
+            case "area_shatter_moth_nest" -> List.of(
+                    gate("gate_shatter_fractured", "Cross to Fractured Contact", 1280f, 1460f,
+                            "area_fractured_contact_high_winds", List.of("dash_restored"), List.of("shatter_moth_defeated"))
+            );
+            case "area_fractured_contact_high_winds" -> List.of(
+                    gate("gate_fractured_stone_judge", "Advance to Stone Judge Maze", 1420f, 1600f,
+                            "area_stone_judge_maze", List.of("shatter_moth_defeated"), List.of("double_jump_restored"))
+            );
+            case "area_stone_judge_maze" -> List.of(
+                    gate("gate_stone_judge_abyss", "Open the Abyssal Gate", 1320f, 1500f,
+                            "area_abyssal_gate", List.of("double_jump_restored"), List.of("stone_judge_defeated"))
+            );
+            default -> List.of();
+        };
+    }
+
+    private static RunGameContentProfile.AreaGate gate(
+            String gateId,
+            String label,
+            float minX,
+            float maxX,
+            String targetAreaId,
+            List<String> requiredFlags,
+            List<String> setFlags) {
+        return new RunGameContentProfile.AreaGate(gateId, label, minX, maxX, targetAreaId, requiredFlags, setFlags);
     }
 }

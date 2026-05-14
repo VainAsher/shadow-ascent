@@ -212,17 +212,37 @@ public final class GameSimulator {
             return;
         }
 
-        float hitboxX = player.facing >= 0
-                ? player.physics.x + player.physics.width
-                : player.physics.x - SimPlayer.MELEE_REACH;
-        float hitboxY = player.physics.y + Math.max(0f, (player.physics.height - SimPlayer.MELEE_HEIGHT) * 0.5f);
+        float hitboxX;
+        float hitboxY;
+        float hitboxWidth;
+        float hitboxHeight;
+        if (player.attackAimY < 0) {
+            hitboxWidth = SimPlayer.MELEE_HEIGHT;
+            hitboxHeight = SimPlayer.MELEE_REACH;
+            hitboxX = player.physics.x + (player.physics.width - hitboxWidth) * 0.5f;
+            hitboxY = player.physics.y - hitboxHeight;
+        } else if (player.attackAimY > 0) {
+            hitboxWidth = SimPlayer.MELEE_REACH;
+            hitboxHeight = SimPlayer.MELEE_HEIGHT;
+            hitboxX = player.attackAimX >= 0
+                    ? player.physics.x + player.physics.width * 0.35f
+                    : player.physics.x - hitboxWidth + player.physics.width * 0.65f;
+            hitboxY = player.physics.y + player.physics.height - hitboxHeight * 0.75f;
+        } else {
+            hitboxWidth = SimPlayer.MELEE_REACH;
+            hitboxHeight = SimPlayer.MELEE_HEIGHT;
+            hitboxX = player.attackAimX >= 0
+                    ? player.physics.x + player.physics.width
+                    : player.physics.x - hitboxWidth;
+            hitboxY = player.physics.y + Math.max(0f, (player.physics.height - hitboxHeight) * 0.5f);
+        }
         int damage = SimPlayer.MELEE_DAMAGE + Math.max(0, player.inventory.totalAttackBonus());
 
         for (SimEnemy enemy : enemies) {
             if (!enemy.isAlive()) {
                 continue;
             }
-            if (!overlaps(hitboxX, hitboxY, SimPlayer.MELEE_REACH, SimPlayer.MELEE_HEIGHT,
+            if (!overlaps(hitboxX, hitboxY, hitboxWidth, hitboxHeight,
                     enemy.physics.x, enemy.physics.y, enemy.physics.width, enemy.physics.height)) {
                 continue;
             }

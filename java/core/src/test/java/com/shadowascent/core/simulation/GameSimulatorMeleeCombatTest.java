@@ -56,6 +56,57 @@ final class GameSimulatorMeleeCombatTest {
         assertEquals(hpAfterFirstTick, enemy.hp);
     }
 
+    @Test
+    void upwardAttackHitsEnemyAboveInsteadOfEnemyDirectlyInFront() {
+        GameSimulator simulator = new GameSimulator();
+        simulator.addPlayer("player", 0, 100f, 300f);
+        simulator.addEnemy("front_enemy", "goblin", 132f, 300f);
+        simulator.addEnemy("above_enemy", "goblin", 108f, 252f);
+
+        InputCommand attack = InputCommand.neutral(1);
+        attack.attack = true;
+        attack.up = true;
+        simulator.applyInput("player", attack);
+        simulator.tick(1f / 60f);
+
+        SimEnemy frontEnemy = enemy(simulator, "front_enemy");
+        SimEnemy aboveEnemy = enemy(simulator, "above_enemy");
+
+        assertEquals(frontEnemy.maxHp, frontEnemy.hp);
+        assertEquals(aboveEnemy.maxHp - SimPlayer.MELEE_DAMAGE, aboveEnemy.hp);
+    }
+
+    @Test
+    void queuedComboStartsSecondSwingAndDealsSecondHit() {
+        GameSimulator simulator = new GameSimulator();
+        simulator.addPlayer("player", 0, 100f, 300f);
+        simulator.addEnemy("front_enemy", "slime", 132f, 300f);
+
+        InputCommand firstAttack = InputCommand.neutral(1);
+        firstAttack.attack = true;
+        simulator.applyInput("player", firstAttack);
+        simulator.tick(1f / 60f);
+
+        simulator.applyInput("player", InputCommand.neutral(2));
+        simulator.tick(1f / 60f);
+
+        InputCommand queuedAttack = InputCommand.neutral(3);
+        queuedAttack.attack = true;
+        simulator.applyInput("player", queuedAttack);
+        simulator.tick(1f / 60f);
+
+        for (int i = 0; i < SimPlayer.MELEE_ACTIVE_TICKS + 6; i++) {
+            simulator.applyInput("player", InputCommand.neutral(4 + i));
+            simulator.tick(1f / 60f);
+        }
+
+        SimEnemy enemy = enemy(simulator, "front_enemy");
+        SimPlayer player = simulator.getPlayer("player");
+
+        assertEquals(enemy.maxHp - 2, enemy.hp);
+        assertFalse(player.isAttacking);
+    }
+
     private static SimEnemy enemy(GameSimulator simulator, String enemyId) {
         return simulator.getEnemies().stream()
                 .filter(enemy -> enemyId.equals(enemy.enemyId))

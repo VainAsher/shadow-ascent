@@ -120,6 +120,11 @@ public final class ShadowAscentGame extends Game {
         setScreen(titleScreen);
     }
 
+    public void refreshGameplaySession() {
+        createGameplaySession(gameState);
+        setScreen(new HubScreen(this, gameState));
+    }
+
     public boolean hasContinueSave() {
         return Files.exists(RUN_GAME_SAVE_PATH) && Files.exists(runGameRuntimeSavePath());
     }

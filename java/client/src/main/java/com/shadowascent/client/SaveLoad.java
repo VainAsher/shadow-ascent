@@ -180,6 +180,12 @@ final class SaveLoad {
         player.attackActiveTicks = 0;
         player.attackCooldown = 0f;
         player.meleeHitConsumed = false;
+        player.attackAimX = player.facing >= 0 ? 1 : -1;
+        player.attackAimY = 0;
+        player.comboStep = 0;
+        player.comboQueued = false;
+        player.queuedAttackAimX = player.attackAimX;
+        player.queuedAttackAimY = 0;
         player.isDashing = false;
         player.dashTimer = 0f;
         player.prevAttack = false;

@@ -98,7 +98,16 @@ public final class PlayerInputController {
         // ── Attack / throw cooldowns ───────────────────────────────────────────
         if (sp.attackActiveTicks > 0) {
             sp.attackActiveTicks--;
-            if (sp.attackActiveTicks == 0) sp.isAttacking = false;
+            if (sp.attackActiveTicks == 0) {
+                if (sp.comboQueued && sp.comboStep < SimPlayer.MAX_COMBO_STEPS) {
+                    startMeleeAttack(sp, sp.comboStep + 1, sp.queuedAttackAimX, sp.queuedAttackAimY);
+                    sp.comboQueued = false;
+                } else {
+                    sp.isAttacking = false;
+                    sp.comboStep = 0;
+                    sp.comboQueued = false;
+                }
+            }
         }
         if (sp.attackCooldown > 0f) sp.attackCooldown -= DT;
         if (sp.throwCooldown  > 0f) {
@@ -368,13 +377,16 @@ public final class PlayerInputController {
         }
 
         // ── Melee attack ───────────────────────────────────────────────────────
-        if (attackJustPressed && sp.attackCooldown <= 0f && !sp.isAttacking) {
-            sp.isAttacking       = true;
-            sp.attackActiveTicks = SimPlayer.MELEE_ACTIVE_TICKS;
-            sp.attackCooldown    = SimPlayer.MELEE_COOLDOWN;
-            sp.meleeHitConsumed  = false;
-            sp.lastMeaningfulActionTimer = FLOW_RECENCY_WINDOW;
-            emitNoise(sp, NOISE_ATTACK_MELEE);
+        if (attackJustPressed) {
+            int aimX = resolveAttackAimX(sp, cmd);
+            int aimY = resolveAttackAimY(cmd);
+            if (sp.isAttacking && sp.comboStep > 0 && sp.comboStep < SimPlayer.MAX_COMBO_STEPS) {
+                sp.comboQueued = true;
+                sp.queuedAttackAimX = aimX;
+                sp.queuedAttackAimY = aimY;
+            } else if (sp.attackCooldown <= 0f && !sp.isAttacking) {
+                startMeleeAttack(sp, 1, aimX, aimY);
+            }
         }
 
         // ── Shuriken throw ─────────────────────────────────────────────────────
@@ -462,6 +474,39 @@ public final class PlayerInputController {
         if (level <= 0f) return;
         sp.noiseLevel  = Math.max(sp.noiseLevel, level);
         sp.noiseRadius = sp.noiseLevel * MAX_NOISE_RADIUS;
+    }
+
+    private static void startMeleeAttack(SimPlayer sp, int comboStep, int aimX, int aimY) {
+        sp.isAttacking = true;
+        sp.attackActiveTicks = SimPlayer.MELEE_ACTIVE_TICKS;
+        sp.attackCooldown = SimPlayer.MELEE_COOLDOWN;
+        sp.meleeHitConsumed = false;
+        sp.comboStep = comboStep;
+        sp.attackAimX = aimX;
+        sp.attackAimY = aimY;
+        sp.comboQueued = false;
+        sp.lastMeaningfulActionTimer = FLOW_RECENCY_WINDOW;
+        emitNoise(sp, NOISE_ATTACK_MELEE);
+    }
+
+    private static int resolveAttackAimX(SimPlayer sp, InputCommand cmd) {
+        if (cmd.left && !cmd.right) {
+            return -1;
+        }
+        if (cmd.right && !cmd.left) {
+            return 1;
+        }
+        return sp.facing >= 0 ? 1 : -1;
+    }
+
+    private static int resolveAttackAimY(InputCommand cmd) {
+        if (cmd.up && !cmd.down) {
+            return -1;
+        }
+        if (cmd.down && !cmd.up) {
+            return 1;
+        }
+        return 0;
     }
 
     private static boolean isInFlow(SimPlayer sp) {
