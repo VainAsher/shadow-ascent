@@ -211,6 +211,13 @@ public final class GameDataContracts {
         return Optional.ofNullable(beatsById.get(beatId));
     }
 
+    public Optional<DialogueLineDefinition> dialogueLine(String dialogueId) {
+        if (dialogueId == null || dialogueId.isBlank()) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(dialogueLinesById.get(dialogueId));
+    }
+
     public List<BeatDefinition> beatsForPlateau(String plateauId) {
         return beatsByPlateau.getOrDefault(normalize(plateauId), List.of());
     }

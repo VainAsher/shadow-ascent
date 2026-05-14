@@ -252,7 +252,7 @@ public final class GameSimulator {
             emit("ENEMY_DAMAGED", enemy.enemyId,
                     Map.of("source", "player_melee", "playerId", player.playerId, "dmg", damage));
             emit("PLAYER_MELEE_HIT", player.playerId,
-                    Map.of("enemyId", enemy.enemyId, "dmg", damage));
+                    Map.of("enemyId", enemy.enemyId, "dmg", damage, "comboStep", player.comboStep));
             if (died) {
                 emit("ENEMY_DEFEATED", enemy.enemyId, Map.of("killedBy", player.playerId));
             }

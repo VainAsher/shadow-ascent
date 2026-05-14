@@ -3,6 +3,7 @@ package com.shadowascent.client.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.shadowascent.client.world.RunGameContentProfile;
 import com.shadowascent.core.physics.TileRect;
 import com.shadowascent.core.simulation.GameSimulator;
 import com.shadowascent.core.simulation.SimPlayer;
@@ -22,7 +23,13 @@ public final class MinimapOverlayRenderer {
         this.shapes = shapes;
     }
 
-    public void render(HudOverlayState state, GameSimulator simulator, List<TileRect> worldTiles, float x, float y) {
+    public void render(
+            HudOverlayState state,
+            GameSimulator simulator,
+            List<TileRect> worldTiles,
+            RunGameContentProfile contentProfile,
+            float x,
+            float y) {
         if (!state.showMinimap()) {
             return;
         }
@@ -80,6 +87,16 @@ public final class MinimapOverlayRenderer {
             );
             shapes.rect(markerX, markerY, MARKER_SIZE, MARKER_SIZE);
         }
+        if (contentProfile != null) {
+            shapes.setColor(UiPalette.WARNING);
+            for (RunGameContentProfile.AreaGate gate : contentProfile.areaGates()) {
+                float gateX = mapGateCoordinate(
+                        gate.minX(), gate.maxX(), minX, scale, contentX, offsetX, contentWidth, drawWidth, MARKER_SIZE
+                );
+                float gateY = contentY + contentHeight - MARKER_SIZE - 6f;
+                shapes.rect(gateX, gateY, MARKER_SIZE, MARKER_SIZE);
+            }
+        }
         shapes.end();
 
         shapes.begin(ShapeRenderer.ShapeType.Line);
@@ -115,5 +132,18 @@ public final class MinimapOverlayRenderer {
                 drawStart + Math.max(0f, drawSize - markerSize)
         );
         return Math.max(minStart, Math.min(mapped, maxStart));
+    }
+
+    static float mapGateCoordinate(float gateMinX,
+                                   float gateMaxX,
+                                   float worldMin,
+                                   float scale,
+                                   float contentStart,
+                                   float drawStart,
+                                   float contentSize,
+                                   float drawSize,
+                                   float markerSize) {
+        float center = (gateMinX + gateMaxX) * 0.5f;
+        return mapMarkerCoordinate(center, worldMin, scale, contentStart, drawStart, contentSize, drawSize, markerSize);
     }
 }

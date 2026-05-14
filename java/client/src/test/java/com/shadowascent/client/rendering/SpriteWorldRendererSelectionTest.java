@@ -60,6 +60,11 @@ final class SpriteWorldRendererSelectionTest {
         attacking.isAttacking = true;
         assertEquals(new Color(1f, 0.88f, 0.68f, 1f), method.invoke(null, attacking));
 
+        SimPlayer comboAttacking = new SimPlayer("combo", 0, 0f, 0f);
+        comboAttacking.isAttacking = true;
+        comboAttacking.comboStep = 2;
+        assertEquals(new Color(1f, 0.76f, 0.52f, 1f), method.invoke(null, comboAttacking));
+
         SimPlayer wall = new SimPlayer("wall", 0, 0f, 0f);
         wall.isWallSliding = true;
         assertEquals(new Color(0.86f, 0.86f, 1f, 1f), method.invoke(null, wall));

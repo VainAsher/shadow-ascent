@@ -4,6 +4,7 @@ import com.shadowascent.client.world.AuthoringWorldBootstrap;
 import com.shadowascent.client.world.RunGameContentProfile;
 import com.shadowascent.core.GameState;
 import com.shadowascent.core.StoryState;
+import com.shadowascent.core.simulation.GameSimulator;
 import com.shadowascent.core.simulation.SimPlayer;
 import org.junit.jupiter.api.Test;
 
@@ -24,9 +25,10 @@ final class RunGameAreaTransitionTest {
         RunGameContentProfile profile = bootstrap.bootstrap(gameState);
         SimPlayer player = new SimPlayer("player", 0, profile.playerSpawnX(), profile.playerSpawnY());
         player.physics.x = 1540f;
+        GameSimulator simulator = new GameSimulator();
 
         RunGameAreaTransition.TraversalResult result =
-                RunGameAreaTransition.tryTraverse(gameState, profile, player);
+                RunGameAreaTransition.tryTraverse(gameState, profile, player, simulator);
 
         assertTrue(result.transitioned());
         assertTrue(gameState.getStoryState().hasFlag("awoke_in_depths"));
@@ -40,6 +42,38 @@ final class RunGameAreaTransitionTest {
         SimPlayer player = new SimPlayer("player", 0, profile.playerSpawnX(), profile.playerSpawnY());
         player.physics.x = 80f;
 
-        assertFalse(RunGameAreaTransition.describeNearbyGate(gameState, profile, player).isPresent());
+        assertFalse(RunGameAreaTransition.describeNearbyGate(gameState, profile, player, new GameSimulator()).isPresent());
+    }
+
+    @Test
+    void weightboundGateStaysBlockedUntilArenaEnemiesAreCleared() {
+        GameState gameState = new GameState();
+        gameState.getStoryState().setFlag("act2_unlocked");
+        gameState.getStoryState().setFlag("awoke_in_depths");
+        gameState.getStoryState().setFlag("hollow_weight_understood");
+        gameState.getStoryState().setPlateau(StoryState.Plateau.HOLLOW_DEPTHS);
+        gameState.getHubManager().updateHubState();
+
+        AuthoringWorldBootstrap bootstrap = new AuthoringWorldBootstrap();
+        RunGameContentProfile profile = bootstrap.bootstrap(gameState);
+        SimPlayer player = new SimPlayer("player", 0, profile.playerSpawnX(), profile.playerSpawnY());
+        player.physics.x = 1360f;
+        GameSimulator simulator = new GameSimulator();
+        simulator.addEnemy("weightbound_ogre", "goblin", 860f, 270f);
+
+        RunGameAreaTransition.TraversalResult blocked =
+                RunGameAreaTransition.tryTraverse(gameState, profile, player, simulator);
+
+        assertTrue(blocked.blocked());
+        assertFalse(gameState.getStoryState().hasFlag("weightbound_ogre_defeated"));
+
+        simulator.getEnemies().getFirst().hp = 0;
+        simulator.getEnemies().getFirst().removed = true;
+
+        RunGameAreaTransition.TraversalResult cleared =
+                RunGameAreaTransition.tryTraverse(gameState, profile, player, simulator);
+
+        assertTrue(cleared.transitioned());
+        assertTrue(gameState.getStoryState().hasFlag("weightbound_ogre_defeated"));
     }
 }

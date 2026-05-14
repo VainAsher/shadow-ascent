@@ -2,6 +2,7 @@ package com.shadowascent.client;
 
 import com.shadowascent.core.GameState;
 import com.shadowascent.core.Mission;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -75,6 +76,23 @@ final class RunGameMissionInteractionTest {
         assertIterableEquals(
                 java.util.List.of("HAZEL", "MARCEL", "SAMSON", "SOPHIA"),
                 RunGameMissionInteraction.orderedRelevantNpcIds(gameState));
+    }
+
+    @Test
+    void authoredBeatDialogueLinesAreSelectedForMatchingNpcAndArea() {
+        GameState gameState = new GameState();
+        gameState.getStoryState().setFlag("act2_unlocked");
+        gameState.getStoryState().setPlateau(com.shadowascent.core.StoryState.Plateau.HOLLOW_DEPTHS);
+        gameState.getHubManager().updateHubState();
+
+        java.util.List<String> lines = RunGameMissionInteraction.authoredDialogueLines(
+                gameState,
+                "SHADE_HERMIT",
+                "area_hollow_depths_camp");
+
+        assertFalse(lines.isEmpty());
+        String firstLine = lines.getFirst().toLowerCase(java.util.Locale.ROOT);
+        Assertions.assertTrue(firstLine.contains("awaken") || firstLine.contains("spirits") || firstLine.contains("dark"));
     }
 
     private static void completeVillageBonds(GameState gameState) {

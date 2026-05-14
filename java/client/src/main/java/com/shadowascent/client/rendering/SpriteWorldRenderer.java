@@ -49,6 +49,7 @@ public final class SpriteWorldRenderer {
     private static final String REGION_TILE_PLATFORM   = "tile_platform";
     private static final Color COLOR_DEFAULT           = new Color(1f, 1f, 1f, 1f);
     private static final Color COLOR_PLAYER_ATTACK     = new Color(1f, 0.88f, 0.68f, 1f);
+    private static final Color COLOR_PLAYER_COMBO      = new Color(1f, 0.76f, 0.52f, 1f);
     private static final Color COLOR_PLAYER_DASH       = new Color(0.68f, 0.92f, 1f, 1f);
     private static final Color COLOR_PLAYER_HURT       = new Color(1f, 0.60f, 0.60f, 1f);
     private static final Color COLOR_PLAYER_BLOCK      = new Color(0.76f, 0.82f, 1f, 1f);
@@ -140,7 +141,7 @@ public final class SpriteWorldRenderer {
             return COLOR_PLAYER_DASH;
         }
         if (player.isAttacking || player.isThrowing) {
-            return COLOR_PLAYER_ATTACK;
+            return player.comboStep > 1 ? COLOR_PLAYER_COMBO : COLOR_PLAYER_ATTACK;
         }
         if (player.isBlocking) {
             return COLOR_PLAYER_BLOCK;

@@ -3,11 +3,15 @@ package com.shadowascent.client;
 import com.shadowascent.client.ui.UiText;
 import com.shadowascent.core.GameState;
 import com.shadowascent.core.Mission;
+import com.shadowascent.core.data.BeatDefinition;
+import com.shadowascent.core.data.DialogueLineDefinition;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -89,6 +93,40 @@ public final class RunGameMissionInteraction {
             return "[E] Talk to " + label + " and start " + availableMission.getDisplayName();
         }
         return "[E] Talk to " + label;
+    }
+
+    static List<String> authoredDialogueLines(GameState gameState, String npcId, String areaId) {
+        if (gameState == null || npcId == null || npcId.isBlank()) {
+            return List.of();
+        }
+
+        Optional<BeatDefinition> areaBeat = gameState.getDataContracts()
+                .beatsForPlateau(gameState.getStoryState().getCurrentPlateau().name()).stream()
+                .filter(RunGameMissionInteraction::isRuntimeBeat)
+                .filter(beat -> beat.requiredFlags().stream().allMatch(gameState.getStoryState()::hasFlag))
+                .filter(beat -> beat.areaId() != null && beat.areaId().equals(areaId))
+                .filter(beat -> beat.npcIds().stream().anyMatch(npcId::equalsIgnoreCase))
+                .filter(beat -> beat.setFlags().isEmpty()
+                        || beat.setFlags().stream().anyMatch(flag -> !gameState.getStoryState().hasFlag(flag)))
+                .min(Comparator.comparingInt(BeatDefinition::routeOrder).thenComparing(BeatDefinition::id));
+
+        if (areaBeat.isPresent()) {
+            List<String> lines = areaBeat.get().dialogueRefs().stream()
+                    .map(gameState.getDataContracts()::dialogueLine)
+                    .flatMap(Optional::stream)
+                    .filter(line -> npcId.equalsIgnoreCase(line.speakerId()))
+                    .map(DialogueLineDefinition::text)
+                    .toList();
+            if (!lines.isEmpty()) {
+                return lines;
+            }
+        }
+
+        return gameState.getDataContracts()
+                .selectNpcDialogueLine(gameState.getStoryState(), npcId)
+                .map(DialogueLineDefinition::text)
+                .map(List::of)
+                .orElse(List.of());
     }
 
     private static Mission maybeStartMission(GameState gameState, String npcId) {
@@ -207,6 +245,17 @@ public final class RunGameMissionInteraction {
                 .sideQuestStep(missionId)
                 .map(step -> Stream.of(step.chainNpc()).filter(id -> id != null && !id.isBlank()).toList())
                 .orElse(List.of());
+    }
+
+    private static boolean isRuntimeBeat(BeatDefinition beat) {
+        if (beat == null) {
+            return false;
+        }
+        String beatType = beat.beatType() == null ? "" : beat.beatType().trim().toLowerCase(Locale.ROOT);
+        return beat.isCriticalPathBeat() || switch (beatType) {
+            case "adaptable_authored", "authored_support", "recovery", "unlock" -> true;
+            default -> false;
+        };
     }
 
     record InteractionResult(

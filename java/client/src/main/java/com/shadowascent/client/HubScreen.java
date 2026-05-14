@@ -107,8 +107,13 @@ final class HubScreen implements Screen {
                 }
                 NPC npc = gameState.getStoryState().getNPC(npcId);
                 String speakerName = npc == null ? UiText.humanizeToken(npcId) : npc.getDisplayName();
-                String dialogue = gameState.getHubManager().getNPCDialogue(npcId);
-                game.dialogueOverlayRenderer.open(speakerName, List.of(dialogue == null || dialogue.isBlank() ? "..." : dialogue));
+                List<String> dialogueLines = RunGameMissionInteraction.authoredDialogueLines(
+                        gameState, npcId, game.contentProfile == null ? null : game.contentProfile.areaId());
+                if (dialogueLines.isEmpty()) {
+                    String dialogue = gameState.getHubManager().getNPCDialogue(npcId);
+                    dialogueLines = List.of(dialogue == null || dialogue.isBlank() ? "..." : dialogue);
+                }
+                game.dialogueOverlayRenderer.open(speakerName, dialogueLines);
                 game.overlayManager.open(OverlayType.DIALOGUE);
                 appendEventFeedLine("Talk: " + speakerName);
                 openedDialogueThisFrame = true;
@@ -121,7 +126,7 @@ final class HubScreen implements Screen {
                 activeOverlay = OverlayType.SHOP;
             } else {
                 RunGameAreaTransition.TraversalResult traversalResult =
-                        RunGameAreaTransition.tryTraverse(gameState, game.contentProfile, hudPlayer);
+                        RunGameAreaTransition.tryTraverse(gameState, game.contentProfile, hudPlayer, game.simulator);
                 if (traversalResult.feedLine() != null) {
                     appendEventFeedLine(traversalResult.feedLine());
                 }
@@ -248,6 +253,7 @@ final class HubScreen implements Screen {
                 hudState,
                 game.simulator,
                 game.worldTiles,
+                game.contentProfile,
                 Gdx.graphics.getWidth() - 220f,
                 16f
         );
@@ -391,8 +397,13 @@ final class HubScreen implements Screen {
         Map<String, Object> data = event == null ? Map.of() : event.data();
 
         if ("PLAYER_MELEE_HIT".equals(event == null ? null : event.type())) {
+            String comboSuffix = "";
+            String comboStep = stringValue(data.get("comboStep"));
+            if (!comboStep.isBlank() && !"0".equals(comboStep) && !"1".equals(comboStep)) {
+                comboSuffix = " (combo x" + comboStep + ")";
+            }
             return "Hit " + UiText.humanizeToken(stringValue(data.get("enemyId")))
-                    + " for " + stringValue(data.get("dmg"));
+                    + " for " + stringValue(data.get("dmg")) + comboSuffix;
         }
         if ("ENEMY_DAMAGED".equals(event == null ? null : event.type()) && "player_melee".equals(stringValue(data.get("source")))) {
             return "Enemy damaged: " + UiText.humanizeToken(entityId);
@@ -529,7 +540,7 @@ final class HubScreen implements Screen {
             return "[E] Open merchant stock";
         }
         if (game.contentProfile != null) {
-            Optional<String> gatePrompt = RunGameAreaTransition.describeNearbyGate(gameState, game.contentProfile, player);
+            Optional<String> gatePrompt = RunGameAreaTransition.describeNearbyGate(gameState, game.contentProfile, player, game.simulator);
             if (gatePrompt.isPresent()) {
                 return gatePrompt.get();
             }

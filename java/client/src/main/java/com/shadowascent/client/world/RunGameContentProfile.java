@@ -27,6 +27,7 @@ public record RunGameContentProfile(
             float minX,
             float maxX,
             String targetAreaId,
+            boolean requiresAreaClear,
             List<String> requiredFlags,
             List<String> setFlags
     ) {

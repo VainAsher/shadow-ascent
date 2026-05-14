@@ -17,4 +17,10 @@ final class MinimapOverlayRendererTest {
         assertEquals(20f, MinimapOverlayRenderer.mapMarkerCoordinate(-5f, 0f, 1f, 10f, 20f, 100f, 60f, 4f));
         assertEquals(76f, MinimapOverlayRenderer.mapMarkerCoordinate(90f, 0f, 1f, 10f, 20f, 100f, 60f, 4f));
     }
+
+    @Test
+    void gateCoordinateUsesGateCenterAndClampsInsideMap() {
+        assertEquals(56f, MinimapOverlayRenderer.mapGateCoordinate(24f, 72f, 0f, 1f, 10f, 10f, 100f, 100f, 4f));
+        assertEquals(106f, MinimapOverlayRenderer.mapGateCoordinate(140f, 180f, 0f, 1f, 10f, 10f, 100f, 100f, 4f));
+    }
 }
