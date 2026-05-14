@@ -1,8 +1,11 @@
 package com.shadowascent.client.ui;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.utils.Align;
 import com.shadowascent.core.simulation.CraftingRecipe;
 import com.shadowascent.core.simulation.RecipeBook;
 import com.shadowascent.core.simulation.SimInventory;
@@ -12,6 +15,8 @@ import java.util.List;
 public final class CraftingOverlayRenderer {
     private final SimInventory inventory;
     private final Matrix4 textProjection = new Matrix4();
+    private final Matrix4 shapeProjection = new Matrix4();
+    private final GlyphLayout layout = new GlyphLayout();
     private int selectedIndex;
     private String lastFeedback = "";
 
@@ -48,18 +53,24 @@ public final class CraftingOverlayRenderer {
         return lastFeedback;
     }
 
-    public void render(SpriteBatch batch, BitmapFont font, int screenWidth, int screenHeight) {
+    public void render(SpriteBatch batch, BitmapFont font, ShapeRenderer shapes, int screenWidth, int screenHeight) {
         textProjection.setToOrtho2D(0f, 0f, screenWidth, screenHeight);
+        shapeProjection.setToOrtho(0f, screenWidth, screenHeight, 0f, 0f, 1f);
         batch.setProjectionMatrix(textProjection);
 
-        float panelX = (screenWidth - 560f) * 0.5f;
-        float panelTop = 120f;
+        float panelWidth = Math.min(660f, screenWidth - 120f);
+        float panelHeight = 300f;
+        float panelX = (screenWidth - panelWidth) * 0.5f;
+        float panelTop = 110f;
         float textX = panelX + UiPalette.PANEL_PADDING;
+        float textWidth = panelWidth - UiPalette.PANEL_PADDING * 2f;
         float lineY = screenHeight - (panelTop + 28f);
         List<CraftingRecipe> recipes = RecipeBook.all();
         if (!recipes.isEmpty()) {
             selectedIndex = Math.min(selectedIndex, recipes.size() - 1);
         }
+
+        UiPanelRenderer.drawPanel(shapes, shapeProjection, panelX, panelTop, panelWidth, panelHeight);
 
         batch.begin();
         font.setColor(UiPalette.TEXT);
@@ -83,15 +94,17 @@ public final class CraftingOverlayRenderer {
             CraftingRecipe selected = recipes.get(selectedIndex);
             float detailY = lineY - 10f - Math.min(recipes.size(), 8) * UiPalette.LINE_HEIGHT;
             font.setColor(UiPalette.TEXT);
-            font.draw(batch, "Needs: " + ingredientLine(selected), textX, detailY);
+            layout.setText(font, "Needs: " + ingredientLine(selected), font.getColor(), textWidth, Align.left, true);
+            font.draw(batch, layout, textX, detailY);
             if (!lastFeedback.isBlank()) {
                 font.setColor(UiPalette.WARNING);
-                font.draw(batch, lastFeedback, textX, detailY - UiPalette.LINE_HEIGHT);
+                layout.setText(font, lastFeedback, font.getColor(), textWidth, Align.left, true);
+                font.draw(batch, layout, textX, detailY - Math.max(UiPalette.LINE_HEIGHT, layout.height + 4f));
             }
         }
 
         font.setColor(UiPalette.TEXT_MUTED);
-        font.draw(batch, "Up/Down select  |  Enter craft  |  Esc close", textX, screenHeight - (panelTop + 250f));
+        font.draw(batch, "Up/Down select  |  Enter craft  |  Esc close", textX, screenHeight - (panelTop + panelHeight - 24f));
         batch.end();
     }
 

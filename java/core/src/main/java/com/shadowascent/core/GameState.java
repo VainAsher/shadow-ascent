@@ -14,6 +14,8 @@ public final class GameState {
     private final StoryState storyState;
     private final HubManager hubManager;
     private final MissionManager missionManager;
+    private String currentRoomId;
+    private String pendingRoomSpawnId;
 
     public GameState() {
         this.dataContracts = GameDataContracts.loadDefault();
@@ -37,6 +39,22 @@ public final class GameState {
 
     public MissionManager getMissionManager() {
         return missionManager;
+    }
+
+    public String getCurrentRoomId() {
+        return currentRoomId;
+    }
+
+    public void setCurrentRoomId(String currentRoomId) {
+        this.currentRoomId = currentRoomId == null || currentRoomId.isBlank() ? null : currentRoomId;
+    }
+
+    public String getPendingRoomSpawnId() {
+        return pendingRoomSpawnId;
+    }
+
+    public void setPendingRoomSpawnId(String pendingRoomSpawnId) {
+        this.pendingRoomSpawnId = pendingRoomSpawnId == null || pendingRoomSpawnId.isBlank() ? null : pendingRoomSpawnId;
     }
 
     public void update(float deltaTime) {

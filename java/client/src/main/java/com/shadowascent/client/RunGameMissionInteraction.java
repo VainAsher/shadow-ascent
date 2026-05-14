@@ -19,6 +19,7 @@ import java.util.stream.Stream;
  * Applies authored mission start/progress rules for the LibGDX production client.
  */
 public final class RunGameMissionInteraction {
+    private static final List<String> RETURN_WARNING_NPCS = List.of("SAMSON", "SOPHIA", "MARCEL", "HAZEL");
 
     private static final Map<String, Set<String>> STARTER_NPCS_BY_MISSION = Map.of(
             "village_bonds", Set.of("SAMSON", "SOPHIA", "MARCEL", "HAZEL"),
@@ -51,6 +52,17 @@ public final class RunGameMissionInteraction {
         return List.copyOf(npcIds);
     }
 
+    public static List<String> highlightedNpcIds(GameState gameState) {
+        if (gameState == null) {
+            return List.of();
+        }
+        if (gameState.getStoryState().hasFlag("npc_withdrawal_started")
+                && !gameState.getStoryState().hasFlag("warnings_heard")) {
+            return RETURN_WARNING_NPCS;
+        }
+        return orderedRelevantNpcIds(gameState);
+    }
+
     static InteractionResult applyNpcInteraction(GameState gameState, String npcId) {
         if (gameState == null || npcId == null || npcId.isBlank()) {
             return new InteractionResult(List.of(), false, false, null);
@@ -69,6 +81,7 @@ public final class RunGameMissionInteraction {
         if (objectiveResult.completedMissionTitle() != null) {
             feedLines.add("Mission complete: " + objectiveResult.completedMissionTitle());
         }
+        feedLines.addAll(maybeAdvanceStoryBeat(gameState, npcId));
 
         return new InteractionResult(
                 List.copyOf(feedLines),
@@ -91,6 +104,9 @@ public final class RunGameMissionInteraction {
         Mission availableMission = firstAvailableMissionForNpc(gameState, npcId);
         if (availableMission != null) {
             return "[E] Talk to " + label + " and start " + availableMission.getDisplayName();
+        }
+        if (shouldAdvanceReturnWarnings(gameState, npcId)) {
+            return "[E] Listen to " + label;
         }
         return "[E] Talk to " + label;
     }
@@ -234,6 +250,41 @@ public final class RunGameMissionInteraction {
     private static void refreshStoryState(GameState gameState) {
         gameState.getHubManager().updateHubState();
         gameState.getMissionManager().updateAvailableMissions();
+    }
+
+    private static List<String> maybeAdvanceStoryBeat(GameState gameState, String npcId) {
+        if (!shouldAdvanceReturnWarnings(gameState, npcId)) {
+            return List.of();
+        }
+
+        String normalizedNpcId = npcId.toUpperCase(Locale.ROOT);
+        String heardFlag = "heard_warning_" + normalizedNpcId.toLowerCase(Locale.ROOT);
+        if (gameState.getStoryState().hasFlag(heardFlag)) {
+            return List.of();
+        }
+
+        gameState.getStoryState().setFlag(heardFlag);
+        List<String> feedLines = new ArrayList<>();
+        feedLines.add("Warning heard: " + UiText.humanizeToken(normalizedNpcId));
+        boolean allHeard = RETURN_WARNING_NPCS.stream()
+                .allMatch(candidate -> gameState.getStoryState().hasFlag("heard_warning_" + candidate.toLowerCase(Locale.ROOT)));
+        if (allHeard) {
+            gameState.getStoryState().setFlag("warnings_heard");
+            feedLines.add("Beat advanced: Warnings Heard");
+        }
+        refreshStoryState(gameState);
+        return List.copyOf(feedLines);
+    }
+
+    private static boolean shouldAdvanceReturnWarnings(GameState gameState, String npcId) {
+        if (gameState == null || npcId == null || npcId.isBlank()) {
+            return false;
+        }
+        if (!gameState.getStoryState().hasFlag("npc_withdrawal_started")
+                || gameState.getStoryState().hasFlag("warnings_heard")) {
+            return false;
+        }
+        return RETURN_WARNING_NPCS.stream().anyMatch(npcId::equalsIgnoreCase);
     }
 
     private static List<String> starterNpcIdsForMission(GameState gameState, String missionId) {

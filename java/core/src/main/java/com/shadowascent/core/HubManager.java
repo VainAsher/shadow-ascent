@@ -112,6 +112,8 @@ public class HubManager {
         LinkedHashSet<String> scheduled = new LinkedHashSet<>();
 
         if (dataContracts != null) {
+            scheduled.addAll(activeMissionNpcIds());
+            scheduled.addAll(activeRuntimeBeatNpcIds());
             scheduled.addAll(dataContracts.scheduledNpcIds(storyState));
             dataContracts.nextCriticalBeat(storyState).ifPresent(beat -> scheduled.addAll(beat.npcIds()));
             scheduled.addAll(dataContracts.factionInfluencedNpcIds(storyState));
@@ -128,6 +130,64 @@ public class HubManager {
 
         scheduled.removeIf(npcId -> storyState.getNPC(npcId) == null);
         return Set.copyOf(scheduled);
+    }
+
+    private Set<String> activeMissionNpcIds() {
+        String activeMissionId = storyState.getActiveMissionId();
+        Mission activeMission = activeMissionId == null ? null : storyState.getMission(activeMissionId);
+        if (activeMission == null) {
+            return Set.of();
+        }
+
+        LinkedHashSet<String> npcIds = new LinkedHashSet<>();
+        switch (activeMission.getId()) {
+            case "village_bonds" -> {
+                if (!activeMission.isObjectiveComplete("talk_to_samson")) {
+                    npcIds.add("SAMSON");
+                }
+                if (!activeMission.isObjectiveComplete("talk_to_sophia")) {
+                    npcIds.add("SOPHIA");
+                }
+                if (!activeMission.isObjectiveComplete("talk_to_marcel")) {
+                    npcIds.add("MARCEL");
+                }
+                if (!activeMission.isObjectiveComplete("talk_to_hazel")) {
+                    npcIds.add("HAZEL");
+                }
+            }
+            case "dojo_practice" -> npcIds.add("INSTRUCTOR_TAI");
+            case "veil_request" -> npcIds.add("VEIL_MAIDEN");
+            default -> {
+            }
+        }
+        return Set.copyOf(npcIds);
+    }
+
+    private Set<String> activeRuntimeBeatNpcIds() {
+        if (dataContracts == null) {
+            return Set.of();
+        }
+        return dataContracts.beatsForPlateau(storyState.getCurrentPlateau().name()).stream()
+                .filter(this::isRuntimeBeat)
+                .filter(beat -> beat.requiredFlags().stream().allMatch(storyState::hasFlag))
+                .filter(beat -> beat.setFlags().isEmpty()
+                        || beat.setFlags().stream().anyMatch(flag -> !storyState.hasFlag(flag)))
+                .sorted(java.util.Comparator.comparingInt(BeatDefinition::routeOrder)
+                        .thenComparing(BeatDefinition::id))
+                .findFirst()
+                .map(beat -> Set.copyOf(beat.npcIds()))
+                .orElse(Set.of());
+    }
+
+    private boolean isRuntimeBeat(BeatDefinition beat) {
+        if (beat == null) {
+            return false;
+        }
+        String beatType = beat.beatType() == null ? "" : beat.beatType().trim().toLowerCase(java.util.Locale.ROOT);
+        return beat.isCriticalPathBeat() || switch (beatType) {
+            case "adaptable_authored", "authored_support", "recovery", "unlock", "authored_milestone" -> true;
+            default -> false;
+        };
     }
 
     private HubState resolveHubStateFromProgression() {

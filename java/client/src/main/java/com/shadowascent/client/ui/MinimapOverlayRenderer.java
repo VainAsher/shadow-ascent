@@ -88,7 +88,39 @@ public final class MinimapOverlayRenderer {
             shapes.rect(markerX, markerY, MARKER_SIZE, MARKER_SIZE);
         }
         if (contentProfile != null) {
+            shapes.setColor(UiPalette.TEXT);
+            for (RunGameContentProfile.NpcPlacement npc : contentProfile.npcPlacements()) {
+                boolean highlighted = state.highlightedNpcIds().stream().anyMatch(npc.npcId()::equalsIgnoreCase);
+                shapes.setColor(highlighted ? UiPalette.ACCENT : UiPalette.TEXT_MUTED);
+                float markerSize = highlighted ? MARKER_SIZE + 2f : MARKER_SIZE;
+                float markerX = mapMarkerCoordinate(
+                        npc.x(), minX, scale, contentX, offsetX, contentWidth, drawWidth, markerSize
+                );
+                float markerY = mapMarkerCoordinate(
+                        npc.y(), minY, scale, contentY, offsetY, contentHeight, drawHeight, markerSize
+                );
+                shapes.rect(markerX, markerY, markerSize, markerSize);
+            }
+        }
+        if (contentProfile != null) {
             shapes.setColor(UiPalette.WARNING);
+            for (com.shadowascent.client.world.RoomTransitionSpec transition : contentProfile.roomTransitions()) {
+                float gateX = mapGateCoordinate(
+                        transition.minX(), transition.maxX(), minX, scale, contentX, offsetX, contentWidth, drawWidth, MARKER_SIZE
+                );
+                float gateY = mapGateVerticalCoordinate(
+                        transition.minY(),
+                        transition.maxY(),
+                        minY,
+                        scale,
+                        contentY,
+                        offsetY,
+                        contentHeight,
+                        drawHeight,
+                        MARKER_SIZE
+                );
+                shapes.rect(gateX, gateY, MARKER_SIZE, MARKER_SIZE);
+            }
             for (RunGameContentProfile.AreaGate gate : contentProfile.areaGates()) {
                 float gateX = mapGateCoordinate(
                         gate.minX(), gate.maxX(), minX, scale, contentX, offsetX, contentWidth, drawWidth, MARKER_SIZE
@@ -144,6 +176,24 @@ public final class MinimapOverlayRenderer {
                                    float drawSize,
                                    float markerSize) {
         float center = (gateMinX + gateMaxX) * 0.5f;
+        return mapMarkerCoordinate(center, worldMin, scale, contentStart, drawStart, contentSize, drawSize, markerSize);
+    }
+
+    static float mapGateVerticalCoordinate(Float gateMinY,
+                                           Float gateMaxY,
+                                           float worldMin,
+                                           float scale,
+                                           float contentStart,
+                                           float drawStart,
+                                           float contentSize,
+                                           float drawSize,
+                                           float markerSize) {
+        if (gateMinY == null && gateMaxY == null) {
+            return contentStart + contentSize - markerSize - 6f;
+        }
+        float minY = gateMinY == null ? gateMaxY.floatValue() : gateMinY;
+        float maxY = gateMaxY == null ? gateMinY.floatValue() : gateMaxY;
+        float center = (minY + maxY) * 0.5f;
         return mapMarkerCoordinate(center, worldMin, scale, contentStart, drawStart, contentSize, drawSize, markerSize);
     }
 }

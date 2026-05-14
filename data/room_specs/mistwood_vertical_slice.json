@@ -1,0 +1,76 @@
+{
+  "schema": "room_specs.v1",
+  "rooms": [
+    {
+      "id": "mistwood_entry",
+      "display_name": "Mistwood Edge",
+      "plateau_id": "LANTERN_HEIGHTS",
+      "area_id": "area_mistwood_path",
+      "scene_role": "outbound_entry",
+      "route_order": 40,
+      "required_flags": ["veil_request_accepted"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_lantern_heights", "x": 120, "y": 280},
+        {"id": "spawn_from_encounter", "x": 1320, "y": 280},
+        {"id": "spawn_upper_from_encounter", "x": 1540, "y": 146}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2400, "h": 30},
+        {"type": "platform", "x": 360, "y": 300, "w": 180, "h": 15},
+        {"type": "platform", "x": 740, "y": 240, "w": 180, "h": 15},
+        {"type": "platform", "x": 1120, "y": 270, "w": 180, "h": 15},
+        {"type": "platform", "x": 1540, "y": 210, "w": 160, "h": 15}
+      ],
+      "npc_anchors": [],
+      "enemy_placements": [
+        {"enemy_id": "mistwood_goblin_1", "enemy_type": "goblin", "x": 820, "y": 280}
+      ],
+      "encounters": [],
+      "transitions": [
+        {"id": "gate_back_to_handoff", "type": "free_exit", "target_room_id": "lh_handoff_path", "target_spawn_id": "spawn_from_mistwood", "min_x": 0, "max_x": 120},
+        {"id": "gate_to_first_encounter", "type": "free_exit", "target_room_id": "mistwood_first_encounter", "target_spawn_id": "spawn_from_entry", "min_x": 1880, "max_x": 2010},
+        {"id": "gate_to_first_encounter_upper", "type": "free_exit", "target_room_id": "mistwood_first_encounter", "target_spawn_id": "spawn_upper_from_entry", "min_x": 1540, "max_x": 1700, "min_y": 120, "max_y": 220}
+      ]
+    },
+    {
+      "id": "mistwood_first_encounter",
+      "display_name": "Mistwood First Clearing",
+      "plateau_id": "LANTERN_HEIGHTS",
+      "area_id": "area_mistwood_path",
+      "scene_role": "first_encounter",
+      "route_order": 45,
+      "required_flags": ["veil_request_accepted"],
+      "set_flags": ["mistwood_beast_defeated"],
+      "spawn_points": [
+        {"id": "spawn_from_entry", "x": 120, "y": 280},
+        {"id": "spawn_upper_from_entry", "x": 1260, "y": 196}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2200, "h": 30},
+        {"type": "platform", "x": 440, "y": 290, "w": 180, "h": 15},
+        {"type": "platform", "x": 860, "y": 220, "w": 180, "h": 15},
+        {"type": "platform", "x": 1280, "y": 260, "w": 200, "h": 15}
+      ],
+      "npc_anchors": [],
+      "enemy_placements": [
+        {"enemy_id": "mistwood_goblin_2", "enemy_type": "goblin", "x": 720, "y": 280},
+        {"enemy_id": "mistwood_bat_1", "enemy_type": "bat", "x": 1040, "y": 205}
+      ],
+      "encounters": ["mistwood_first_clearing"],
+      "transitions": [
+        {"id": "gate_back_to_entry_upper", "type": "free_exit", "target_room_id": "mistwood_entry", "target_spawn_id": "spawn_upper_from_encounter", "min_x": 820, "max_x": 1040, "min_y": 150, "max_y": 240},
+        {"id": "gate_back_to_entry", "type": "free_exit", "target_room_id": "mistwood_entry", "target_spawn_id": "spawn_from_encounter", "min_x": 0, "max_x": 120},
+        {"id": "gate_return_to_hub", "type": "return_gate", "target_room_id": "lh_hub_return_changed", "target_spawn_id": "spawn_from_mistwood_return", "min_x": 1660, "max_x": 1780, "set_flags": ["npc_withdrawal_started"]}
+      ]
+    }
+  ],
+  "encounter_definitions": [
+    {
+      "id": "mistwood_first_clearing",
+      "clear_type": "enemy_ids",
+      "enemy_ids": ["mistwood_goblin_2", "mistwood_bat_1"],
+      "set_flags": ["mistwood_beast_defeated"]
+    }
+  ]
+}

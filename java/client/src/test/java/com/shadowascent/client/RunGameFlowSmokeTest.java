@@ -30,7 +30,7 @@ final class RunGameFlowSmokeTest {
         RunGameContentProfile defaultProfile = bootstrap.bootstrap(defaultState);
         assertEquals("LANTERN_HEIGHTS", defaultProfile.plateauId());
         assertFalse(defaultProfile.worldTiles().isEmpty());
-        assertNotNull(defaultProfile.merchantNpcId());
+        assertEquals("lh_balcony_opening", defaultProfile.roomId());
 
         GameState advancedState = new GameState();
         advancedState.getStoryState().setFlag("entered_ember_monastery");
@@ -41,6 +41,7 @@ final class RunGameFlowSmokeTest {
         assertEquals("EMBER_MONASTERY", advancedProfile.plateauId());
         assertTrue(advancedProfile.areaId().startsWith("area_"));
         assertFalse(advancedProfile.npcPlacements().isEmpty());
+        assertFalse(advancedProfile.worldTiles().isEmpty());
     }
 
     @Test
@@ -52,5 +53,39 @@ final class RunGameFlowSmokeTest {
         assertNotNull(availableMission);
         assertEquals("village_bonds", availableMission.getId());
         assertFalse(availableMission.getDescription().isBlank());
+    }
+
+    @Test
+    void actIMissionOrderingPrefersVeilRequestBeforeMistwoodTraversal() {
+        GameState gameState = new GameState();
+        gameState.getStoryState().setFlag("opening_seen");
+        gameState.getStoryState().setFlag("aen_introduced");
+        gameState.getStoryState().setFlag("yin_yang_present");
+        gameState.getStoryState().setFlag("village_bonds");
+        gameState.getHubManager().updateHubState();
+        gameState.getMissionManager().updateAvailableMissions();
+
+        java.util.List<Mission> availableMissions = gameState.getMissionManager().getAvailableMissions();
+
+        assertTrue(availableMissions.stream().anyMatch(mission -> "veil_request".equals(mission.getId())));
+        assertFalse(availableMissions.stream().anyMatch(mission -> "mistwood_beast".equals(mission.getId())));
+        assertEquals("veil_request", availableMissions.getFirst().getId());
+    }
+
+    @Test
+    void mistwoodMissionUnlocksAfterVeilRequestAcceptance() {
+        GameState gameState = new GameState();
+        gameState.getStoryState().setFlag("opening_seen");
+        gameState.getStoryState().setFlag("aen_introduced");
+        gameState.getStoryState().setFlag("yin_yang_present");
+        gameState.getStoryState().setFlag("village_bonds");
+        gameState.getStoryState().setFlag("veil_request_accepted");
+        gameState.getHubManager().updateHubState();
+        gameState.getMissionManager().updateAvailableMissions();
+
+        java.util.List<Mission> availableMissions = gameState.getMissionManager().getAvailableMissions();
+
+        assertTrue(availableMissions.stream().anyMatch(mission -> "mistwood_beast".equals(mission.getId())));
+        assertEquals("mistwood_beast", availableMissions.getFirst().getId());
     }
 }

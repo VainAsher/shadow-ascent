@@ -95,6 +95,76 @@ final class RunGameMissionInteractionTest {
         Assertions.assertTrue(firstLine.contains("awaken") || firstLine.contains("spirits") || firstLine.contains("dark"));
     }
 
+    @Test
+    void villageBondsCanProgressAcrossAllRequiredVillagersWithAuthoredDialogue() {
+        GameState gameState = new GameState();
+        gameState.getStoryState().setFlag("opening_seen");
+        gameState.getHubManager().updateHubState();
+        gameState.getMissionManager().updateAvailableMissions();
+
+        RunGameMissionInteraction.InteractionResult samson =
+                RunGameMissionInteraction.applyNpcInteraction(gameState, "SAMSON");
+        assertTrue(samson.missionStarted());
+        assertTrue(samson.objectiveAdvanced());
+
+        assertTrue(gameState.getStoryState().getNPC("SOPHIA").isActive());
+        assertTrue(gameState.getStoryState().getNPC("MARCEL").isActive());
+        assertTrue(gameState.getStoryState().getNPC("HAZEL").isActive());
+        assertFalse(RunGameMissionInteraction.authoredDialogueLines(gameState, "SOPHIA", "area_lantern_heights_hub").isEmpty());
+        assertFalse(RunGameMissionInteraction.authoredDialogueLines(gameState, "MARCEL", "area_lantern_heights_hub").isEmpty());
+        assertFalse(RunGameMissionInteraction.authoredDialogueLines(gameState, "HAZEL", "area_lantern_heights_hub").isEmpty());
+
+        RunGameMissionInteraction.InteractionResult sophia =
+                RunGameMissionInteraction.applyNpcInteraction(gameState, "SOPHIA");
+        RunGameMissionInteraction.InteractionResult marcel =
+                RunGameMissionInteraction.applyNpcInteraction(gameState, "MARCEL");
+        RunGameMissionInteraction.InteractionResult hazel =
+                RunGameMissionInteraction.applyNpcInteraction(gameState, "HAZEL");
+
+        assertTrue(sophia.objectiveAdvanced());
+        assertTrue(marcel.objectiveAdvanced());
+        assertTrue(hazel.objectiveAdvanced());
+        assertTrue(gameState.getStoryState().hasFlag("village_bonds"));
+        assertEquals(Mission.MissionState.COMPLETED, gameState.getStoryState().getMission("village_bonds").getState());
+    }
+
+    @Test
+    void returnHubWarningsCanProgressAcrossRemainingVillagers() {
+        GameState gameState = new GameState();
+        gameState.getStoryState().setFlag("opening_seen");
+        gameState.getStoryState().setFlag("aen_introduced");
+        gameState.getStoryState().setFlag("yin_yang_present");
+        gameState.getStoryState().setFlag("village_bonds");
+        gameState.getStoryState().setFlag("veil_request_accepted");
+        gameState.getStoryState().setFlag("mistwood_beast_defeated");
+        gameState.getStoryState().setFlag("npc_withdrawal_started");
+        gameState.getHubManager().updateHubState();
+        gameState.getMissionManager().updateAvailableMissions();
+
+        assertTrue(gameState.getStoryState().getNPC("SAMSON").isActive());
+        assertTrue(gameState.getStoryState().getNPC("SOPHIA").isActive());
+        assertTrue(gameState.getStoryState().getNPC("MARCEL").isActive());
+        assertTrue(gameState.getStoryState().getNPC("HAZEL").isActive());
+        assertFalse(RunGameMissionInteraction.authoredDialogueLines(gameState, "SAMSON", "area_lantern_heights_hub_dimming").isEmpty());
+
+        RunGameMissionInteraction.InteractionResult samson =
+                RunGameMissionInteraction.applyNpcInteraction(gameState, "SAMSON");
+        RunGameMissionInteraction.InteractionResult sophia =
+                RunGameMissionInteraction.applyNpcInteraction(gameState, "SOPHIA");
+        RunGameMissionInteraction.InteractionResult marcel =
+                RunGameMissionInteraction.applyNpcInteraction(gameState, "MARCEL");
+        RunGameMissionInteraction.InteractionResult hazel =
+                RunGameMissionInteraction.applyNpcInteraction(gameState, "HAZEL");
+
+        assertTrue(samson.feedLines().stream().anyMatch(line -> line.contains("Warning heard")));
+        assertTrue(gameState.getStoryState().hasFlag("heard_warning_samson"));
+        assertTrue(gameState.getStoryState().hasFlag("heard_warning_sophia"));
+        assertTrue(gameState.getStoryState().hasFlag("heard_warning_marcel"));
+        assertTrue(gameState.getStoryState().hasFlag("heard_warning_hazel"));
+        assertTrue(hazel.feedLines().stream().anyMatch(line -> line.contains("Beat advanced")));
+        assertTrue(gameState.getStoryState().hasFlag("warnings_heard"));
+    }
+
     private static void completeVillageBonds(GameState gameState) {
         assertTrue(gameState.getMissionManager().startMission("village_bonds"));
         gameState.getMissionManager().updateObjectiveProgress("village_bonds", "talk_to_samson", 1);

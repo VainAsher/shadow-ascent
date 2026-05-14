@@ -66,6 +66,10 @@ final class HubScreen implements Screen {
             worldRight  = Math.max(worldRight,  t.x() + t.w());
             worldBottom = Math.max(worldBottom, t.y() + t.h());
         }
+        String entryLine = currentRoomEntryLine();
+        if (entryLine != null && !entryLine.isBlank()) {
+            appendEventFeedLine(entryLine);
+        }
     }
 
     @Override
@@ -246,7 +250,7 @@ final class HubScreen implements Screen {
         Gdx.gl.glClearColor(0.08f, 0.11f, 0.17f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        game.spriteRenderer.render(game.simulator, game.worldTiles, camera.combined);
+        game.spriteRenderer.render(game.simulator, game.worldTiles, game.contentProfile, camera.combined);
         HudOverlayState hudState = buildHudState(hudPlayer);
         game.hudOverlayRenderer.render(hudState, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         game.minimapOverlayRenderer.render(
@@ -268,6 +272,7 @@ final class HubScreen implements Screen {
             game.inventoryOverlayRenderer.render(
                     game.batch,
                     game.uiFont,
+                    game.uiShapes,
                     Gdx.graphics.getWidth(),
                     Gdx.graphics.getHeight()
             );
@@ -275,6 +280,7 @@ final class HubScreen implements Screen {
             game.shopOverlayRenderer.render(
                     game.batch,
                     game.uiFont,
+                    game.uiShapes,
                     Gdx.graphics.getWidth(),
                     Gdx.graphics.getHeight()
             );
@@ -282,6 +288,7 @@ final class HubScreen implements Screen {
             game.craftingOverlayRenderer.render(
                     game.batch,
                     game.uiFont,
+                    game.uiShapes,
                     Gdx.graphics.getWidth(),
                     Gdx.graphics.getHeight()
             );
@@ -289,6 +296,7 @@ final class HubScreen implements Screen {
             game.dialogueOverlayRenderer.render(
                     game.batch,
                     game.uiFont,
+                    game.uiShapes,
                     Gdx.graphics.getWidth(),
                     Gdx.graphics.getHeight()
             );
@@ -348,6 +356,8 @@ final class HubScreen implements Screen {
                 UiText.humanizeToken(storyState.getCurrentAct().name()),
                 UiText.humanizeToken(storyState.getCurrentPlateau().name()),
                 areaId,
+                game.contentProfile == null ? UiText.areaName(areaId) : game.contentProfile.roomDisplayName(),
+                game.contentProfile == null ? "legacy_bootstrap" : game.contentProfile.sceneRole(),
                 missionTitle,
                 objectiveLine,
                 player == null ? 0 : player.health,
@@ -356,16 +366,21 @@ final class HubScreen implements Screen {
                 UiText.overlayStatus(game.overlayManager.activeOverlay()),
                 List.copyOf(recentEventFeed),
                 showMinimap,
-                interactionHint
+                interactionHint,
+                RunGameMissionInteraction.highlightedNpcIds(gameState)
         );
     }
 
     private Mission recommendedMissionForPlateau(StoryState storyState) {
         String currentPlateau = storyState == null ? "" : storyState.getCurrentPlateau().name();
         return gameState.getMissionManager().getAvailableMissions().stream()
+                .filter(HubScreen::isMainlineMission)
                 .filter(mission -> currentPlateau.equals(plateauForMission(mission)))
                 .findFirst()
-                .orElseGet(() -> gameState.getMissionManager().getAvailableMissions().stream().findFirst().orElse(null));
+                .orElseGet(() -> gameState.getMissionManager().getAvailableMissions().stream()
+                        .filter(HubScreen::isMainlineMission)
+                        .findFirst()
+                        .orElseGet(() -> gameState.getMissionManager().getAvailableMissions().stream().findFirst().orElse(null)));
     }
 
     private BeatDefinition nextRuntimeBeat(StoryState storyState) {
@@ -556,10 +571,38 @@ final class HubScreen implements Screen {
             StoryState storyState) {
         String areaName = UiText.areaName(areaId);
         String routeHint = resolveRouteHint(activeMission, recommendedMission, nextBeat, areaId);
-        return "Area " + areaName
+        return sceneContextPrefix()
+                + "Area " + areaName
                 + "  |  " + routeHint
                 + "  |  Lanterns: " + storyState.getLanternCount()
                 + "  |  Abilities: " + storyState.getAbilities().size();
+    }
+
+    private String sceneContextPrefix() {
+        if (game.contentProfile == null) {
+            return "";
+        }
+        return switch (game.contentProfile.sceneRole()) {
+            case "return_changed" -> "Scene: villagers withdraw  |  ";
+            case "isolation_night" -> "Scene: isolation night  |  ";
+            case "first_encounter" -> "Scene: first mistwood clash  |  ";
+            case "social_hub" -> "Scene: village social hub  |  ";
+            default -> "";
+        };
+    }
+
+    private String currentRoomEntryLine() {
+        if (game.contentProfile == null) {
+            return null;
+        }
+        return switch (game.contentProfile.sceneRole()) {
+            case "return_changed" -> "Scene: Lantern Heights dims. Find the remaining villagers.";
+            case "isolation_night" -> "Scene: Lantern Heights stands nearly empty.";
+            case "first_encounter" -> "Scene: Mistwood clearing ahead. Defeat the corrupted threat.";
+            case "social_hub" -> "Scene: Lantern Heights hub. Meet the villagers.";
+            case "handoff_path" -> "Scene: Outer path. Speak to Veil Maiden to continue east.";
+            default -> null;
+        };
     }
 
     private String resolveRouteHint(Mission activeMission, Mission recommendedMission, BeatDefinition nextBeat, String areaId) {
@@ -653,6 +696,18 @@ final class HubScreen implements Screen {
             case "mirror" -> "MIRROR_SUMMIT";
             case "beacon" -> "BEACON_CLIFF";
             default -> "";
+        };
+    }
+
+    private static boolean isMainlineMission(Mission mission) {
+        if (mission == null) {
+            return false;
+        }
+        return switch (mission.getId()) {
+            case "village_bonds", "veil_request", "mistwood_beast",
+                    "hollow_descent", "lantern_restoration",
+                    "monastery_arrival", "yin_yang_balance" -> true;
+            default -> false;
         };
     }
 

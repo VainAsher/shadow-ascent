@@ -177,6 +177,7 @@ public class MissionManager {
      * Update which missions are available based on story state.
      */
     public void updateAvailableMissions() {
+        synchronizeMainlineMissionStatesFromFlags();
         advanceWorldSignals();
 
         // Act I mission availability logic
@@ -196,14 +197,14 @@ public class MissionManager {
 
         // Mistwood beast available after village bonds
         Mission mistwoodBeast = missionRegistry.get("mistwood_beast");
-        if (mistwoodBeast != null && storyState.hasFlag("village_bonds") &&
+        if (mistwoodBeast != null && storyState.hasFlag("veil_request_accepted") &&
             mistwoodBeast.getState() == Mission.MissionState.LOCKED) {
             mistwoodBeast.setState(Mission.MissionState.AVAILABLE);
         }
 
-        // Veil request available after mistwood beast
+        // Veil request available after village bonds
         Mission veilRequest = missionRegistry.get("veil_request");
-        if (veilRequest != null && storyState.hasFlag("mistwood_beast_defeated") &&
+        if (veilRequest != null && storyState.hasFlag("village_bonds") &&
             veilRequest.getState() == Mission.MissionState.LOCKED) {
             veilRequest.setState(Mission.MissionState.AVAILABLE);
         }
@@ -237,6 +238,30 @@ public class MissionManager {
         }
 
         updateSideQuestAvailability();
+    }
+
+    private void synchronizeMainlineMissionStatesFromFlags() {
+        synchronizeMissionCompletion("village_bonds", storyState.hasFlag("village_bonds"));
+        synchronizeMissionCompletion("veil_request",
+                storyState.hasFlag("veil_request_accepted") || storyState.hasFlag("veil_request_declined"));
+        synchronizeMissionCompletion("mistwood_beast", storyState.hasFlag("mistwood_beast_defeated"));
+        synchronizeMissionCompletion("dojo_practice",
+                storyState.hasFlag("dojo_practiced") || storyState.hasAbility("dash"));
+        synchronizeMissionCompletion("hollow_descent", storyState.hasFlag("hollow_depths_explored"));
+        synchronizeMissionCompletion("lantern_restoration", storyState.hasFlag("lanterns_restored"));
+        synchronizeMissionCompletion("monastery_arrival", storyState.hasFlag("monastery_reached"));
+        synchronizeMissionCompletion("yin_yang_balance", storyState.hasFlag("emotional_balance_achieved"));
+    }
+
+    private void synchronizeMissionCompletion(String missionId, boolean completedByStoryFlag) {
+        if (!completedByStoryFlag) {
+            return;
+        }
+        Mission mission = missionRegistry.get(missionId);
+        if (mission == null || mission.getState() == Mission.MissionState.COMPLETED) {
+            return;
+        }
+        storyState.completeMission(missionId);
     }
 
     private void updateSideQuestAvailability() {
@@ -434,7 +459,8 @@ public class MissionManager {
     public java.util.List<Mission> getAvailableMissions() {
         return storyState.getAllMissions().values().stream()
             .filter(Mission::isAvailable)
-            .sorted(Comparator.comparingDouble(this::availabilityScoreForMission).reversed()
+            .sorted(Comparator.comparingInt(this::mainlinePriorityForMission)
+                    .thenComparing(Comparator.comparingDouble(this::availabilityScoreForMission).reversed())
                     .thenComparing(Mission::getId))
             .toList();
     }
@@ -546,6 +572,23 @@ public class MissionManager {
         }
         double plateauSignal = plateauSignalScores.getOrDefault(plateau, 0.0d);
         return clamp01(0.35d + (plateauSignal * 0.65d));
+    }
+
+    private int mainlinePriorityForMission(Mission mission) {
+        if (mission == null) {
+            return Integer.MAX_VALUE;
+        }
+        return switch (mission.getId()) {
+            case "village_bonds" -> 0;
+            case "veil_request" -> 1;
+            case "mistwood_beast" -> 2;
+            case "dojo_practice" -> 3;
+            case "hollow_descent" -> 4;
+            case "lantern_restoration" -> 5;
+            case "monastery_arrival" -> 6;
+            case "yin_yang_balance" -> 7;
+            default -> 100;
+        };
     }
 
     private static String plateauFromRegion(String region) {

@@ -6,6 +6,8 @@ public record HudOverlayState(
         String actId,
         String plateauId,
         String areaId,
+        String roomDisplayName,
+        String sceneRole,
         String missionTitle,
         String objectiveLine,
         int playerHealth,
@@ -14,9 +16,11 @@ public record HudOverlayState(
         String overlayStatus,
         List<String> eventFeedLines,
         boolean showMinimap,
-        String interactionHint
+        String interactionHint,
+        List<String> highlightedNpcIds
 ) {
     public HudOverlayState {
         eventFeedLines = List.copyOf(eventFeedLines);
+        highlightedNpcIds = List.copyOf(highlightedNpcIds);
     }
 }

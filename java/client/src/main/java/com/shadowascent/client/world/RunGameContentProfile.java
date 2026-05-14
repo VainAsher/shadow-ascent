@@ -5,6 +5,9 @@ import com.shadowascent.core.physics.TileRect;
 import java.util.List;
 
 public record RunGameContentProfile(
+        String roomId,
+        String roomDisplayName,
+        String sceneRole,
         String areaId,
         String plateauId,
         float playerSpawnX,
@@ -12,6 +15,8 @@ public record RunGameContentProfile(
         List<TileRect> worldTiles,
         List<NpcPlacement> npcPlacements,
         List<EnemyPlacement> enemyPlacements,
+        List<EncounterSpec> encounters,
+        List<RoomTransitionSpec> roomTransitions,
         String merchantNpcId,
         List<AreaGate> areaGates) {
 

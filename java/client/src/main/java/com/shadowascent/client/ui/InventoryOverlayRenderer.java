@@ -2,6 +2,7 @@ package com.shadowascent.client.ui;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.shadowascent.core.simulation.ItemDatabase;
 import com.shadowascent.core.simulation.SimInventory;
@@ -67,17 +68,19 @@ public final class InventoryOverlayRenderer {
         return def.name() + ": " + def.desc();
     }
 
-    public void render(SpriteBatch batch, BitmapFont font, int screenWidth, int screenHeight) {
-        float panelWidth = 420f;
-        float panelHeight = 240f;
+    public void render(SpriteBatch batch, BitmapFont font, ShapeRenderer shapes, int screenWidth, int screenHeight) {
+        float panelWidth = 520f;
+        float panelHeight = 270f;
         float panelX = (screenWidth - panelWidth) * 0.5f;
-        float panelTop = 120f;
+        float panelTop = 96f;
         float textX = panelX + UiPalette.PANEL_PADDING;
         float lineHeight = UiPalette.LINE_HEIGHT;
         float lineY = screenHeight - (panelTop + 28f);
 
         textProjection.setToOrtho2D(0f, 0f, screenWidth, screenHeight);
         batch.setProjectionMatrix(textProjection);
+        Matrix4 shapeProjection = new Matrix4().setToOrtho(0f, screenWidth, screenHeight, 0f, 0f, 1f);
+        UiPanelRenderer.drawPanel(shapes, shapeProjection, panelX, panelTop, panelWidth, panelHeight);
         batch.begin();
         font.setColor(UiPalette.TEXT);
         font.draw(batch, "Inventory", textX, lineY);
@@ -95,7 +98,7 @@ public final class InventoryOverlayRenderer {
 
         lineY -= lineHeight;
         font.setColor(UiPalette.TEXT_MUTED);
-        font.draw(batch, "Arrows/WASD move  |  Enter use/equip  |  Esc close", textX, lineY);
+        font.draw(batch, "Arrows/WASD move  |  Enter use/equip  |  Esc close", textX, screenHeight - (panelTop + panelHeight - 24f));
         batch.end();
     }
 

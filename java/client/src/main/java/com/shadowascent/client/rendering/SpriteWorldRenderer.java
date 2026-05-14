@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
+import com.shadowascent.client.world.RoomTransitionSpec;
+import com.shadowascent.client.world.RunGameContentProfile;
 import com.shadowascent.core.physics.TileRect;
 import com.shadowascent.core.simulation.GameSimulator;
 import com.shadowascent.core.simulation.EnemyAIState;
@@ -57,6 +59,15 @@ public final class SpriteWorldRenderer {
     private static final Color COLOR_ENEMY_ALERTED     = new Color(1f, 0.88f, 0.56f, 1f);
     private static final Color COLOR_ENEMY_ATTACK      = new Color(1f, 0.70f, 0.58f, 1f);
     private static final Color COLOR_ENEMY_STUNNED     = new Color(0.70f, 0.82f, 1f, 1f);
+    private static final Color COLOR_GATE_FREE         = new Color(0.62f, 0.86f, 1f, 0.90f);
+    private static final Color COLOR_GATE_MISSION      = new Color(1f, 0.84f, 0.46f, 0.94f);
+    private static final Color COLOR_GATE_RETURN       = new Color(1f, 0.62f, 0.54f, 0.94f);
+    private static final Color COLOR_GATE_FRAME        = new Color(0.10f, 0.13f, 0.22f, 0.82f);
+    private static final float DEFAULT_GATE_HEIGHT     = 96f;
+    private static final float DEFAULT_GATE_TOP_OFFSET = 88f;
+    private static final float DEFAULT_GATE_WIDTH      = 56f;
+    private static final float VERTICAL_GATE_MIN_WIDTH = 44f;
+    private static final float GATE_FRAME_THICKNESS    = 6f;
 
     private final SpriteBatch    batch;
     private final TextureAtlas   atlas;
@@ -66,7 +77,11 @@ public final class SpriteWorldRenderer {
         this.atlas = atlas;
     }
 
-    public void render(GameSimulator simulator, List<TileRect> tiles, Matrix4 projMatrix) {
+    public void render(
+            GameSimulator simulator,
+            List<TileRect> tiles,
+            RunGameContentProfile contentProfile,
+            Matrix4 projMatrix) {
         batch.setProjectionMatrix(projMatrix);
         batch.begin();
 
@@ -74,6 +89,8 @@ public final class SpriteWorldRenderer {
             TextureRegion r = region(tile.isPlatform() ? REGION_TILE_PLATFORM : REGION_TILE_GROUND);
             batch.draw(r, tile.x(), tile.y(), tile.w(), tile.h());
         }
+
+        renderTransitionMarkers(tiles, contentProfile);
 
         for (SimPlayer p : simulator.getPlayers()) {
             batch.setColor(selectPlayerTint(p));
@@ -109,6 +126,96 @@ public final class SpriteWorldRenderer {
     private TextureRegion region(String name) {
         TextureRegion r = atlas.findRegion(name);
         return r != null ? r : atlas.findRegion(REGION_TILE_GROUND);
+    }
+
+    private void renderTransitionMarkers(List<TileRect> tiles, RunGameContentProfile contentProfile) {
+        if (contentProfile == null || contentProfile.roomTransitions().isEmpty()) {
+            return;
+        }
+
+        TextureRegion fillRegion = region(REGION_TILE_PLATFORM);
+        TextureRegion frameRegion = region(REGION_TILE_GROUND);
+        for (RoomTransitionSpec transition : contentProfile.roomTransitions()) {
+            GateMarkerSpec marker = gateMarkerSpec(transition, tiles);
+            batch.setColor(marker.fillColor());
+            batch.draw(fillRegion, marker.x(), marker.y(), marker.width(), marker.height());
+
+            batch.setColor(COLOR_GATE_FRAME);
+            batch.draw(frameRegion, marker.x() - GATE_FRAME_THICKNESS, marker.y() - GATE_FRAME_THICKNESS,
+                    marker.width() + GATE_FRAME_THICKNESS * 2f, GATE_FRAME_THICKNESS);
+            batch.draw(frameRegion, marker.x() - GATE_FRAME_THICKNESS, marker.y() + marker.height(),
+                    marker.width() + GATE_FRAME_THICKNESS * 2f, GATE_FRAME_THICKNESS);
+            batch.draw(frameRegion, marker.x() - GATE_FRAME_THICKNESS, marker.y(),
+                    GATE_FRAME_THICKNESS, marker.height());
+            batch.draw(frameRegion, marker.x() + marker.width(), marker.y(),
+                    GATE_FRAME_THICKNESS, marker.height());
+
+            if (!marker.verticalBand()) {
+                batch.setColor(COLOR_GATE_FRAME);
+                float lintelWidth = Math.max(12f, marker.width() * 0.38f);
+                batch.draw(frameRegion,
+                        marker.x() + (marker.width() - lintelWidth) * 0.5f,
+                        marker.y() + marker.height() * 0.34f,
+                        lintelWidth,
+                        GATE_FRAME_THICKNESS);
+            }
+        }
+        batch.setColor(COLOR_DEFAULT);
+    }
+
+    private static GateMarkerSpec gateMarkerSpec(RoomTransitionSpec transition, List<TileRect> tiles) {
+        float bandCenterX = (transition.minX() + transition.maxX()) * 0.5f;
+        Float minY = transition.minY();
+        Float maxY = transition.maxY();
+        boolean verticalBand = minY != null && maxY != null;
+
+        if (verticalBand) {
+            float bandHeight = Math.max(28f, maxY - minY);
+            float width = Math.max(VERTICAL_GATE_MIN_WIDTH, Math.min(DEFAULT_GATE_WIDTH, transition.maxX() - transition.minX()));
+            return new GateMarkerSpec(
+                    bandCenterX - width * 0.5f,
+                    minY,
+                    width,
+                    bandHeight,
+                    true,
+                    gateTint(transition.type()));
+        }
+
+        float supportY = supportSurfaceY(tiles, bandCenterX);
+        float width = Math.min(DEFAULT_GATE_WIDTH, Math.max(transition.maxX() - transition.minX() - 16f, 36f));
+        return new GateMarkerSpec(
+                bandCenterX - width * 0.5f,
+                supportY - DEFAULT_GATE_TOP_OFFSET,
+                width,
+                DEFAULT_GATE_HEIGHT,
+                false,
+                gateTint(transition.type()));
+    }
+
+    private static float supportSurfaceY(List<TileRect> tiles, float worldX) {
+        float bestY = 360f;
+        float bestWidth = Float.MAX_VALUE;
+        for (TileRect tile : tiles) {
+            if (worldX < tile.x() || worldX > tile.x() + tile.w()) {
+                continue;
+            }
+            if (tile.y() < bestY || (tile.y() == bestY && tile.w() < bestWidth)) {
+                bestY = tile.y();
+                bestWidth = tile.w();
+            }
+        }
+        return bestY;
+    }
+
+    private static Color gateTint(String type) {
+        if (type == null) {
+            return COLOR_GATE_FREE;
+        }
+        return switch (type.trim().toLowerCase()) {
+            case "mission_gate", "npc_handoff_gate" -> COLOR_GATE_MISSION;
+            case "return_gate" -> COLOR_GATE_RETURN;
+            default -> COLOR_GATE_FREE;
+        };
     }
 
     private static String selectPlayerRegionName(SimPlayer player) {
@@ -191,5 +298,14 @@ public final class SpriteWorldRenderer {
             case "wolf" -> REGION_ENEMY_WOLF;
             default -> REGION_ENEMY_PATROL;
         };
+    }
+
+    private record GateMarkerSpec(
+            float x,
+            float y,
+            float width,
+            float height,
+            boolean verticalBand,
+            Color fillColor) {
     }
 }

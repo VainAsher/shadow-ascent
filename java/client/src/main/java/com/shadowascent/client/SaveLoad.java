@@ -63,6 +63,8 @@ final class SaveLoad {
         }
 
         Properties properties = new Properties();
+        properties.setProperty("room.currentId", emptyIfNull(gameState.getCurrentRoomId()));
+        properties.setProperty("room.pendingSpawnId", emptyIfNull(gameState.getPendingRoomSpawnId()));
         properties.setProperty("player.x", Float.toString(player.physics.x));
         properties.setProperty("player.y", Float.toString(player.physics.y));
         properties.setProperty("player.vx", Float.toString(player.physics.vx));
@@ -138,6 +140,8 @@ final class SaveLoad {
             throw new IllegalStateException("Missing player `" + playerId + "` for runtime load.");
         }
 
+        gameState.setCurrentRoomId(nullIfEmpty(properties.getProperty("room.currentId")));
+        gameState.setPendingRoomSpawnId(nullIfEmpty(properties.getProperty("room.pendingSpawnId")));
         restorePlayer(player, properties);
         restoreEnemies(simulator, properties);
         simulator.drainEvents();

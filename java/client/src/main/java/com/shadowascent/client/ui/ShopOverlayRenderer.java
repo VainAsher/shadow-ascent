@@ -2,6 +2,7 @@ package com.shadowascent.client.ui;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.shadowascent.core.simulation.SimInventory;
 import com.shadowascent.core.simulation.SimShop;
@@ -78,15 +79,20 @@ public final class ShopOverlayRenderer {
         return null;
     }
 
-    public void render(SpriteBatch batch, BitmapFont font, int screenWidth, int screenHeight) {
+    public void render(SpriteBatch batch, BitmapFont font, ShapeRenderer shapes, int screenWidth, int screenHeight) {
         textProjection.setToOrtho2D(0f, 0f, screenWidth, screenHeight);
         batch.setProjectionMatrix(textProjection);
 
-        float panelX = (screenWidth - 640f) * 0.5f;
-        float panelTop = 120f;
+        float panelWidth = Math.min(720f, screenWidth - 120f);
+        float panelHeight = 280f;
+        float panelX = (screenWidth - panelWidth) * 0.5f;
+        float panelTop = 88f;
         float leftX = panelX + UiPalette.PANEL_PADDING;
-        float rightX = panelX + 330f;
+        float rightX = panelX + panelWidth * 0.52f;
         float lineY = screenHeight - (panelTop + 28f);
+
+        Matrix4 shapeProjection = new Matrix4().setToOrtho(0f, screenWidth, screenHeight, 0f, 0f, 1f);
+        UiPanelRenderer.drawPanel(shapes, shapeProjection, panelX, panelTop, panelWidth, panelHeight);
 
         batch.begin();
         font.setColor(UiPalette.TEXT);
@@ -106,7 +112,7 @@ public final class ShopOverlayRenderer {
 
         font.setColor(UiPalette.TEXT_MUTED);
         font.draw(batch, "Up/Down select  |  Left/Right switch  |  Enter trade  |  Esc close",
-                leftX, screenHeight - (panelTop + 220f));
+                leftX, screenHeight - (panelTop + panelHeight - 24f));
         batch.end();
     }
 

@@ -23,4 +23,14 @@ final class MinimapOverlayRendererTest {
         assertEquals(56f, MinimapOverlayRenderer.mapGateCoordinate(24f, 72f, 0f, 1f, 10f, 10f, 100f, 100f, 4f));
         assertEquals(106f, MinimapOverlayRenderer.mapGateCoordinate(140f, 180f, 0f, 1f, 10f, 10f, 100f, 100f, 4f));
     }
+
+    @Test
+    void gateVerticalCoordinateDefaultsToBottomBandWhenNoYRangeExists() {
+        assertEquals(100f, MinimapOverlayRenderer.mapGateVerticalCoordinate(null, null, 0f, 1f, 10f, 10f, 100f, 100f, 4f));
+    }
+
+    @Test
+    void gateVerticalCoordinateUsesCenteredYBandWhenPresent() {
+        assertEquals(58f, MinimapOverlayRenderer.mapGateVerticalCoordinate(30f, 70f, 0f, 1f, 10f, 10f, 100f, 100f, 4f));
+    }
 }

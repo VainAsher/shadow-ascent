@@ -20,7 +20,7 @@ public final class AreaPlacementResolver {
         Optional<BeatDefinition> plateauBeat = contracts.beatsForPlateau(storyState.getCurrentPlateau().name()).stream()
                 .filter(AreaPlacementResolver::isRuntimeAreaBeat)
                 .filter(beat -> beat.requiredFlags().stream().allMatch(storyState::hasFlag))
-                .filter(beat -> beat.setFlags().isEmpty() || beat.setFlags().stream().anyMatch(flag -> !storyState.hasFlag(flag)))
+                .filter(beat -> isUnresolvedForAreaPlacement(beat, storyState))
                 .filter(beat -> !beat.areaId().isBlank())
                 .min(Comparator.comparingInt(BeatDefinition::routeOrder).thenComparing(BeatDefinition::id));
         if (plateauBeat.isPresent()) {
@@ -37,6 +37,7 @@ public final class AreaPlacementResolver {
         return contracts.beatsForPlateau(storyState.getCurrentPlateau().name()).stream()
                 .filter(BeatDefinition::isCriticalPathBeat)
                 .filter(beat -> !beat.areaId().isBlank())
+                .filter(beat -> isUnresolvedForAreaPlacement(beat, storyState))
                 .min(Comparator.comparingInt(BeatDefinition::routeOrder).thenComparing(BeatDefinition::id))
                 .map(BeatDefinition::areaId)
                 .orElse("area_lantern_heights_hub");
@@ -51,5 +52,16 @@ public final class AreaPlacementResolver {
             case "adaptable_authored", "authored_support", "recovery", "unlock" -> true;
             default -> false;
         };
+    }
+
+    private static boolean isUnresolvedForAreaPlacement(BeatDefinition beat, StoryState storyState) {
+        if (beat == null || storyState == null) {
+            return false;
+        }
+        if (beat.setFlags().isEmpty()) {
+            return true;
+        }
+        String routeAdvanceFlag = beat.setFlags().getFirst();
+        return routeAdvanceFlag == null || routeAdvanceFlag.isBlank() || !storyState.hasFlag(routeAdvanceFlag);
     }
 }

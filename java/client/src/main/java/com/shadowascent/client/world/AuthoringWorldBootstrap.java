@@ -17,18 +17,25 @@ public final class AuthoringWorldBootstrap {
     private static final float FLOOR_Y = 360f;
 
     private final AreaPlacementResolver areaPlacementResolver;
+    private final RoomSpecCatalog roomSpecCatalog;
 
     public AuthoringWorldBootstrap() {
-        this(new AreaPlacementResolver());
+        this(new AreaPlacementResolver(), RoomSpecCatalog.loadDefault());
     }
 
-    AuthoringWorldBootstrap(AreaPlacementResolver areaPlacementResolver) {
+    AuthoringWorldBootstrap(AreaPlacementResolver areaPlacementResolver, RoomSpecCatalog roomSpecCatalog) {
         this.areaPlacementResolver = areaPlacementResolver;
+        this.roomSpecCatalog = roomSpecCatalog;
     }
 
     public RunGameContentProfile bootstrap(GameState gameState) {
         String areaId = areaPlacementResolver.resolveAreaId(gameState);
         String plateauId = gameState.getStoryState().getCurrentPlateau().name();
+        RoomSpec roomSpec = resolveRoomSpec(gameState, areaId, plateauId);
+
+        if (roomSpec != null) {
+            return bootstrapRoomSpecProfile(gameState, roomSpec, plateauId);
+        }
 
         List<TileRect> worldTiles = buildTilesForArea(areaId, plateauId);
         List<RunGameContentProfile.NpcPlacement> npcPlacements = buildNpcPlacements(gameState, areaId, plateauId);
@@ -60,14 +67,162 @@ public final class AuthoringWorldBootstrap {
 
         return new RunGameContentProfile(
                 areaId,
+                com.shadowascent.client.ui.UiText.areaName(areaId),
+                "legacy_bootstrap",
+                areaId,
                 plateauId,
                 playerSpawnX,
                 playerSpawnY,
                 List.copyOf(worldTiles),
                 List.copyOf(npcPlacements),
                 List.copyOf(enemyPlacements),
+                List.of(),
+                List.of(),
                 merchantNpcId,
                 List.copyOf(areaGates));
+    }
+
+    private RunGameContentProfile bootstrapRoomSpecProfile(GameState gameState, RoomSpec roomSpec, String plateauId) {
+        List<TileRect> worldTiles = buildTilesForRoom(roomSpec);
+        List<RunGameContentProfile.NpcPlacement> npcPlacements = roomSpec.npcAnchors().stream()
+                .filter(anchor -> shouldStageNpcAnchor(gameState, roomSpec, anchor))
+                .map(anchor -> new RunGameContentProfile.NpcPlacement(
+                        anchor.npcId(),
+                        anchor.role(),
+                        anchor.x(),
+                        anchor.y(),
+                        anchor.patrolMinX(),
+                        anchor.patrolMaxX()))
+                .toList();
+        List<RunGameContentProfile.EnemyPlacement> enemyPlacements = roomSpec.enemyPlacements().stream()
+                .map(enemy -> new RunGameContentProfile.EnemyPlacement(
+                        enemy.enemyId(),
+                        enemy.enemyType(),
+                        enemy.x(),
+                        enemy.y()))
+                .toList();
+        List<EncounterSpec> encounters = roomSpec.encounters().stream()
+                .map(roomSpecCatalog::encounter)
+                .flatMap(java.util.Optional::stream)
+                .toList();
+        List<RoomTransitionSpec> roomTransitions = roomSpec.transitions().stream()
+                .map(transition -> new RoomTransitionSpec(
+                        transition.id(),
+                        transition.type(),
+                        transition.targetRoomId(),
+                        roomSpecCatalog.room(transition.targetRoomId()).map(RoomSpec::areaId).orElse(roomSpec.areaId()),
+                        transition.targetSpawnId(),
+                        transition.minX(),
+                        transition.maxX(),
+                        transition.minY(),
+                        transition.maxY(),
+                        transition.requiredFlags(),
+                        transition.setFlags()))
+                .toList();
+        List<RunGameContentProfile.AreaGate> areaGates = roomSpec.transitions().stream()
+                .map(transition -> new RunGameContentProfile.AreaGate(
+                        transition.id(),
+                        transition.type(),
+                        transition.minX(),
+                        transition.maxX(),
+                        roomSpecCatalog.room(transition.targetRoomId()).map(RoomSpec::areaId).orElse(roomSpec.areaId()),
+                        false,
+                        transition.requiredFlags(),
+                        List.of()))
+                .toList();
+
+        String pendingSpawnId = gameState == null ? null : gameState.getPendingRoomSpawnId();
+        RoomSpec.SpawnPoint spawnPoint = roomSpec.spawnPoints().stream()
+                .filter(candidate -> pendingSpawnId != null && pendingSpawnId.equals(candidate.id()))
+                .findFirst()
+                .orElse(roomSpec.spawnPoints().getFirst());
+        String merchantNpcId = npcPlacements.stream()
+                .map(RunGameContentProfile.NpcPlacement::npcId)
+                .filter("MERCHANT_RILU"::equals)
+                .findFirst()
+                .orElse(null);
+        if (gameState != null) {
+            gameState.setCurrentRoomId(roomSpec.id());
+            gameState.setPendingRoomSpawnId(null);
+        }
+
+        return new RunGameContentProfile(
+                roomSpec.id(),
+                roomSpec.displayName(),
+                roomSpec.sceneRole(),
+                roomSpec.areaId(),
+                plateauId,
+                spawnPoint.x(),
+                spawnPoint.y(),
+                List.copyOf(worldTiles),
+                List.copyOf(npcPlacements),
+                List.copyOf(enemyPlacements),
+                List.copyOf(encounters),
+                List.copyOf(roomTransitions),
+                merchantNpcId,
+                List.copyOf(areaGates));
+    }
+
+    private static boolean shouldStageNpcAnchor(GameState gameState, RoomSpec roomSpec, RoomSpec.NpcAnchor anchor) {
+        if (anchor == null || anchor.npcId() == null || anchor.npcId().isBlank()) {
+            return false;
+        }
+        if (gameState == null) {
+            return true;
+        }
+        NPC npc = gameState.getStoryState().getNPC(anchor.npcId());
+        if (npc != null && npc.isActive()) {
+            return true;
+        }
+        if ("return_changed".equalsIgnoreCase(roomSpec.sceneRole())) {
+            boolean warningsHeard = gameState.getStoryState().hasFlag("warnings_heard");
+            Set<String> stagedCast = warningsHeard
+                    ? Set.of("AEN", "VEIL_MAIDEN")
+                    : Set.of("AEN", "VEIL_MAIDEN", "MERCHANT_RILU", "SAMSON", "SOPHIA", "MARCEL", "HAZEL");
+            return stagedCast.contains(anchor.npcId());
+        }
+        if ("isolation_night".equalsIgnoreCase(roomSpec.sceneRole())) {
+            return Set.of("AEN", "VEIL_MAIDEN").contains(anchor.npcId());
+        }
+        return false;
+    }
+
+    private RoomSpec resolveRoomSpec(GameState gameState, String areaId, String plateauId) {
+        if (gameState == null || !"LANTERN_HEIGHTS".equals(plateauId)) {
+            return null;
+        }
+        String currentRoomId = gameState.getCurrentRoomId();
+        if (currentRoomId != null && !currentRoomId.isBlank()) {
+            RoomSpec pinnedRoom = roomSpecCatalog.room(currentRoomId)
+                    .filter(room -> plateauId.equals(room.plateauId()))
+                    .filter(room -> room.requiredFlags().stream().allMatch(gameState.getStoryState()::hasFlag))
+                    .orElse(null);
+            if (pinnedRoom != null) {
+                return pinnedRoom;
+            }
+            gameState.setCurrentRoomId(null);
+            gameState.setPendingRoomSpawnId(null);
+        }
+        return roomSpecCatalog.roomsForPlateau(plateauId).stream()
+                .filter(room -> areaId.equals(room.areaId()))
+                .filter(room -> room.requiredFlags().stream().allMatch(gameState.getStoryState()::hasFlag))
+                .filter(room -> room.setFlags().isEmpty()
+                        || room.setFlags().stream().anyMatch(flag -> !gameState.getStoryState().hasFlag(flag)))
+                .min(Comparator.comparingInt(RoomSpec::routeOrder).thenComparing(RoomSpec::id))
+                .map(room -> {
+                    gameState.setCurrentRoomId(room.id());
+                    return room;
+                })
+                .orElse(null);
+    }
+
+    private static List<TileRect> buildTilesForRoom(RoomSpec roomSpec) {
+        List<TileRect> tiles = new ArrayList<>();
+        for (RoomSpec.GeometrySpec geometry : roomSpec.geometry()) {
+            boolean platform = "platform".equalsIgnoreCase(geometry.type());
+            tiles.add(new TileRect(geometry.x(), geometry.y(), geometry.w(), geometry.h(), platform));
+        }
+        return tiles;
     }
 
     private static List<TileRect> buildTilesForArea(String areaId, String plateauId) {

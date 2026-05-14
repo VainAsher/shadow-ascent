@@ -18,6 +18,8 @@ final class HudOverlayStateTest {
                 "ACT_1",
                 "LANTERN_HUB",
                 "area_lantern_heights_hub",
+                "Lantern Heights Hub",
+                "social_hub",
                 "mission_intro",
                 "Reach the east gate",
                 2,
@@ -26,7 +28,8 @@ final class HudOverlayStateTest {
                 "Overlay status",
                 List.of("line1", "line2"),
                 true,
-                "[E] Talk"
+                "[E] Talk",
+                List.of("SAMSON")
         );
 
         assertEquals("ACT_1", state.actId());
@@ -43,6 +46,8 @@ final class HudOverlayStateTest {
                 "ACT_1",
                 "LANTERN_HUB",
                 "area_lantern_heights_hub",
+                "Lantern Heights Hub",
+                "social_hub",
                 "mission_intro",
                 "Reach the east gate",
                 2,
@@ -51,7 +56,8 @@ final class HudOverlayStateTest {
                 "Overlay status",
                 feedLines,
                 true,
-                "[E] Talk"
+                "[E] Talk",
+                List.of("SAMSON")
         );
 
         feedLines.add("line3");
@@ -66,6 +72,8 @@ final class HudOverlayStateTest {
                 "ACT_1",
                 "LANTERN_HUB",
                 "area_lantern_heights_hub",
+                "Lantern Heights Hub",
+                "social_hub",
                 "mission_intro",
                 "Reach the east gate",
                 2,
@@ -74,7 +82,8 @@ final class HudOverlayStateTest {
                 UiText.overlayStatus(null),
                 List.of("newest", "older", "oldest"),
                 true,
-                "[E] Talk"
+                "[E] Talk",
+                List.of("SAMSON")
         );
 
         assertEquals("newest", state.eventFeedLines().getFirst());
@@ -83,8 +92,8 @@ final class HudOverlayStateTest {
 
     @Test
     void minimapVisibilityFlagTracksHudToggleState() {
-        HudOverlayState shown = new HudOverlayState("A", "P", "area", "M", "O", 3, 3, "H", "S", List.of(), true, "I");
-        HudOverlayState hidden = new HudOverlayState("A", "P", "area", "M", "O", 3, 3, "H", "S", List.of(), false, "I");
+        HudOverlayState shown = new HudOverlayState("A", "P", "area", "Room", "scene", "M", "O", 3, 3, "H", "S", List.of(), true, "I", List.of());
+        HudOverlayState hidden = new HudOverlayState("A", "P", "area", "Room", "scene", "M", "O", 3, 3, "H", "S", List.of(), false, "I", List.of());
 
         assertTrue(shown.showMinimap());
         assertFalse(hidden.showMinimap());
@@ -96,6 +105,8 @@ final class HudOverlayStateTest {
                 "Act I",
                 "Lantern Heights",
                 "area_lantern_heights_hub",
+                "Lantern Heights Hub",
+                "social_hub",
                 "Mission",
                 "Objective",
                 3,
@@ -104,7 +115,8 @@ final class HudOverlayStateTest {
                 "Overlay: none",
                 List.of(),
                 true,
-                "[E] Talk to Merchant Rilu"
+                "[E] Talk to Merchant Rilu",
+                List.of("MERCHANT_RILU")
         );
 
         assertEquals("[E] Talk to Merchant Rilu", state.interactionHint());
@@ -116,6 +128,8 @@ final class HudOverlayStateTest {
                 "Act I",
                 "Lantern Heights",
                 "area_hollow_depths_camp",
+                "Hollow Depths Camp",
+                "camp_intro",
                 "Mission",
                 "Objective",
                 3,
@@ -124,9 +138,58 @@ final class HudOverlayStateTest {
                 "Overlay: none",
                 List.of(),
                 true,
-                "[E] Talk"
+                "[E] Talk",
+                List.of("SHADE_HERMIT")
         );
 
         assertEquals("area_hollow_depths_camp", state.areaId());
+    }
+
+    @Test
+    void hudStateCarriesRoomIdentitySeparatelyFromAreaIdentity() {
+        HudOverlayState state = new HudOverlayState(
+                "Act I",
+                "Lantern Heights",
+                "area_lantern_heights_hub",
+                "Lantern Heights Balcony",
+                "opening",
+                "Mission",
+                "Objective",
+                3,
+                3,
+                "Context",
+                "Overlay: none",
+                List.of(),
+                true,
+                "[E] Talk",
+                List.of("INSTRUCTOR_TAI")
+        );
+
+        assertEquals("Lantern Heights Balcony", state.roomDisplayName());
+        assertEquals("opening", state.sceneRole());
+    }
+
+    @Test
+    void hudStateCarriesHighlightedNpcIdsForRouteSurfacing() {
+        HudOverlayState state = new HudOverlayState(
+                "Act I",
+                "Lantern Heights",
+                "area_lantern_heights_hub_dimming",
+                "Lantern Heights Dimming Hub",
+                "return_changed",
+                "Mission",
+                "Objective",
+                3,
+                3,
+                "Context",
+                "Overlay: none",
+                List.of(),
+                true,
+                "[E] Listen to Samson",
+                List.of("SAMSON", "HAZEL")
+        );
+
+        assertEquals(List.of("SAMSON", "HAZEL"), state.highlightedNpcIds());
+        assertThrows(UnsupportedOperationException.class, () -> state.highlightedNpcIds().add("SOPHIA"));
     }
 }

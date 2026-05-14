@@ -1,0 +1,156 @@
+{
+  "schema": "room_specs.v1",
+  "rooms": [
+    {
+      "id": "lh_balcony_opening",
+      "display_name": "Lantern Heights Balcony",
+      "plateau_id": "LANTERN_HEIGHTS",
+      "area_id": "area_lantern_heights_balcony",
+      "scene_role": "opening",
+      "route_order": 10,
+      "required_flags": [],
+      "set_flags": ["opening_seen"],
+      "spawn_points": [
+        {"id": "spawn_main", "x": 180, "y": 280},
+        {"id": "spawn_from_hub", "x": 1360, "y": 280}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 1800, "h": 30},
+        {"type": "platform", "x": 260, "y": 240, "w": 220, "h": 15},
+        {"type": "platform", "x": 560, "y": 290, "w": 180, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "MERCHANT_RILU", "role": "merchant", "x": 350, "y": 288, "patrol_min_x": 330, "patrol_max_x": 370},
+        {"npc_id": "INSTRUCTOR_TAI", "role": "teacher", "x": 520, "y": 288, "patrol_min_x": 500, "patrol_max_x": 540}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {"id": "gate_to_social_hub", "type": "free_exit", "target_room_id": "lh_hub_social", "target_spawn_id": "spawn_balcony_entry", "min_x": 1480, "max_x": 1600, "set_flags": ["opening_seen", "aen_introduced", "yin_yang_present"]}
+      ]
+    },
+    {
+      "id": "lh_hub_social",
+      "display_name": "Lantern Heights Hub",
+      "plateau_id": "LANTERN_HEIGHTS",
+      "area_id": "area_lantern_heights_hub",
+      "scene_role": "social_hub",
+      "route_order": 20,
+      "required_flags": ["opening_seen"],
+      "set_flags": ["village_bonds"],
+      "spawn_points": [
+        {"id": "spawn_balcony_entry", "x": 120, "y": 280},
+        {"id": "spawn_return_from_handoff", "x": 1380, "y": 280}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2200, "h": 30},
+        {"type": "platform", "x": 260, "y": 250, "w": 220, "h": 15},
+        {"type": "platform", "x": 620, "y": 250, "w": 220, "h": 15},
+        {"type": "platform", "x": 980, "y": 180, "w": 160, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "MERCHANT_RILU", "role": "merchant", "x": 350, "y": 288, "patrol_min_x": 330, "patrol_max_x": 370},
+        {"npc_id": "INSTRUCTOR_TAI", "role": "teacher", "x": 520, "y": 288, "patrol_min_x": 500, "patrol_max_x": 540},
+        {"npc_id": "SMITH_JENRO", "role": "smith", "x": 690, "y": 288, "patrol_min_x": 670, "patrol_max_x": 710},
+        {"npc_id": "SAMSON", "role": "villager", "x": 860, "y": 288, "patrol_min_x": 840, "patrol_max_x": 880},
+        {"npc_id": "SOPHIA", "role": "villager", "x": 1030, "y": 288, "patrol_min_x": 1010, "patrol_max_x": 1050},
+        {"npc_id": "MARCEL", "role": "villager", "x": 1200, "y": 288, "patrol_min_x": 1180, "patrol_max_x": 1220},
+        {"npc_id": "HAZEL", "role": "villager", "x": 1370, "y": 288, "patrol_min_x": 1350, "patrol_max_x": 1390}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {"id": "gate_back_to_balcony", "type": "free_exit", "target_room_id": "lh_balcony_opening", "target_spawn_id": "spawn_from_hub", "min_x": 0, "max_x": 120},
+        {"id": "gate_to_handoff_path", "type": "npc_handoff_gate", "target_room_id": "lh_handoff_path", "target_spawn_id": "spawn_from_social_hub", "min_x": 1860, "max_x": 1980, "required_flags": ["village_bonds"]}
+      ]
+    },
+    {
+      "id": "lh_handoff_path",
+      "display_name": "Lantern Heights Outer Path",
+      "plateau_id": "LANTERN_HEIGHTS",
+      "area_id": "area_lantern_heights_hub",
+      "scene_role": "handoff_path",
+      "route_order": 30,
+      "required_flags": ["village_bonds"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_social_hub", "x": 140, "y": 280},
+        {"id": "spawn_from_mistwood", "x": 1480, "y": 280}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2000, "h": 30},
+        {"type": "platform", "x": 420, "y": 300, "w": 180, "h": 15},
+        {"type": "platform", "x": 760, "y": 240, "w": 180, "h": 15},
+        {"type": "platform", "x": 1120, "y": 210, "w": 160, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "VEIL_MAIDEN", "role": "mission_giver", "x": 760, "y": 288, "patrol_min_x": 740, "patrol_max_x": 780},
+        {"npc_id": "AEN", "role": "story", "x": 980, "y": 288, "patrol_min_x": 960, "patrol_max_x": 1000}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {"id": "gate_back_to_social_hub", "type": "free_exit", "target_room_id": "lh_hub_social", "target_spawn_id": "spawn_return_from_handoff", "min_x": 0, "max_x": 120},
+        {"id": "gate_to_mistwood", "type": "mission_gate", "target_room_id": "mistwood_entry", "target_spawn_id": "spawn_from_lantern_heights", "min_x": 1680, "max_x": 1800, "required_flags": ["veil_request_accepted"]}
+      ]
+    },
+    {
+      "id": "lh_hub_return_changed",
+      "display_name": "Lantern Heights Dimming Hub",
+      "plateau_id": "LANTERN_HEIGHTS",
+      "area_id": "area_lantern_heights_hub_dimming",
+      "scene_role": "return_changed",
+      "route_order": 50,
+      "required_flags": ["mistwood_beast_defeated"],
+      "set_flags": ["npc_withdrawal_started"],
+      "spawn_points": [
+        {"id": "spawn_from_mistwood_return", "x": 140, "y": 280}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2200, "h": 30},
+        {"type": "platform", "x": 260, "y": 250, "w": 220, "h": 15},
+        {"type": "platform", "x": 620, "y": 250, "w": 220, "h": 15},
+        {"type": "platform", "x": 980, "y": 180, "w": 160, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "MERCHANT_RILU", "role": "merchant", "x": 360, "y": 288, "patrol_min_x": 340, "patrol_max_x": 380},
+        {"npc_id": "SAMSON", "role": "villager", "x": 620, "y": 288, "patrol_min_x": 600, "patrol_max_x": 640},
+        {"npc_id": "SOPHIA", "role": "villager", "x": 780, "y": 288, "patrol_min_x": 760, "patrol_max_x": 800},
+        {"npc_id": "VEIL_MAIDEN", "role": "story", "x": 880, "y": 288, "patrol_min_x": 860, "patrol_max_x": 900},
+        {"npc_id": "MARCEL", "role": "villager", "x": 1180, "y": 288, "patrol_min_x": 1160, "patrol_max_x": 1200},
+        {"npc_id": "AEN", "role": "story", "x": 1040, "y": 288, "patrol_min_x": 1020, "patrol_max_x": 1060},
+        {"npc_id": "HAZEL", "role": "villager", "x": 1380, "y": 288, "patrol_min_x": 1360, "patrol_max_x": 1400}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": []
+    },
+    {
+      "id": "lh_hub_isolation_night",
+      "display_name": "Lantern Heights Empty Night",
+      "plateau_id": "LANTERN_HEIGHTS",
+      "area_id": "area_empty_lantern_heights_night",
+      "scene_role": "isolation_night",
+      "route_order": 60,
+      "required_flags": ["warnings_heard"],
+      "set_flags": ["hub_dimming_seen"],
+      "spawn_points": [
+        {"id": "spawn_from_dimming_hub", "x": 240, "y": 280}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2200, "h": 30},
+        {"type": "platform", "x": 260, "y": 250, "w": 220, "h": 15},
+        {"type": "platform", "x": 620, "y": 250, "w": 220, "h": 15},
+        {"type": "platform", "x": 980, "y": 180, "w": 160, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "AEN", "role": "story", "x": 780, "y": 288, "patrol_min_x": 760, "patrol_max_x": 800},
+        {"npc_id": "VEIL_MAIDEN", "role": "story", "x": 980, "y": 288, "patrol_min_x": 960, "patrol_max_x": 1000}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": []
+    }
+  ],
+  "encounter_definitions": []
+}

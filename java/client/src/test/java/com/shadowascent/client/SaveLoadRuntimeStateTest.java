@@ -21,6 +21,8 @@ final class SaveLoadRuntimeStateTest {
     @Test
     void saveAndLoadRoundTripRunGameRuntimeState() throws Exception {
         GameState gameState = new GameState();
+        gameState.setCurrentRoomId("mistwood_first_encounter");
+        gameState.setPendingRoomSpawnId("spawn_from_entry");
         GameSimulator simulator = new GameSimulator();
         simulator.addPlayer("player1", 0, 100f, 200f);
         simulator.addEnemy("goblin_1", "goblin", 600f, 280f);
@@ -51,9 +53,13 @@ final class SaveLoadRuntimeStateTest {
         enemy.physics.x = 700f;
         enemy.hp = 0;
         enemy.removed = true;
+        gameState.setCurrentRoomId("lh_balcony_opening");
+        gameState.setPendingRoomSpawnId(null);
 
         assertTrue(saveLoad.loadRunGame(simulator, "player1"));
 
+        assertEquals("mistwood_first_encounter", gameState.getCurrentRoomId());
+        assertEquals("spawn_from_entry", gameState.getPendingRoomSpawnId());
         assertEquals(412f, player.physics.x);
         assertEquals(255f, player.physics.y);
         assertEquals(3, player.health);
