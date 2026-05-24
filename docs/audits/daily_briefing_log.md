@@ -134,3 +134,22 @@
 - `84a0d40` chore: nightly stale-doc audit 2026-05-20
 - `37abb29` chore: nightly stale-doc audit 2026-05-19
 - `85cc3db` chore: nightly stale-doc audit 2026-05-18
+
+## Daily Focus — 2026-05-24
+
+**Active milestones:**
+- M3 Stability/Release — Complete (2026-05-08); all 12 gate criteria green; gate doc at `docs/M3_RELEASE_GATE.md` (CLAUDE.md still lists as Active — minor sync needed)
+- M6 Open-World Runtime Expansion — Active; all tracked M6 backlog items complete; no open M6 tasks; no code changes since 2026-05-09
+- M4 Campaign Content Scale — Queued; hard-blocked on SUMMIT_SHRINE authoring decision
+
+**Most important next task:** `[AUTHORING DECISION REQUIRED] M4 Authored Act I Plateau Content — SUMMIT_SHRINE plateau` has no narrative beats, eligible NPCs, or Act I spine connections defined. This is the sole gate for all M4 content work (authored act coverage, optional plateau content, worldgen validation gates). Developer must decide: (1) which quests/beats belong to SUMMIT_SHRINE, (2) which NPCs are eligible, (3) how it connects LANTERN_HEIGHTS → HOLLOW_DEPTHS. See `data/plateaus.json`.
+
+**Open blockers:**
+- SUMMIT_SHRINE authoring decision: developer narrative input required before any M4 code work can begin.
+- CLAUDE.md milestone table: M3 row should read "Complete (2026-05-08)" to match `CURRENT_STATE.md`.
+
+**Recent completions:**
+- `80f57c2` chore: nightly stale-doc audit 2026-05-23
+- `8ba690d` chore: daily briefing 2026-05-23
+- `16da5c3` chore: daily briefing 2026-05-22
+*(No code changes since LibGDX scaffold + Wave 5 extractions landed 2026-05-09)*
