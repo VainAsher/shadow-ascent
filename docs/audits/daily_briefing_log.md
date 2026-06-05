@@ -67,3 +67,20 @@
 - `e2172fc` chore: nightly stale-doc audit 2026-05-22
 - `84a0d40` chore: nightly stale-doc audit 2026-05-20
 - `37abb29` chore: nightly stale-doc audit 2026-05-19
+
+## Daily Focus — 2026-06-05
+
+**Active milestones:**
+- M3 Stability/Release — Complete (2026-05-08); all 12 gate criteria green; gate doc at `docs/M3_RELEASE_GATE.md`
+- M6 Open-World Runtime Expansion — Active; all tracked backlog tasks checked off; no open M6 items remain
+- M4 Campaign Content Scale — Queued; hard-blocked on SUMMIT_SHRINE authoring decision
+
+**Most important next task:** `[AUTHORING DECISION REQUIRED] M4 Authored Act I Plateau Content — SUMMIT_SHRINE plateau` has no narrative beats, eligible NPCs, or Act I spine connections defined. This is the gate for all M4 content work (authored act coverage, optional plateau content, worldgen validation gates). Developer must decide: (1) which quests/beats belong to SUMMIT_SHRINE, (2) which NPCs are eligible, (3) how it connects LANTERN_HEIGHTS → HOLLOW_DEPTHS. See `data/plateaus.json`.
+
+**Open blockers:**
+- SUMMIT_SHRINE authoring decision: developer narrative input required before any M4 code work begins.
+
+**Recent completions:**
+- `29cf496` chore: nightly stale-doc audit 2026-06-04
+- `195e118` chore: nightly stale-doc audit 2026-06-03
+- `e54d4a0` chore: nightly stale-doc audit 2026-06-02
