@@ -37,4 +37,3 @@
 
 ## Interpretation Rule
 Prefer the live clean-start repo over old analysis docs when they conflict. Donor material explains intent and missing surface area; it does not override executable truth.
-
