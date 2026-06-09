@@ -1,5 +1,6 @@
 package com.shadowascent.client.ui;
 
+import com.shadowascent.client.world.RoomSpec;
 import com.shadowascent.core.simulation.ItemDatabase;
 
 import java.util.Locale;
@@ -37,6 +38,17 @@ public final class UiText {
 
     public static String areaName(String areaId) {
         return hasText(areaId) ? humanizeToken(areaId) : "Unknown Area";
+    }
+
+    public static String areaLabel(RoomSpec roomSpec) {
+        if (roomSpec == null) {
+            return "Unknown Area";
+        }
+        return areaLabel(roomSpec.displayName(), roomSpec.areaId());
+    }
+
+    public static String areaLabel(String roomDisplayName, String areaId) {
+        return hasText(roomDisplayName) ? roomDisplayName.trim() : areaName(areaId);
     }
 
     public static String missionTitle(String missionTitle) {

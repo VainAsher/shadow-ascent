@@ -333,7 +333,8 @@ final class HubScreen implements Screen {
         String missionTitle;
         String objectiveLine;
         if (activeMission != null) {
-            missionTitle = activeMission.getDisplayName() + " [" + activeMission.getId() + "]";
+            String missionPrefix = activeMission.getId().startsWith("sq_") ? "[Side Quest] " : "";
+            missionTitle = missionPrefix + activeMission.getDisplayName() + " [" + activeMission.getId() + "]";
             objectiveLine = activeMission.getObjectives().stream()
                     .filter(objective -> !activeMission.isObjectiveComplete(objective))
                     .map(UiText::objectiveToken)
@@ -374,11 +375,11 @@ final class HubScreen implements Screen {
     private Mission recommendedMissionForPlateau(StoryState storyState) {
         String currentPlateau = storyState == null ? "" : storyState.getCurrentPlateau().name();
         return gameState.getMissionManager().getAvailableMissions().stream()
-                .filter(HubScreen::isMainlineMission)
-                .filter(mission -> currentPlateau.equals(plateauForMission(mission)))
+                .filter(mission -> gameState.getDataContracts().isMainlineMission(mission.getId()))
+                .filter(mission -> currentPlateau.equals(gameState.getDataContracts().plateauForMission(mission.getId()).orElse("")))
                 .findFirst()
                 .orElseGet(() -> gameState.getMissionManager().getAvailableMissions().stream()
-                        .filter(HubScreen::isMainlineMission)
+                        .filter(mission -> gameState.getDataContracts().isMainlineMission(mission.getId()))
                         .findFirst()
                         .orElseGet(() -> gameState.getMissionManager().getAvailableMissions().stream().findFirst().orElse(null)));
     }
@@ -569,7 +570,9 @@ final class HubScreen implements Screen {
             BeatDefinition nextBeat,
             String areaId,
             StoryState storyState) {
-        String areaName = UiText.areaName(areaId);
+        String areaName = game.contentProfile == null
+                ? UiText.areaName(areaId)
+                : UiText.areaLabel(game.contentProfile.roomDisplayName(), areaId);
         String routeHint = resolveRouteHint(activeMission, recommendedMission, nextBeat, areaId);
         return sceneContextPrefix()
                 + "Area " + areaName
@@ -635,17 +638,18 @@ final class HubScreen implements Screen {
         if (mission == null) {
             return null;
         }
-        return switch (mission.getId()) {
-            case "village_bonds" -> "Speak to " + displayNameForFirstIncompleteVillageNpc(mission);
-            case "dojo_practice" -> "Speak to Instructor Tai in " + UiText.areaName(areaId);
-            case "veil_request" -> "Speak to Veil Maiden in " + UiText.areaName(areaId);
-            case "mistwood_beast" -> "Push east toward the mission route";
-            case "hollow_descent" -> "Cross toward Hollow Depths objectives";
-            case "lantern_restoration" -> "Collect lantern pieces, then restore them";
-            case "monastery_arrival" -> "Climb toward the Ember Monastery gate";
-            case "yin_yang_balance" -> "Return to Sophia and follow the skyroad lead";
-            default -> null;
-        };
+        return gameState.getDataContracts().routeHintForMission(mission.getId())
+                .map(routeHint -> resolveRouteHintTemplate(routeHint, mission, areaId))
+                .orElse(null);
+    }
+
+    private String resolveRouteHintTemplate(String routeHint, Mission mission, String areaId) {
+        if (routeHint == null || routeHint.isBlank()) {
+            return null;
+        }
+        String resolved = routeHint.replace("{area_label}", UiText.areaName(areaId))
+                .replace("{next_villager}", displayNameForFirstIncompleteVillageNpc(mission));
+        return resolved.isBlank() ? null : resolved;
     }
 
     private String displayNameForFirstIncompleteVillageNpc(Mission mission) {
@@ -679,34 +683,8 @@ final class HubScreen implements Screen {
         }
         String beatType = beat.beatType() == null ? "" : beat.beatType().trim().toLowerCase(Locale.ROOT);
         return beat.isCriticalPathBeat() || switch (beatType) {
-            case "adaptable_authored", "authored_support", "recovery", "unlock" -> true;
-            default -> false;
-        };
-    }
-
-    private static String plateauForMission(Mission mission) {
-        if (mission == null || mission.getRegion() == null) {
-            return "";
-        }
-        return switch (mission.getRegion().trim().toLowerCase(Locale.ROOT)) {
-            case "town", "forest", "summit" -> "LANTERN_HEIGHTS";
-            case "caves" -> "HOLLOW_DEPTHS";
-            case "mountain", "monastery" -> "EMBER_MONASTERY";
-            case "skyroad" -> "WINDING_SKYROAD";
-            case "mirror" -> "MIRROR_SUMMIT";
-            case "beacon" -> "BEACON_CLIFF";
-            default -> "";
-        };
-    }
-
-    private static boolean isMainlineMission(Mission mission) {
-        if (mission == null) {
-            return false;
-        }
-        return switch (mission.getId()) {
-            case "village_bonds", "veil_request", "mistwood_beast",
-                    "hollow_descent", "lantern_restoration",
-                    "monastery_arrival", "yin_yang_balance" -> true;
+            case "adaptable_authored", "authored_support", "recovery", "unlock",
+                 "authored_critical", "authored_milestone" -> true;
             default -> false;
         };
     }

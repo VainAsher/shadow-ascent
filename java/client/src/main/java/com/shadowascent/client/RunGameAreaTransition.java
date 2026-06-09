@@ -5,6 +5,8 @@ import com.shadowascent.client.world.EncounterSpec;
 import com.shadowascent.client.world.RoomTransitionSpec;
 import com.shadowascent.client.world.RunGameContentProfile;
 import com.shadowascent.core.GameState;
+import com.shadowascent.core.Mission;
+import com.shadowascent.core.data.SideQuestStepDefinition;
 import com.shadowascent.core.simulation.GameSimulator;
 import com.shadowascent.core.simulation.SimPlayer;
 
@@ -23,7 +25,7 @@ final class RunGameAreaTransition {
             RoomTransitionSpec transition = nearbyRoomTransition.get();
             boolean unlocked = transition.requiredFlags().stream().allMatch(gameState.getStoryState()::hasFlag);
             if (!unlocked) {
-                return Optional.of("[E] Route blocked: " + UiText.areaName(transition.targetAreaId()));
+                return Optional.of(blockedReasonForType(transition));
             }
             if (requiresEncounterClear(transition) && hasBlockingEncounter(gameState, profile, simulator)) {
                 return Optional.of("[E] Clear the room to continue to " + UiText.areaName(transition.targetAreaId()));
@@ -49,10 +51,10 @@ final class RunGameAreaTransition {
             RoomTransitionSpec transition = nearbyRoomTransition.get();
             boolean unlocked = transition.requiredFlags().stream().allMatch(gameState.getStoryState()::hasFlag);
             if (!unlocked) {
-                return TraversalResult.blocked("Route blocked: " + UiText.areaName(transition.targetAreaId()));
+                return TraversalResult.blocked(blockedReasonForType(transition));
             }
             if (requiresEncounterClear(transition) && hasBlockingEncounter(gameState, profile, simulator)) {
-                return TraversalResult.blocked("Route blocked: clear the room first.");
+                return TraversalResult.blocked("Encounter gating: clear the room before leaving.");
             }
 
             applyResolvedEncounterFlags(gameState, profile, simulator);
@@ -116,6 +118,19 @@ final class RunGameAreaTransition {
         return playerCenterY >= minY && playerCenterY <= maxY;
     }
 
+    private static String blockedReasonForType(RoomTransitionSpec transition) {
+        if (transition == null) {
+            return "[E] Route blocked.";
+        }
+        return switch (transition.type() == null ? "" : transition.type().toLowerCase(java.util.Locale.ROOT)) {
+            case "mission_gate" -> "[E] Mission required: accept a mission to continue toward " + UiText.areaName(transition.targetAreaId());
+            case "npc_handoff_gate" -> "[E] Story bond needed: deepen your bonds with the village before continuing";
+            case "encounter_gate" -> "[E] Encounter gating: clear the room to open the path forward";
+            case "return_gate" -> "[E] Path sealed: defeat the enemy to unlock the return route";
+            default -> "[E] Route blocked: " + UiText.areaName(transition.targetAreaId());
+        };
+    }
+
     private static boolean requiresEncounterClear(RoomTransitionSpec transition) {
         return transition != null && ("encounter_gate".equalsIgnoreCase(transition.type())
                 || "return_gate".equalsIgnoreCase(transition.type()));
@@ -139,8 +154,33 @@ final class RunGameAreaTransition {
         for (EncounterSpec encounter : unresolvedEncounters(gameState, profile)) {
             if (isEncounterCleared(encounter, simulator)) {
                 encounter.setFlags().forEach(gameState.getStoryState()::setFlag);
+                advanceCombatQuestForEncounter(gameState, encounter);
             }
         }
+        gameState.getMissionManager().updateAvailableMissions();
+    }
+
+    private static void advanceCombatQuestForEncounter(GameState gameState, EncounterSpec encounter) {
+        String missionId = gameState.getStoryState().getActiveMissionId();
+        if (missionId == null) {
+            return;
+        }
+        SideQuestStepDefinition step = gameState.getMissionManager().sideQuestStep(missionId).orElse(null);
+        if (step == null) {
+            return;
+        }
+        boolean encounterFlagsMatchQuest = encounter.setFlags().stream().anyMatch(step.setFlags()::contains);
+        if (!encounterFlagsMatchQuest) {
+            return;
+        }
+        Mission mission = gameState.getStoryState().getMission(missionId);
+        if (mission == null) {
+            return;
+        }
+        mission.getObjectives().stream()
+                .filter(obj -> !mission.isObjectiveComplete(obj))
+                .findFirst()
+                .ifPresent(obj -> gameState.getMissionManager().updateObjectiveProgress(missionId, obj, 999));
     }
 
     private static List<EncounterSpec> unresolvedEncounters(GameState gameState, RunGameContentProfile profile) {

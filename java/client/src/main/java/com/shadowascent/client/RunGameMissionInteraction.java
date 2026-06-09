@@ -121,7 +121,7 @@ public final class RunGameMissionInteraction {
                 .filter(RunGameMissionInteraction::isRuntimeBeat)
                 .filter(beat -> beat.requiredFlags().stream().allMatch(gameState.getStoryState()::hasFlag))
                 .filter(beat -> beat.areaId() != null && beat.areaId().equals(areaId))
-                .filter(beat -> beat.npcIds().stream().anyMatch(npcId::equalsIgnoreCase))
+                .filter(beat -> beat.npcIds().isEmpty() || beat.npcIds().stream().anyMatch(npcId::equalsIgnoreCase))
                 .filter(beat -> beat.setFlags().isEmpty()
                         || beat.setFlags().stream().anyMatch(flag -> !gameState.getStoryState().hasFlag(flag)))
                 .min(Comparator.comparingInt(BeatDefinition::routeOrder).thenComparing(BeatDefinition::id));
@@ -304,7 +304,8 @@ public final class RunGameMissionInteraction {
         }
         String beatType = beat.beatType() == null ? "" : beat.beatType().trim().toLowerCase(Locale.ROOT);
         return beat.isCriticalPathBeat() || switch (beatType) {
-            case "adaptable_authored", "authored_support", "recovery", "unlock" -> true;
+            case "adaptable_authored", "authored_support", "recovery", "unlock",
+                 "authored_critical", "authored_milestone" -> true;
             default -> false;
         };
     }

@@ -17,7 +17,6 @@ import java.util.Optional;
 
 public final class RoomSpecCatalog {
     private static final ObjectMapper MAPPER = new ObjectMapper();
-
     private final Map<String, RoomSpec> roomsById;
     private final Map<String, EncounterSpec> encountersById;
 
@@ -27,19 +26,7 @@ public final class RoomSpecCatalog {
     }
 
     public static RoomSpecCatalog loadDefault() {
-        Path roomSpecDir = resolveDefaultRoomSpecDir();
-        if (!Files.isDirectory(roomSpecDir)) {
-            throw new IllegalArgumentException("Room spec directory missing: " + roomSpecDir.toAbsolutePath());
-        }
-        try {
-            List<Path> files = Files.list(roomSpecDir)
-                    .filter(path -> path.getFileName().toString().endsWith(".json"))
-                    .sorted()
-                    .toList();
-            return load(files);
-        } catch (IOException ex) {
-            throw new IllegalArgumentException("Failed to enumerate room specs: " + ex.getMessage(), ex);
-        }
+        return load(defaultRoomSpecFiles());
     }
 
     public static RoomSpecCatalog load(List<Path> files) {
@@ -98,6 +85,30 @@ public final class RoomSpecCatalog {
                 .toList();
     }
 
+    public List<RoomSpec> allRooms() {
+        return List.copyOf(roomsById.values());
+    }
+
+    public List<EncounterSpec> allEncounters() {
+        return List.copyOf(encountersById.values());
+    }
+
+    public static List<Path> defaultRoomSpecFiles() {
+        Path roomSpecDir = resolveDefaultRoomSpecDir();
+        if (!Files.isDirectory(roomSpecDir)) {
+            throw new IllegalArgumentException("Room spec directory missing: " + roomSpecDir.toAbsolutePath());
+        }
+        try {
+            return Files.list(roomSpecDir)
+                    .filter(path -> path.getFileName().toString().endsWith(".json"))
+                    .filter(path -> !isFixtureFile(path))
+                    .sorted()
+                    .toList();
+        } catch (IOException ex) {
+            throw new IllegalArgumentException("Failed to enumerate room specs: " + ex.getMessage(), ex);
+        }
+    }
+
     private static Path resolveDefaultRoomSpecDir() {
         Path current = Paths.get("").toAbsolutePath().normalize();
         for (Path cursor = current; cursor != null; cursor = cursor.getParent()) {
@@ -107,6 +118,11 @@ public final class RoomSpecCatalog {
             }
         }
         return current.resolve("data").resolve("room_specs");
+    }
+
+    private static boolean isFixtureFile(Path path) {
+        String name = path.getFileName().toString().toLowerCase(Locale.ROOT);
+        return name.contains("fixture");
     }
 
     private static RoomSpec parseRoom(JsonNode roomNode) {
