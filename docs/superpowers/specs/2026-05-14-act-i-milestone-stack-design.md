@@ -97,6 +97,18 @@ This is the best fit for the current project state and the stated priorities:
 
 ---
 
+## Relationship to Existing Milestones
+
+Milestone A and Milestone B are sub-milestones of **M4 (Campaign Content Scale)** in `docs/NORTH_STAR_EXECUTION_MATRIX.md`.
+
+- **Milestone A = M4a.** M4a closes when `runGame` is a truthful, playable, and authorable host for the first Act I vertical slice.
+- **Milestone B = M4b.** M4b closes when that slice can be extended and tuned quickly through the supported authoring path.
+- **M4 closes when both M4a and M4b are complete.**
+
+M6 (Open-World Runtime Expansion) continues in parallel and is not blocked by M4a/M4b. HOLLOW_DEPTHS deepening work (ongoing in M6 and the broader M4 track) proceeds independently and does not gate either sub-milestone.
+
+---
+
 ## Milestone A
 
 ## Name
@@ -107,7 +119,7 @@ This is the best fit for the current project state and the stated priorities:
 
 Make `runGame` a truthful, fully playable, fully testable, and practically authorable host for the first Act I slice, using placeholder presentation where necessary.
 
-This milestone ends after the first return-to-hub emotional change and includes both the critical path and the intended optional side content that lives inside that slice.
+This milestone ends after the first return-to-hub emotional change. In contract terms: the slice ends when `beat_npc_withdrawal` fires and flag `npc_withdrawal_started` is set, entering the `area_lantern_heights_hub_dimming` hub variant where shops close early and NPCs begin pulling away. This milestone includes both the critical path and the intended optional side content that lives inside that slice.
 
 ## Why This Milestone Exists
 
@@ -139,15 +151,26 @@ The slice must support the full intended first-loop flow:
 
 ### Optional side-content layer inside the slice
 
-The first slice is not complete if only the critical route works. It must also include the intended playable optional layer inside that same slice:
+The first slice is not complete if only the critical route works. It must also include the intended playable optional layer inside that same slice. The following content is explicitly in scope, as authored in `data/quests.json`:
 
-- early optional villager or side-quest interactions
-- bounded optional objectives that are meant to coexist with the first route
-- optional content that can be started, progressed, saved, loaded, and completed without corrupting the critical route
+**ACT_0 quest steps (LANTERN_HEIGHTS):**
+
+- `samson_q1_unfinished_sparring_match` — training combat challenge; areas: `area_training_dojo`, `elastic_lh_training_loop`
+- `sophia_q1_lantern_cartography` — map shard collection; areas: `area_lantern_heights_hub`, `area_mistwood_path`, `elastic_lh_lore_walk`
+- `marcel_q1_guard_the_forge` — forge defense wave; areas: `area_training_dojo`, `area_lantern_forge`
+- `hazel_q1_gentle_glow` — gathering errand; areas: `area_lantern_heights_hub`, `elastic_lh_social_errand`
+
+**Optional NPC interactions eligible in LANTERN_HEIGHTS:**
+
+- `old_man_riku` — Storykeeper; unlocks lore tablets when brought relics
+- `lantern_kid` — early-to-late hub presence; authored slice feel, no quest chain required
+
+All four quest steps must be startable, progressable, saveable, loadable, and completable without corrupting the critical route. Optional NPC interactions must be discoverable and must not block or confuse mainline progression.
 
 ### Runtime and authoring obligations
 
-- authored room graph for the slice
+- a validated room-spec schema (`RoomSpec`, `RoomTransitionSpec`, `EncounterSpec`) loaded from `data/room_specs/` at startup, with actionable diagnostics for authoring mistakes; schema drives room selection — no ad hoc bootstrap switches
+- authored room graph for the slice driven by that schema
 - authored room transitions
 - typed encounter gating where relevant
 - scene-aware NPC staging
@@ -184,14 +207,30 @@ Milestone A is complete only when all of the following are true:
 
 ### Authorability
 
+- A validated room-spec schema (`RoomSpec`, `RoomTransitionSpec`, `EncounterSpec`) exists, is loaded from `data/room_specs/` at startup with actionable diagnostics for authoring mistakes, and drives room selection for the slice. This is a hard criterion: acceptance cannot be satisfied by hardcoded routing with annotated data alongside it.
 - The slice can be meaningfully iterated through room/data authoring rather than requiring repeated Java-only rewrites for ordinary content changes.
 - Adding or revising a room, NPC staging pattern, or optional conversation/objective inside the slice is a bounded authoring task.
 
 ### Testability
 
-- There is deterministic smoke coverage for the main route skeleton.
-- Route-critical save/load transitions are covered.
-- Encounter-gated transitions and return-state hub selection are verifiable without manual guesswork.
+The following test classes must exist and pass before Milestone A is signed off:
+
+- `RoomSpecCatalogTest` — loads Lantern Heights and Mistwood specs; rejects duplicate room IDs, unknown transition targets, and missing encounter definitions
+- `ActIVerticalSliceBootstrapTest` — proves the correct room is selected for each flag state in the slice
+- `RunGameAreaTransitionTest` — typed transition resolution for all five slice transition types
+- `ActIRouteStateSmokeTest` — deterministic coverage for the full main route state machine: initial room → social progression → mission start → Mistwood entry → encounter clear → return-state room selection
+- `SaveLoadRuntimeStateTest` — route-critical save/load transitions across outbound and return phases
+
+Minimum Gradle gate before sign-off:
+
+```bash
+./gradlew :client:test --tests "com.shadowascent.client.world.RoomSpecCatalogTest"
+./gradlew :client:test --tests "com.shadowascent.client.world.ActIVerticalSliceBootstrapTest"
+./gradlew :client:test --tests "com.shadowascent.client.RunGameAreaTransitionTest"
+./gradlew :client:test --tests "com.shadowascent.client.ActIRouteStateSmokeTest"
+./gradlew :client:test --tests "com.shadowascent.client.SaveLoadRuntimeStateTest"
+./gradlew runRegressionTests
+```
 
 ### Placeholder-ready presentation
 
@@ -244,16 +283,20 @@ Milestone A is not complete if any of the following remain true:
 
 ## Recommended Evidence
 
+Milestone A acceptance applies to `runGame` only. `PlaytestClient` (the Swing QA harness) is not a substitute for gaps in the LibGDX path.
+
 Milestone A should be signed off with:
 
-- passing route smoke coverage
-- passing save/load continuity checks for the slice
-- a canonical Act I QA route document aligned to actual room IDs and state transitions
-- a short manual sign-off record demonstrating:
-  - mainline completion
-  - optional side-content functionality
-  - Mistwood encounter completion
-  - return-hub state change readability
+- all tests in the Testability section passing via `./gradlew runRegressionTests`
+- `docs/ACT_I_QA_ROUTE.md` — canonical Act I QA route aligned to actual room IDs and state transitions; must not claim authoring readiness before `ActIRouteStateSmokeTest` is green
+- `docs/MILESTONE_A_GATE.md` — formal sign-off checklist following the `docs/M3_RELEASE_GATE.md` pattern, recording:
+  - mainline route completion through `beat_npc_withdrawal` / `npc_withdrawal_started`
+  - each of the four Lantern Heights ACT_0 quest steps started and resolved
+  - `old_man_riku` and `lantern_kid` interactions confirmed discoverable
+  - Mistwood first encounter completion
+  - `area_lantern_heights_hub_dimming` return-state hub change confirmed readable in `runGame`
+
+The implementation plan for this milestone is `docs/superpowers/plans/2026-05-14-m4a-act-i-vertical-slice-playable-readiness-implementation.md`.
 
 ---
 
@@ -344,7 +387,7 @@ Milestone B is complete only when all of the following are true:
 
 ### Sustainability
 
-- future Act I content work can proceed faster than it could at the Milestone A boundary
+- adding a new room or optional side beat is achievable by editing room-spec JSON alone, with zero Java changes required; this must be demonstrable by a test that loads the modified spec from data without touching runtime code
 - the slice becomes a stable production base for additional Act I tuning and density
 
 ## Failure Conditions
@@ -381,14 +424,12 @@ Milestone B is not complete if:
 
 Milestone B should be signed off with:
 
-- evidence that new Act I content can be added or modified through the supported authoring path with bounded code changes
-- updated validation coverage for content-authoring failure cases
-- a documented content-authoring pattern for:
-  - new room
-  - new optional side beat
-  - new room-state variant
-  - new bounded encounter
-- proof that readability improved as a consequence of better authored structure
+- a Gradle validation command (added as part of this milestone) demonstrating that common authoring mistakes — stale room IDs, missing NPC anchors, broken transition targets, optional content that hard-blocks the mainline — fail fast with actionable diagnostics
+- evidence that a new room or beat was added via JSON alone with zero Java changes, backed by a passing test
+- `docs/MILESTONE_B_AUTHORING_PATTERNS.md` — content authoring pattern guide covering: new room, new optional side beat, new room-state variant, new bounded encounter
+- `docs/MILESTONE_B_GATE.md` — formal sign-off checklist recording the above evidence and confirming readability improvements derived from stronger authored structure
+
+The Milestone B implementation plan will be created after Milestone A closes, targeting the highest-friction authoring surfaces revealed by the M4a completion work.
 
 ---
 
@@ -418,30 +459,37 @@ If a piece of work mainly makes the slice easier to extend, safer to modify, or 
 
 ## Recommended Planning Implications
 
-The next implementation planning wave should likely split into:
+The Milestone A implementation plan already exists:
 
-1. a Milestone A completion plan:
-   - route truth
-   - optional side-content truth
-   - save/load stability
-   - encounter and transition clarity
-   - room/dialogue/mission authoring completeness for the first slice
+`docs/superpowers/plans/2026-05-14-m4a-act-i-vertical-slice-playable-readiness-implementation.md`
 
-2. a Milestone B hardening plan:
-   - schema and validation upgrades
-   - reusable authoring patterns
-   - readability improvements driven by stronger authored structures
-   - increased Act I content velocity
+It covers all 16 tasks for M4a: room-spec schema, bootstrap replacement, room geometry primitives, typed transitions, NPC staging, dialogue sequencing, mission triggers, HUD/minimap surfacing, combat feedback, save/load hardening, smoke tests, and QA route docs. The pre-flight steps in that plan must be completed before Task 1 begins.
 
-## Review Questions
+The Milestone B implementation plan will be created after Milestone A closes, targeting the highest-friction authoring surfaces revealed by M4a completion work. Anticipated scope:
 
-Before this milestone stack is treated as locked, the reviewer should confirm:
+- schema and validation upgrades
+- reusable authoring patterns
+- readability improvements driven by stronger authored structures
+- increased Act I content velocity
 
-- Does Milestone A include enough optional side-content truth, or is any intended early side content still being treated as "later" by accident?
-- Is the placeholder-presentation boundary strict enough to stop polish creep?
-- Is the Milestone A / Milestone B handoff clear enough that agents will not mix them?
-- Does Milestone B prioritize authoring velocity strongly enough before readability polish broadens?
-- Is the next plateau correctly excluded from the immediate milestone pair?
+## Review Questions — Resolved
+
+These questions were open at initial drafting. They are answered here.
+
+**Does Milestone A include enough optional side-content truth?**
+Yes. The four ACT_0 quest steps (`samson_q1`, `sophia_q1`, `marcel_q1`, `hazel_q1`) and the two LANTERN_HEIGHTS-eligible optional NPCs (`old_man_riku`, `lantern_kid`) are now named explicitly in scope. Optional content not in that list is out of scope for Milestone A.
+
+**Is the placeholder-presentation boundary strict enough to stop polish creep?**
+Yes. The acceptance criteria require only: readable room identity, readable transition points, discoverable mission-critical NPCs, and interpretable gate and encounter state. The existing sprite atlas placeholder presentation in `runGame` already satisfies this bar. Final art, cinematic presentation, and audio mix remain out of scope.
+
+**Is the Milestone A / Milestone B handoff clear enough that agents will not mix them?**
+Yes. The boundary section defines it precisely: work that makes the slice truthful belongs in A; work that makes the slice faster to extend or safer to modify after truth is established belongs in B. Agents should use the named implementation plans as execution input, not the GDD or open-ended wish lists.
+
+**Does Milestone B prioritize authoring velocity strongly enough before readability polish broadens?**
+Yes. The acceptance criteria for Milestone B lead with authoring efficiency and validation before readability improvements. The sustainability criterion now has a binary-testable form: a new room or beat must be addable via JSON alone with zero Java changes, provable by a test.
+
+**Is the next plateau correctly excluded?**
+Yes. EMBER_MONASTERY is excluded from both milestones. HOLLOW_DEPTHS authored area deepening is ongoing in M6 and the broader M4 track and proceeds independently of M4a/M4b — it does not gate either sub-milestone and is not in scope for the first Act I vertical slice.
 
 ## Recommended Decision
 
