@@ -2,7 +2,7 @@
 doc_type: current_state
 status: living
 owner: core-team
-last_updated: 2026-05-14
+last_updated: 2026-05-15
 version_anchor: 0.0.1
 ---
 # Current State
@@ -18,7 +18,7 @@ Canonical runtime and execution snapshot for the clean-start repository.
   - M1 Act I QA gate: complete (2026-05-07).
   - M2 campaign spine integration: complete (2026-05-07) — contract-backed mission/hub runtime exit criteria met; multi-act content authoring is M4 scope.
   - M3 stability/release: complete (2026-05-08). Gate evidence: `docs/M3_RELEASE_GATE.md`.
-  - M4 campaign completion/content scale: active and partially delivered.
+  - M4 campaign completion/content scale: complete (2026-05-15). Gate evidence: `docs/MILESTONE_GATE_M4_FULL.md`.
   - M5 systemic world simulation foundation: complete (2026-05-07) — all three exit criteria met; QuestEcologyEngine closes first M6 task.
   - M6 open-world runtime expansion: active.
 
@@ -210,6 +210,17 @@ Canonical runtime and execution snapshot for the clean-start repository.
   - `AuthoringWorldBootstrap` now exposes a broader Hollow Depths slice with area-specific geometry, spawn points, NPC anchor placement, and enemy placement for `area_hollow_depths_camp`, `area_hollow_depths_caves`, `area_echo_galleries`, `area_weightbound_mines_arena`, `area_hollow_hub_first_sparks`, `area_shatter_moth_nest`, `area_fractured_contact_high_winds`, `area_stone_judge_maze`, and `area_abyssal_gate`,
   - `runGame` HUD mission surfacing now prefers plateau-relevant available missions and unresolved authored plateau beats over cross-plateau generic availability when no mission is active,
   - `runGame` is now the primary forward QA surface; `runPlayableClient` is retained as a legacy Swing prototype/reference layer rather than the lead play surface.
+- M4a Act I vertical slice playable readiness (2026-05-14):
+  - room-spec routing is now the hard gate for Lantern Heights: hardcoded NPC fallback injection removed from `AuthoringWorldBootstrap`; areas without a room-spec emit a `[AuthoringWorldBootstrap] WARNING` rather than silently injecting content,
+  - ACT_0 optional quests (`sq_samson_q1_unfinished_sparring_match`, `sq_sophia_q1_lantern_cartography`, `sq_marcel_q1_guard_the_forge`, `sq_hazel_q1_gentle_glow`) are now wired: available after `village_bonds` completes, started via NPC interaction, advanced via encounter clears, and completion-synchronized via story flags through `synchronizeMissionCompletion`,
+  - `optional_npc` role bypass in `shouldStageNpcAnchor` makes OLD_MAN_RIKU and LANTERN_KID appear in their anchored rooms without requiring explicit NPC activation in story state; LANTERN_KID dialogue line `bark_lk_hope_01` added to `dialogue.json`,
+  - typed transition gate feedback: `encounter_gate`, `return_gate`, `mission_gate`, `npc_handoff_gate` transition types all produce distinct player-visible blocked messages via `blockedReasonForType`; encounter clears call `updateAvailableMissions()`,
+  - `authoredDialogueLines` now treats empty `npc_ids` in a beat as "any NPC in this area" rather than zero-match, and `isRuntimeBeat` now covers `authored_critical` and `authored_milestone` beat types — fixing two compounding bugs that silenced all key Lantern Heights beat dialogue,
+  - HUD optional quest clarity: active side quests display `[Side Quest]` prefix; `missionRoutePrompt` handles all four ACT_0 quest IDs; `authored_critical`/`authored_milestone` beats now surface in the HUD when no mission is active,
+  - combat feedback: 2-hit combo events emit `PLAYER_MELEE_HIT` with `comboStep` 1 and 2; enemy kill emits `ENEMY_DEFEATED` with alive-count drop to 0; coverage added to `GameSimulatorMeleeCombatTest`,
+  - save/load hardening: `village_bonds` partial objective progress now restores from `talked_to_*` story flags in `synchronizeMainlineMissionStatesFromFlags` via `restoreVillageBondsObjectiveProgress()`, so a save mid-village-bonds no longer loses partial NPC progress after reload,
+  - smoke coverage expanded: `ActIRouteStateSmokeTest.npcWithdrawalWarningsAdvanceThroughBeatToWarningsHeard` covers the warning NPC interaction flow; `ActIOptionalQuestFlowTest` (new file, 3 tests) covers objective progress restoration, optional quest availability, and side-quest start from NPC interaction,
+  - gate doc at `docs/MILESTONE_A_GATE.md`; QA route updated in `docs/ACT_I_QA_ROUTE.md`.
 - LibGDX audio and authored-area presence follow-up (2026-05-14):
   - runtime placeholder WAV assets now ship in `java/client/src/main/resources/audio/`, which makes the existing audio routing audible in `runGame` for title, Lantern Heights, Hollow Depths, Ember Monastery, player hurt, enemy defeat, and portal activation events,
   - `AudioManager` now selects title music and plateau-aware gameplay music keys rather than treating music as a single fallback slot,
@@ -246,7 +257,7 @@ Canonical runtime and execution snapshot for the clean-start repository.
 ## Open Issues / Remaining Work
 
 - ~~**M3 exit criteria not fully defined**~~ — resolved 2026-05-08. Formal gate checklist defined and all 12 criteria confirmed green; gate doc at `docs/M3_RELEASE_GATE.md`; M3 promoted to complete.
-- **M4 campaign content** — active. `SUMMIT_SHRINE` and `HOLLOW_DEPTHS` are authored and validated, but later plateau runtime delivery still needs broader authored geometry, authored NPC placement, and mission/UI surfacing before campaign coverage can be treated as complete.
+- ~~**M4 campaign content**~~ — resolved 2026-05-15. All seven plateau families are now room-spec staged on the `runGame` path, plateau-local optional content already authored in contracts is surfaced, continuity survives save/load, and the campaign resolves into a bounded post-climax free-roam state. Gate evidence: `docs/MILESTONE_GATE_M4_FULL.md`.
 - ~~**Chunk-streaming geometry**~~ — resolved 2026-05-08. All 3 region fragment JSONs now carry authored world-space tile geometry; `RegionLoader` sources static tiles from fragment data; stub fallback retained only for missing fragments; dead `addSolidTile`/`addPlatformTile` helpers removed.
 - ~~**Echo puzzle evaluation**~~ — resolved 2026-05-08. `EchoPuzzleSolution` + `EchoPuzzleEvaluator` in `core.simulation`; rising-edge press counting; completion/tick/action-minimum checks with per-rule trace; 51/51 pass.
 - ~~**Echo / enemy / player collision**~~ — resolved 2026-05-08. `SimEcho` AABB-tests live enemies on `attackedThisTick`; emits `ECHO_COMBAT_HIT` / `ENEMY_DAMAGED`; `echoKillCount` tracked; `EchoPuzzleSolution.ofKills()` evaluates echo kills; 51/51 pass.
@@ -254,7 +265,9 @@ Canonical runtime and execution snapshot for the clean-start repository.
 - ~~**PlaytestClient decomposition**~~ — resolved 2026-05-09. `InputHandler` (key bindings + 16 queue flags), `RoomGeometry` (boundary constants + region resolver), `SaveLoad` (persistence I/O + `LoadResult` record) all extracted; `PlaytestClient` delegates fully to all three.
 - ~~**Stub physics floor (P2)**~~ — resolved 2026-05-09. `CollisionWorld` injected into `GameSimulator`; `resolveX` + `resolveY` called each tick; spawnY stub is the fallback only when `collisionWorld == null` (regression tests unaffected).
 - ~~**LibGDX world geometry**~~ — resolved 2026-05-09. `StubWorldRenderer` accepts `List<TileRect>`; solid floor and platform drawn as coloured rects; `ShadowAscentGame` builds and passes stub tile geometry.
-- **Next LibGDX production-client follow-up**: `runGame` is now the main QA surface, but it still needs broader authored geometry density, richer authored transition/gate behavior, deeper animation coverage, and more direct content-complete encounter scripting before it can fully retire the older prototype path.
+- **Next LibGDX production-client follow-up**: `runGame` is now the main QA surface and the full campaign host; the next work is campaign fidelity/polish, stronger authored density, and broader authoring acceleration rather than basic plateau existence.
+- **M4a Act I vertical slice**: complete as of 2026-05-14. All 12 exit criteria green (see `docs/MILESTONE_A_GATE.md`). Pre-existing `Campaign Continuity` regression failure not caused by M4a scope — tracked separately.
+- **M4b Act I authoring velocity and fidelity hardening**: complete as of 2026-05-15. The repo now has explicit authoring diagnostics, zero-Java room/side-beat proofs, contract-driven route-hint/mainline metadata, fixture authoring coverage, and durable save/load coverage for growth-state room IDs.
 
 ## Verification Evidence
 

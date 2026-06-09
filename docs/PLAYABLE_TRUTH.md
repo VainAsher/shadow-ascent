@@ -2,7 +2,7 @@
 doc_type: playable_truth
 status: living
 owner: qa-team
-last_updated: 2026-05-14
+last_updated: 2026-05-15
 version_anchor: 0.0.1
 ---
 # Playable Truth
@@ -18,7 +18,7 @@ Read this before running a playtest. Read this before giving feedback. Read this
 - Audience: internal development and controlled QA only
 - Primary runtime: `runGame`
 - Secondary runtime: `runPlayableClient` as a legacy Swing prototype/reference layer and possible future intermediary/editor surface
-- Product direction: full campaign narrative Metroidvania, with the current runtime serving as a bounded validation slice rather than a content-complete game
+- Product direction: full campaign narrative Metroidvania, with the current runtime now carrying the authored campaign spine in placeholder-presentation form
 
 ## The One Approved QA Route
 
@@ -30,6 +30,7 @@ Current approved focus:
 2. Verify the opening hub is readable.
 3. Progress through the first social mission path.
 4. Confirm objective updates, hub-state changes, and save/load continuity.
+5. When needed, validate later-plateau routing and bounded post-climax free-roam against milestone gates.
 
 Pass criteria live in [ACT_I_QA_ROUTE.md](ACT_I_QA_ROUTE.md).
 
@@ -50,7 +51,7 @@ Pass criteria live in [ACT_I_QA_ROUTE.md](ACT_I_QA_ROUTE.md).
 
 | System | State | Why feedback should stay narrow |
 | --- | --- | --- |
-| Campaign content breadth | Partial | Runtime spine exists, but content scale is not the current proof target |
+| Campaign content breadth | Working but still placeholder-heavy | All currently authored plateau families are staged in `runGame`, but presentation and density are still not final |
 | Combat depth | Partial | The bounded encounter loop is present, but not yet representative of the full intended combat game |
 | LibGDX production client | Active primary surface | `runGame` now renders atlas-backed placeholder sprites plus a title/new-game/continue flow, persistent HUD, toggleable minimap, dialogue modal, pause/save/load flow, modal inventory/shop/crafting overlays, audible placeholder audio, deeper Hollow Depths authored bootstrap, tighter area-authored NPC presence, and explicit interaction hints. It is now the correct forward QA surface, even though content density and authored geometry breadth are still expanding |
 | Open-world systemic simulation | Active expansion lane | M6 is active, but it should be judged as foundation work, not finished player-facing design |
@@ -64,7 +65,7 @@ These exist in the repo and may be visible in docs or code, but should not be tr
 | Multi-act content authoring | Scaffolded / queued beyond current route proof |
 | Full open-world runtime expansion | Active architecture lane |
 | Broader co-op and advanced systemic simulation behavior | Foundation present, not current review target |
-| Late-game narrative plateaus and post-Act I content breadth | Contract and planning surface present, not runtime-complete |
+| Late-game narrative plateaus and post-Act I content breadth | Runtime-complete at campaign-spine level, still open for fidelity/polish |
 
 ## What Is Frozen For The Current Feedback Loop
 

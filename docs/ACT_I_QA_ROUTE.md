@@ -17,23 +17,32 @@ This is a **quality gate**, not the product boundary.
 
 The route is runnable with objective-driven mission completion. Hub transitions are progression-bound, save/load uses a versioned envelope with legacy compatibility, and session evidence logs are now captured per run. Historical movement-feel sign-off was captured in `runPlayableClient`, but forward route validation should now be executed in `runGame` unless a task explicitly targets the legacy Swing surface.
 
-## Approved Evidence Route
+## Approved Evidence Route — M4a Vertical Slice (2026-05-14)
 
-1. Launch the game.
-2. Confirm opening hub state is readable (`VIBRANT`) and key NPCs are present.
-3. Start the first social mission path.
-4. Progress mission objectives through NPC interactions.
-5. Trigger veil-influence transition and confirm hub/NPC changes.
-6. Continue toward next mission availability.
-7. Save state.
-8. Reload and verify route-critical progress persists.
+This route reflects the Act I vertical slice as of M4a. Run in `runGame` (LibGDX production client).
+
+1. Launch `runGame`. Confirm opening balcony state is readable and key NPCs are visible.
+2. Traverse east from `lh_balcony_opening` — room transitions gate on flags set by traversal.
+3. Arrive at `lh_hub_social`. Interact with SAMSON, SOPHIA, MARCEL, HAZEL to complete `village_bonds`.
+4. Observe HUD: mission title changes, objective line tracks NPC progress.
+5. Explore optional side quests: interact with any villager (e.g., SAMSON) — `[Side Quest]` mission starts.
+6. Complete or abandon side quest; confirm no interference with mainline progression.
+7. Traverse east to `lh_handoff_path`; interact with VEIL_MAIDEN to accept `veil_request`.
+8. Continue to `mistwood_entry`, then `mistwood_first_encounter`. Confirm encounter gate blocks exit while enemies live.
+9. Defeat Mistwood enemies. Confirm `mistwood_beast_defeated` flag and hub state shifts to dimming.
+10. Return to `lh_hub_return_changed` (`area_lantern_heights_hub_dimming`). Confirm 4 warning NPCs are highlighted.
+11. Interact with each warning NPC (SAMSON, SOPHIA, MARCEL, HAZEL). Confirm `heard_warning_*` flags and final `warnings_heard`.
+12. Save via Esc → Save. Reload via Esc → Load. Confirm route-critical story state persists.
 
 ## Pass Criteria
 
-- no crash, softlock, or dead-end,
-- mission progression is understandable,
-- hub transition effects are visible,
-- save/load preserves route-critical story state.
+- no crash, softlock, or dead-end on any room transition,
+- mission progression is readable via HUD title and objective line,
+- optional quests label as `[Side Quest]` and do not block mainline,
+- encounter gate properly blocks and unblocks on enemy clear,
+- hub transitions (`lh_hub_social` → `lh_hub_return_changed`) are visible,
+- warning NPC interaction flow advances to `warnings_heard`,
+- save/load preserves flags, active mission, and partial objective progress.
 
 ## Evidence Artifacts
 

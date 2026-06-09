@@ -10,27 +10,19 @@ This backlog is the operational companion to `docs/ROADMAP.md` and `docs/CURRENT
 
 ## Active Workstreams
 
-## 0) Campaign Spine and Production-Client Deepening (M4 / active)
+## 0) Campaign Spine and Production-Client Deepening (M4 / completed)
 
 ### Current Focus
 
-- `SUMMIT_SHRINE` and `HOLLOW_DEPTHS` authoring are landed and validated.
-- Remaining M4 work is no longer "write more beats in the abstract." It is:
-  - making later plateau coverage explicit,
-  - surfacing authored content clearly in `runGame`,
-  - finishing the `HOLLOW_DEPTHS` runtime-facing slice as the first deep production-client plateau,
-  - and moving production-client runtime away from fixture-only bootstrap behavior.
+- `LANTERN_HEIGHTS`, `MISTWOOD`, `SUMMIT_SHRINE`, `HOLLOW_DEPTHS`, `EMBER_MONASTERY`, `WINDING_SKYROAD`, `MIRROR_SUMMIT`, and `BEACON_CLIFF` are now room-spec staged in `runGame`.
+- Plateau-local optional content already authored in contracts is surfaced on the runtime path.
+- `Campaign Continuity` is green again, and the runtime closes into a bounded post-climax free-roam state.
 
 ### Next
 
-- [ ] Normalize milestone truth across `ROADMAP`, `CURRENT_STATE`, `PLAYABLE_TRUTH`, and `INDEX` when M4/M6 scope changes.
-- [ ] Define the remaining M4 plateau spine and checkpoint sequence explicitly in implementation-facing docs.
-- [ ] Build a source-backed content ledger covering repo data, integrated donor data, and GDD plateau/dungeon sources.
-- [ ] Replace fixture world bootstrap behavior in `runGame` with authored area bootstrap.
-- [ ] Replace remaining fallback NPC placement heuristics with authored runtime placement keyed by plateau/beat/area state.
-- [ ] Deepen mission/objective/interaction surfacing in `runGame` from actual quest/beat/dialogue data.
 - [x] Decide explicitly when `runGame` becomes the primary forward QA surface.
-- [ ] Finish the current `HOLLOW_DEPTHS` runtime slice before opening the main `EMBER_MONASTERY` tranche.
+- [x] Complete M4 Full campaign spine runtime playability.
+- [ ] Move the active delivery lane to post-M4 campaign fidelity/polish and M6 elastic/runtime opportunity integration.
 
 ## 1) Data Contract Runtime Integration (M1/M2)
 
