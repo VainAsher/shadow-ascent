@@ -26,6 +26,7 @@
 - She determines wound structure: the game's post-Summit progression, hub emptiness, and recovery arc only land if her manipulation has already reorganized the player's expectations.
 - She also teaches the player to distrust praise that arrives without reciprocity, witness, or shared burden.
 - Her dossier is necessary for differentiating "hard game" from "emotionally manipulative game": the hurt starts before the boss arena.
+- Her combat and encounter role should also reinforce illusion pressure rather than straightforward duel clarity. The player should feel identity erosion, ritual control, and unfair emotional possession more than a normal mastery contest.
 
 ## Player Learning
 - The player learns that being told they are special can be a control tactic.
@@ -50,6 +51,7 @@
 - If players can describe her only as "the boss who stole the spirits," the dossier is too thin.
 
 ## Source Basis
+- combat and movement design review provided by user on 2026-05-10
 - `game_design_document/07_characters/01_main_characters/README.md`
 - `game_design_document/07_characters/08_enemies/README.md`
 - `game_design_document/06_story_and_narrative/02_main_plot/README.md`

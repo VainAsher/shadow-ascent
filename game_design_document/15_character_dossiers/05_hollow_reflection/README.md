@@ -19,6 +19,7 @@
 - The fight should mirror Aen's recovered toolkit directly: dashes, second reaches, aerial corrections, wall pressure, plunges, and upward re-engagements should all appear in hostile form.
 - Support-earned lessons should return as threats. Community-made mobility, endurance, and combat options should feel twisted into proof that pain can imitate growth.
 - The arena and phase structure should force the player to recognize familiar verbs under hostile intent. This is how the boss proves that the deepest enemy is not lack of skill, but what the recovered self chooses to become.
+- The stance split should matter here more than anywhere else in the game. Armed pressure should read as survival through force and domination, while unarmed control should read as restraint, integration, and refusal to let pain dictate the final language of victory.
 - The final resolution needs a meaningful split between domination and release. A player leaning into armed pressure should be able to win, but the fight and aftermath should feel harsher than a mastery-through-restraint resolution.
 
 ## Gameplay Impact
@@ -26,6 +27,7 @@
 - It turns community-earned skills hostile, making earlier support characters matter again at the point of climax.
 - It is the strongest system bridge between combat expression and ending texture: domination should feel like victory without full release, while restraint should feel like the most complete thematic resolution.
 - The boss also validates the entire recovery arc by proving that regained power alone is morally insufficient.
+- It should also validate the game's traversal-combat thesis: the player survives by reading space, preserving flow, and mastering pressure, not by standing still and trading damage.
 
 ## Player Learning
 - The player learns that mastery can be used to hold pain tighter or to release it.
@@ -51,6 +53,7 @@
 - If support characters do not echo through the fight's verbs, the final boss loses its community-earned stakes.
 
 ## Source Basis
+- combat and movement design review provided by user on 2026-05-10
 - `game_design_document/07_characters/01_main_characters/README.md`
 - `game_design_document/07_characters/08_enemies/README.md`
 - `game_design_document/06_story_and_narrative/02_main_plot/README.md`
