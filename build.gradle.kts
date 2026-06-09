@@ -48,6 +48,30 @@ task<JavaExec>("runDataContractDiagnostics") {
     mainClass.set("com.shadowascent.core.DataContractDiagnostics")
 }
 
+task<JavaExec>("runActIAuthoringDiagnostics") {
+    group = "verification"
+    description = "Validate Act I room-spec authoring and contract-backed readability surfaces"
+    dependsOn(":client:classes")
+    classpath = project(":client").mainSourceSet().runtimeClasspath
+    mainClass.set("com.shadowascent.client.tools.ActIAuthoringDiagnostics")
+}
+
+task<JavaExec>("runRunGameAuthoringDiagnostics") {
+    group = "verification"
+    description = "Validate runGame room-spec authoring and contract-backed readability surfaces"
+    dependsOn(":client:classes")
+    classpath = project(":client").mainSourceSet().runtimeClasspath
+    mainClass.set("com.shadowascent.client.tools.RunGameAuthoringDiagnostics")
+}
+
+task<JavaExec>("runAuthoringDiagnostics") {
+    group = "verification"
+    description = "Validate authored runGame room-spec coverage across all staged plateaus"
+    dependsOn(":client:classes")
+    classpath = project(":client").mainSourceSet().runtimeClasspath
+    mainClass.set("com.shadowascent.client.tools.RunGameAuthoringDiagnostics")
+}
+
 task<JavaExec>("runWorldgenDiagnostics") {
     group = "verification"
     description = "Validate and report migrated worldgen section templates"
@@ -131,6 +155,7 @@ project(":core") {
 project(":client") {
     dependencies {
         implementation(project(":core"))
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
         implementation("com.badlogicgames.gdx:gdx:1.12.1")
         implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:1.12.1")
         runtimeOnly("com.badlogicgames.gdx:gdx-platform:1.12.1:natives-desktop")
