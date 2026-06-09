@@ -241,6 +241,7 @@ public class MissionManager {
     }
 
     private void synchronizeMainlineMissionStatesFromFlags() {
+        restoreVillageBondsObjectiveProgress();
         synchronizeMissionCompletion("village_bonds", storyState.hasFlag("village_bonds"));
         synchronizeMissionCompletion("veil_request",
                 storyState.hasFlag("veil_request_accepted") || storyState.hasFlag("veil_request_declined"));
@@ -251,6 +252,24 @@ public class MissionManager {
         synchronizeMissionCompletion("lantern_restoration", storyState.hasFlag("lanterns_restored"));
         synchronizeMissionCompletion("monastery_arrival", storyState.hasFlag("monastery_reached"));
         synchronizeMissionCompletion("yin_yang_balance", storyState.hasFlag("emotional_balance_achieved"));
+        synchronizeMissionCompletion("sq_samson_q1_unfinished_sparring_match", storyState.hasFlag("samson_q1_complete"));
+        synchronizeMissionCompletion("sq_sophia_q1_lantern_cartography", storyState.hasFlag("sophia_q1_complete"));
+        synchronizeMissionCompletion("sq_marcel_q1_guard_the_forge", storyState.hasFlag("marcel_q1_complete"));
+        synchronizeMissionCompletion("sq_hazel_q1_gentle_glow", storyState.hasFlag("hazel_q1_complete"));
+    }
+
+    private void restoreVillageBondsObjectiveProgress() {
+        if (storyState.hasFlag("village_bonds")) {
+            return;
+        }
+        Mission mission = missionRegistry.get("village_bonds");
+        if (mission == null) {
+            return;
+        }
+        if (storyState.hasFlag("talked_to_samson")) mission.addObjectiveProgress("talk_to_samson", 999);
+        if (storyState.hasFlag("talked_to_sophia")) mission.addObjectiveProgress("talk_to_sophia", 999);
+        if (storyState.hasFlag("talked_to_marcel")) mission.addObjectiveProgress("talk_to_marcel", 999);
+        if (storyState.hasFlag("talked_to_hazel")) mission.addObjectiveProgress("talk_to_hazel", 999);
     }
 
     private void synchronizeMissionCompletion(String missionId, boolean completedByStoryFlag) {
@@ -593,7 +612,8 @@ public class MissionManager {
 
     private static String plateauFromRegion(String region) {
         return switch (region == null ? "" : region.trim().toLowerCase(Locale.ROOT)) {
-            case "town", "forest", "summit" -> "LANTERN_HEIGHTS";
+            case "town", "forest" -> "LANTERN_HEIGHTS";
+            case "summit" -> "SUMMIT_SHRINE";
             case "caves" -> "HOLLOW_DEPTHS";
             case "monastery", "mountain" -> "EMBER_MONASTERY";
             case "skyroad" -> "WINDING_SKYROAD";

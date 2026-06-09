@@ -1104,54 +1104,96 @@ public class RegressionTest {
             gameState.getMissionManager().updateObjectiveProgress("dojo_practice", "learn_dash", 1);
             boolean dojoComplete = storyState.hasFlag("dojo_practiced");
 
+            boolean startedVeil = gameState.getMissionManager().startMission("veil_request");
+            gameState.getMissionManager().updateObjectiveProgress("veil_request", "hear_veil_offer", 1);
+            gameState.getMissionManager().updateObjectiveProgress("veil_request", "accept_or_decline", 1);
+            boolean veilResolved = storyState.hasFlag("veil_request_accepted")
+                    || storyState.hasFlag("veil_request_declined");
+
             boolean startedMistwood = gameState.getMissionManager().startMission("mistwood_beast");
             gameState.getMissionManager().updateObjectiveProgress("mistwood_beast", "defeat_beast", 1);
             boolean mistwoodComplete = storyState.hasFlag("mistwood_beast_defeated");
 
-            boolean startedVeil = gameState.getMissionManager().startMission("veil_request");
-            gameState.getMissionManager().updateObjectiveProgress("veil_request", "hear_veil_offer", 1);
-            gameState.getMissionManager().updateObjectiveProgress("veil_request", "accept_or_decline", 1);
-            boolean veilResolved = storyState.hasFlag("veil_request_accepted") || storyState.hasFlag("veil_request_declined");
+            // Summit to Hollow boundary must survive a save/load round-trip before Act II progression continues.
+            storyState.setPlateau(StoryState.Plateau.SUMMIT_SHRINE);
+            storyState.setFlag("yin_yang_taken");
+            storyState.setFlag("hollowed");
+            java.nio.file.Path continuityPath = java.nio.file.Files.createTempFile("campaign-continuity", ".sav");
+            gameState.save(continuityPath);
+            GameState loadedGameState = new GameState();
+            loadedGameState.load(continuityPath);
+            java.nio.file.Files.deleteIfExists(continuityPath);
+
+            StoryState loadedStoryState = loadedGameState.getStoryState();
+            boolean boundaryPlateauPreserved =
+                    loadedStoryState.getCurrentPlateau() == StoryState.Plateau.SUMMIT_SHRINE;
+            boolean boundaryFlagsPreserved =
+                    loadedStoryState.hasFlag("yin_yang_taken") && loadedStoryState.hasFlag("hollowed");
 
             // Act II chain and objective-count thresholds
-            boolean startedHollow = gameState.getMissionManager().startMission("hollow_descent");
-            gameState.getMissionManager().updateObjectiveProgress("hollow_descent", "enter_hollow_depths", 1);
-            gameState.getMissionManager().updateObjectiveProgress("hollow_descent", "find_veil_source", 1);
-            boolean actProgressed = storyState.getCurrentAct() == StoryState.Act.ACT_II;
-            boolean plateauChanged = storyState.getCurrentPlateau() == StoryState.Plateau.HOLLOW_DEPTHS;
+            boolean startedHollow = loadedGameState.getMissionManager().startMission("hollow_descent");
+            loadedGameState.getMissionManager().updateObjectiveProgress("hollow_descent", "enter_hollow_depths", 1);
+            loadedGameState.getMissionManager().updateObjectiveProgress("hollow_descent", "find_veil_source", 1);
+            boolean actProgressed = loadedStoryState.getCurrentAct() == StoryState.Act.ACT_II;
+            boolean plateauChanged = loadedStoryState.getCurrentPlateau() == StoryState.Plateau.HOLLOW_DEPTHS;
 
-            boolean startedLanterns = gameState.getMissionManager().startMission("lantern_restoration");
-            gameState.getMissionManager().updateObjectiveProgress("lantern_restoration", "collect_lantern_pieces", 5);
-            gameState.getMissionManager().updateObjectiveProgress("lantern_restoration", "restore_lanterns", 1);
-            boolean lanternMissionComplete = storyState.hasFlag("lanterns_restored");
+            boolean startedLanterns = loadedGameState.getMissionManager().startMission("lantern_restoration");
+            loadedGameState.getMissionManager().updateObjectiveProgress("lantern_restoration", "collect_lantern_pieces", 5);
+            loadedGameState.getMissionManager().updateObjectiveProgress("lantern_restoration", "restore_lanterns", 1);
+            boolean lanternMissionComplete = loadedStoryState.hasFlag("lanterns_restored");
 
             // Act III chain
-            boolean startedMonastery = gameState.getMissionManager().startMission("monastery_arrival");
-            gameState.getMissionManager().updateObjectiveProgress("monastery_arrival", "climb_to_monastery", 1);
-            gameState.getMissionManager().updateObjectiveProgress("monastery_arrival", "enter_monastery", 1);
+            boolean startedMonastery = loadedGameState.getMissionManager().startMission("monastery_arrival");
+            loadedGameState.getMissionManager().updateObjectiveProgress("monastery_arrival", "climb_to_monastery", 1);
+            loadedGameState.getMissionManager().updateObjectiveProgress("monastery_arrival", "enter_monastery", 1);
 
-            boolean startedBalance = gameState.getMissionManager().startMission("yin_yang_balance");
-            gameState.getMissionManager().updateObjectiveProgress("yin_yang_balance", "understand_yin_yang", 1);
-            gameState.getMissionManager().updateObjectiveProgress("yin_yang_balance", "achieve_balance", 1);
+            boolean startedBalance = loadedGameState.getMissionManager().startMission("yin_yang_balance");
+            loadedGameState.getMissionManager().updateObjectiveProgress("yin_yang_balance", "understand_yin_yang", 1);
+            loadedGameState.getMissionManager().updateObjectiveProgress("yin_yang_balance", "achieve_balance", 1);
 
-            boolean actProgressedAgain = storyState.getCurrentAct() == StoryState.Act.ACT_III;
-            boolean plateauChangedAgain = storyState.getCurrentPlateau() == StoryState.Plateau.EMBER_MONASTERY;
+            boolean actProgressedAgain = loadedStoryState.getCurrentAct() == StoryState.Act.ACT_III;
+            boolean plateauChangedAgain = loadedStoryState.getCurrentPlateau() == StoryState.Plateau.EMBER_MONASTERY;
 
             // Verify abilities granted
-            boolean hasBasicAbilities = storyState.getAbilities().contains("basic_movement") &&
-                                      storyState.getAbilities().contains("dash");
-            boolean hasCombatAbility = storyState.getAbilities().contains("combat_basic");
-            boolean hasEmotionalAbility = storyState.getAbilities().contains("emotional_insight");
+            boolean hasBasicAbilities = loadedStoryState.getAbilities().contains("basic_movement") &&
+                                       loadedStoryState.getAbilities().contains("dash");
+            boolean hasCombatAbility = loadedStoryState.getAbilities().contains("combat_basic");
+            boolean hasEmotionalAbility = loadedStoryState.getAbilities().contains("emotional_insight");
 
             boolean result = startedVillage && villageComplete &&
                            startedDojo && dojoComplete &&
-                           startedMistwood && mistwoodComplete &&
                            startedVeil && veilResolved &&
+                           startedMistwood && mistwoodComplete &&
+                           boundaryPlateauPreserved && boundaryFlagsPreserved &&
                            startedHollow && actProgressed && plateauChanged &&
                            startedLanterns && lanternMissionComplete &&
                            startedMonastery && startedBalance &&
                            actProgressedAgain && plateauChangedAgain &&
                            hasBasicAbilities && hasCombatAbility && hasEmotionalAbility;
+            if (!result) {
+                System.out.println("  startedVillage=" + startedVillage);
+                System.out.println("  villageComplete=" + villageComplete);
+                System.out.println("  startedDojo=" + startedDojo);
+                System.out.println("  dojoComplete=" + dojoComplete);
+                System.out.println("  startedVeil=" + startedVeil);
+                System.out.println("  veilResolved=" + veilResolved);
+                System.out.println("  startedMistwood=" + startedMistwood);
+                System.out.println("  mistwoodComplete=" + mistwoodComplete);
+                System.out.println("  boundaryPlateauPreserved=" + boundaryPlateauPreserved);
+                System.out.println("  boundaryFlagsPreserved=" + boundaryFlagsPreserved);
+                System.out.println("  startedHollow=" + startedHollow);
+                System.out.println("  actProgressed=" + actProgressed);
+                System.out.println("  plateauChanged=" + plateauChanged);
+                System.out.println("  startedLanterns=" + startedLanterns);
+                System.out.println("  lanternMissionComplete=" + lanternMissionComplete);
+                System.out.println("  startedMonastery=" + startedMonastery);
+                System.out.println("  startedBalance=" + startedBalance);
+                System.out.println("  actProgressedAgain=" + actProgressedAgain);
+                System.out.println("  plateauChangedAgain=" + plateauChangedAgain);
+                System.out.println("  hasBasicAbilities=" + hasBasicAbilities);
+                System.out.println("  hasCombatAbility=" + hasCombatAbility);
+                System.out.println("  hasEmotionalAbility=" + hasEmotionalAbility);
+            }
             System.out.println(result ? "[PASS] PASSED" : "[FAIL] FAILED");
             return result;
 

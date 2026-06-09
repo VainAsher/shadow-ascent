@@ -22,6 +22,7 @@ public final class StoryState {
 
     public enum Plateau {
         LANTERN_HEIGHTS,
+        SUMMIT_SHRINE,
         HOLLOW_DEPTHS,
         EMBER_MONASTERY,
         WINDING_SKYROAD,
@@ -287,10 +288,14 @@ public final class StoryState {
         this.flags.addAll(other.flags);
         this.abilities.clear();
         this.abilities.addAll(other.abilities);
-        this.npcs.clear();
-        this.npcs.putAll(other.npcs);
-        this.missions.clear();
-        this.missions.putAll(other.missions);
+        if (!other.npcs.isEmpty()) {
+            this.npcs.clear();
+            this.npcs.putAll(other.npcs);
+        }
+        if (!other.missions.isEmpty()) {
+            this.missions.clear();
+            this.missions.putAll(other.missions);
+        }
         this.activeMissionId = other.activeMissionId;
         this.missionTimer = other.missionTimer;
         this.yinScore = other.yinScore;
