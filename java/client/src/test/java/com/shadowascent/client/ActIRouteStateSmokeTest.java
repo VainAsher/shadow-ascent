@@ -67,6 +67,40 @@ final class ActIRouteStateSmokeTest {
         assertEquals("area_lantern_heights_hub_dimming", returnHub.areaId());
     }
 
+    @Test
+    void npcWithdrawalWarningsAdvanceThroughBeatToWarningsHeard() {
+        GameState gameState = new GameState();
+        gameState.getStoryState().setFlag("npc_withdrawal_started");
+        gameState.getHubManager().updateHubState();
+        gameState.getMissionManager().updateAvailableMissions();
+
+        // Before any warnings: highlighted NPCs are the withdrawal warning set
+        java.util.List<String> highlighted = RunGameMissionInteraction.highlightedNpcIds(gameState);
+        assertTrue(highlighted.stream().anyMatch(id -> id.equalsIgnoreCase("SAMSON")));
+        assertTrue(highlighted.stream().anyMatch(id -> id.equalsIgnoreCase("SOPHIA")));
+        assertTrue(highlighted.stream().anyMatch(id -> id.equalsIgnoreCase("MARCEL")));
+        assertTrue(highlighted.stream().anyMatch(id -> id.equalsIgnoreCase("HAZEL")));
+
+        // Interact with each warning NPC
+        for (String npcId : java.util.List.of("SAMSON", "SOPHIA", "MARCEL", "HAZEL")) {
+            assertFalse(gameState.getStoryState().hasFlag("warnings_heard"),
+                    "warnings_heard should not be set until all 4 NPCs are heard");
+            RunGameMissionInteraction.applyNpcInteraction(gameState, npcId);
+            assertTrue(gameState.getStoryState().hasFlag("heard_warning_" + npcId.toLowerCase(java.util.Locale.ROOT)),
+                    "heard_warning flag missing for " + npcId);
+        }
+
+        assertTrue(gameState.getStoryState().hasFlag("warnings_heard"),
+                "warnings_heard should be set after all four warning NPCs are interacted with");
+
+        // After warnings heard: highlighted NPCs switches back to mission-ordered NPCs
+        java.util.List<String> afterHighlighted = RunGameMissionInteraction.highlightedNpcIds(gameState);
+        assertFalse(afterHighlighted.size() == 4
+                && afterHighlighted.stream().anyMatch(id -> id.equalsIgnoreCase("SAMSON"))
+                && !gameState.getStoryState().hasFlag("warnings_heard"),
+                "After warnings_heard, highlight set should no longer be the withdrawal set");
+    }
+
     private static void traverse(GameState gameState, RunGameContentProfile profile, float playerX, GameSimulator simulator) {
         SimPlayer player = new SimPlayer("player", 0, profile.playerSpawnX(), profile.playerSpawnY());
         player.physics.x = playerX;

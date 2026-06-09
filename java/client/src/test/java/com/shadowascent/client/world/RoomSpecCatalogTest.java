@@ -5,6 +5,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,6 +24,19 @@ final class RoomSpecCatalogTest {
         assertEquals("lh_balcony_opening", catalog.room("lh_balcony_opening").orElseThrow().id());
         assertEquals("mistwood_first_encounter", catalog.room("mistwood_first_encounter").orElseThrow().id());
         assertTrue(catalog.roomsForPlateau("LANTERN_HEIGHTS").stream().anyMatch(room -> "lh_hub_social".equals(room.id())));
+        assertTrue(catalog.room("lh_fixture_annex").isEmpty(), "fixture room must not be loaded by default scans");
+        assertTrue(catalog.room("fixture_hd_fallback").isEmpty(), "multi-plateau fixture room must not be loaded by default scans");
+    }
+
+    @Test
+    void explicitCatalogLoadCanIncludeAuthoringFixtureFile() {
+        Path fixturePath = resolveFixturePath();
+        List<Path> files = new ArrayList<>(RoomSpecCatalog.defaultRoomSpecFiles());
+        files.add(fixturePath);
+
+        RoomSpecCatalog catalog = RoomSpecCatalog.load(files);
+
+        assertEquals("lh_fixture_annex", catalog.room("lh_fixture_annex").orElseThrow().id());
     }
 
     @Test
@@ -93,5 +107,15 @@ final class RoomSpecCatalogTest {
                 () -> RoomSpecCatalog.load(List.of(fileA, fileB)));
 
         assertTrue(error.getMessage().contains("duplicate_room"));
+    }
+
+    private static Path resolveFixturePath() {
+        for (Path cursor = Path.of("").toAbsolutePath(); cursor != null; cursor = cursor.getParent()) {
+            Path candidate = cursor.resolve("data").resolve("room_specs").resolve("act_i_authoring_fixture.json");
+            if (Files.exists(candidate)) {
+                return candidate;
+            }
+        }
+        throw new IllegalStateException("Unable to resolve act_i_authoring_fixture.json");
     }
 }

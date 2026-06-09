@@ -233,6 +233,38 @@ final class RunGameAreaTransitionTest {
     }
 
     @Test
+    void clearedMistwoodEncounterCanTraverseIntoDeeperAuthoredRoom() {
+        GameState gameState = new GameState();
+        gameState.getStoryState().setFlag("opening_seen");
+        gameState.getStoryState().setFlag("village_bonds");
+        gameState.getStoryState().setFlag("veil_request_accepted");
+        gameState.setCurrentRoomId("mistwood_first_encounter");
+
+        AuthoringWorldBootstrap bootstrap = new AuthoringWorldBootstrap();
+        RunGameContentProfile profile = bootstrap.bootstrap(gameState);
+        SimPlayer player = new SimPlayer("player", 0, profile.playerSpawnX(), profile.playerSpawnY());
+        player.physics.x = 1480f;
+
+        GameSimulator simulator = new GameSimulator();
+        simulator.addEnemy("mistwood_goblin_2", "goblin", 720f, 280f);
+        simulator.addEnemy("mistwood_bat_1", "bat", 1040f, 205f);
+        simulator.getEnemies().forEach(enemy -> {
+            enemy.hp = 0;
+            enemy.removed = true;
+        });
+
+        RunGameAreaTransition.TraversalResult result =
+                RunGameAreaTransition.tryTraverse(gameState, profile, player, simulator);
+
+        assertTrue(result.transitioned());
+        assertTrue(gameState.getStoryState().hasFlag("mistwood_annex_opened"));
+        assertEquals("mistwood_afterglow_pass", gameState.getCurrentRoomId());
+
+        RunGameContentProfile deeperProfile = bootstrap.bootstrap(gameState);
+        assertEquals("mistwood_afterglow_pass", deeperProfile.roomId());
+    }
+
+    @Test
     void hollowCampGateTraversalAdvancesIntoCaves() {
         GameState gameState = new GameState();
         gameState.getStoryState().setFlag("act2_unlocked");

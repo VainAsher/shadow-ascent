@@ -1,5 +1,6 @@
 package com.shadowascent.client.ui;
 
+import com.shadowascent.core.data.GameDataContracts;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -191,5 +192,15 @@ final class HudOverlayStateTest {
 
         assertEquals(List.of("SAMSON", "HAZEL"), state.highlightedNpcIds());
         assertThrows(UnsupportedOperationException.class, () -> state.highlightedNpcIds().add("SOPHIA"));
+    }
+
+    @Test
+    void routeHintsResolveFromQuestContractsForMainlineAndFixtureSideQuest() {
+        GameDataContracts contracts = GameDataContracts.loadDefault();
+
+        assertEquals("Push east toward the mission route", contracts.routeHintForMission("mistwood_beast").orElseThrow());
+        assertEquals("Help Lantern Kid with the practice errand", contracts.routeHintForMission("sq_fixture_q1_test_errand").orElseThrow());
+        assertTrue(contracts.isMainlineMission("mistwood_beast"));
+        assertFalse(contracts.isMainlineMission("sq_fixture_q1_test_errand"));
     }
 }

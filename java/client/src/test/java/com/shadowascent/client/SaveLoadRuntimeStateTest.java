@@ -73,4 +73,34 @@ final class SaveLoadRuntimeStateTest {
         assertEquals(1, enemy.hp);
         assertFalse(enemy.removed);
     }
+
+    @Test
+    void saveAndLoadPreservesAuthoredGrowthRoomIdsAndFixtureSideQuestState() throws Exception {
+        GameState gameState = new GameState();
+        gameState.getStoryState().setFlag("opening_seen");
+        gameState.getStoryState().setFlag("aen_introduced");
+        gameState.getStoryState().setFlag("yin_yang_present");
+        gameState.getStoryState().setFlag("village_bonds");
+        gameState.getStoryState().setFlag("fixture_annex_unlocked");
+        gameState.getHubManager().updateHubState();
+        gameState.getMissionManager().updateAvailableMissions();
+        RunGameMissionInteraction.applyNpcInteraction(gameState, "LANTERN_KID");
+        gameState.setCurrentRoomId("lh_fixture_annex");
+        gameState.setPendingRoomSpawnId("spawn_main");
+
+        GameSimulator simulator = new GameSimulator();
+        simulator.addPlayer("player1", 0, 160f, 280f);
+        SaveLoad saveLoad = new SaveLoad(gameState, tempDir.resolve("runGame_slot2.sav"));
+
+        saveLoad.saveRunGame(simulator, "player1");
+
+        gameState.setCurrentRoomId("lh_balcony_opening");
+        gameState.setPendingRoomSpawnId(null);
+        gameState.getStoryState().setActiveMission(null);
+
+        assertTrue(saveLoad.loadRunGame(simulator, "player1"));
+        assertEquals("lh_fixture_annex", gameState.getCurrentRoomId());
+        assertEquals("spawn_main", gameState.getPendingRoomSpawnId());
+        assertEquals("sq_fixture_q1_test_errand", gameState.getStoryState().getActiveMissionId());
+    }
 }

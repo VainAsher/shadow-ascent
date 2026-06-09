@@ -165,6 +165,24 @@ final class RunGameMissionInteractionTest {
         assertTrue(gameState.getStoryState().hasFlag("warnings_heard"));
     }
 
+    @Test
+    void fixtureSideQuestStartsFromLanternKidWithoutNewMissionSwitchBranch() {
+        GameState gameState = new GameState();
+        gameState.getStoryState().setFlag("opening_seen");
+        gameState.getStoryState().setFlag("aen_introduced");
+        gameState.getStoryState().setFlag("yin_yang_present");
+        gameState.getStoryState().setFlag("village_bonds");
+        gameState.getHubManager().updateHubState();
+        gameState.getMissionManager().updateAvailableMissions();
+
+        RunGameMissionInteraction.InteractionResult result =
+                RunGameMissionInteraction.applyNpcInteraction(gameState, "LANTERN_KID");
+
+        assertTrue(result.missionStarted());
+        assertEquals("sq_fixture_q1_test_errand", gameState.getStoryState().getActiveMissionId());
+        assertTrue(result.feedLines().stream().anyMatch(line -> line.contains("Mission started")));
+    }
+
     private static void completeVillageBonds(GameState gameState) {
         assertTrue(gameState.getMissionManager().startMission("village_bonds"));
         gameState.getMissionManager().updateObjectiveProgress("village_bonds", "talk_to_samson", 1);

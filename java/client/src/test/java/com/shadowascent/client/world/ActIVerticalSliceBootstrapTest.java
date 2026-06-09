@@ -3,6 +3,11 @@ package com.shadowascent.client.world;
 import com.shadowascent.core.GameState;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -75,5 +80,34 @@ final class ActIVerticalSliceBootstrapTest {
         assertTrue(profile.npcPlacements().stream().anyMatch(npc -> "AEN".equals(npc.npcId())));
         assertFalse(profile.npcPlacements().stream().anyMatch(npc -> "SAMSON".equals(npc.npcId())));
         assertFalse(profile.npcPlacements().stream().anyMatch(npc -> "HAZEL".equals(npc.npcId())));
+    }
+
+    @Test
+    void fixtureRoomStateVariantCanBeSelectedThroughJsonPredicateOnly() {
+        Path fixturePath = resolveFixturePath();
+        List<Path> files = new ArrayList<>(RoomSpecCatalog.defaultRoomSpecFiles());
+        files.add(fixturePath);
+        AuthoringWorldBootstrap bootstrap = new AuthoringWorldBootstrap(
+                new AreaPlacementResolver(),
+                RoomSpecCatalog.load(files));
+
+        GameState gameState = new GameState();
+        gameState.getStoryState().setFlag("opening_seen");
+        gameState.getStoryState().setFlag("fixture_annex_unlocked");
+
+        RunGameContentProfile profile = bootstrap.bootstrap(gameState);
+
+        assertEquals("lh_fixture_annex", profile.roomId());
+        assertEquals("area_lantern_heights_hub", profile.areaId());
+    }
+
+    private static Path resolveFixturePath() {
+        for (Path cursor = Path.of("").toAbsolutePath(); cursor != null; cursor = cursor.getParent()) {
+            Path candidate = cursor.resolve("data").resolve("room_specs").resolve("act_i_authoring_fixture.json");
+            if (Files.exists(candidate)) {
+                return candidate;
+            }
+        }
+        throw new IllegalStateException("Unable to resolve act_i_authoring_fixture.json");
     }
 }

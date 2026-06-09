@@ -107,6 +107,70 @@ final class GameSimulatorMeleeCombatTest {
         assertFalse(player.isAttacking);
     }
 
+    @Test
+    void comboSequenceEmitsHitEventsWithStepProgression() {
+        GameSimulator simulator = new GameSimulator();
+        simulator.addPlayer("player", 0, 100f, 300f);
+        simulator.addEnemy("target", "slime", 132f, 300f);
+
+        InputCommand firstAttack = InputCommand.neutral(1);
+        firstAttack.attack = true;
+        simulator.applyInput("player", firstAttack);
+        simulator.tick(DT);
+
+        simulator.applyInput("player", InputCommand.neutral(2));
+        simulator.tick(DT);
+
+        InputCommand queuedAttack = InputCommand.neutral(3);
+        queuedAttack.attack = true;
+        simulator.applyInput("player", queuedAttack);
+        simulator.tick(DT);
+
+        for (int i = 0; i < SimPlayer.MELEE_ACTIVE_TICKS + 6; i++) {
+            simulator.applyInput("player", InputCommand.neutral(4 + i));
+            simulator.tick(DT);
+        }
+
+        List<SimEvent> events = simulator.drainEvents();
+        assertTrue(events.stream().anyMatch(e -> "PLAYER_MELEE_HIT".equals(e.type())
+                && Integer.valueOf(1).equals(e.data().get("comboStep"))));
+        assertTrue(events.stream().anyMatch(e -> "PLAYER_MELEE_HIT".equals(e.type())
+                && Integer.valueOf(2).equals(e.data().get("comboStep"))));
+    }
+
+    @Test
+    void enemyKilledInComboEmitsDefeatedEventAndReducesAliveCount() {
+        GameSimulator simulator = new GameSimulator();
+        simulator.addPlayer("player", 0, 100f, 300f);
+        // bat maxHp=2 — dies in a standard 2-hit combo
+        simulator.addEnemy("bat_enemy", "bat", 132f, 300f);
+
+        InputCommand firstAttack = InputCommand.neutral(1);
+        firstAttack.attack = true;
+        simulator.applyInput("player", firstAttack);
+        simulator.tick(DT);
+
+        simulator.applyInput("player", InputCommand.neutral(2));
+        simulator.tick(DT);
+
+        InputCommand queuedAttack = InputCommand.neutral(3);
+        queuedAttack.attack = true;
+        simulator.applyInput("player", queuedAttack);
+        simulator.tick(DT);
+
+        for (int i = 0; i < SimPlayer.MELEE_ACTIVE_TICKS + 6; i++) {
+            simulator.applyInput("player", InputCommand.neutral(4 + i));
+            simulator.tick(DT);
+        }
+
+        List<SimEvent> events = simulator.drainEvents();
+        assertTrue(events.stream().anyMatch(e -> "ENEMY_DEFEATED".equals(e.type())
+                && "bat_enemy".equals(e.entityId())));
+        assertEquals(0, simulator.aliveEnemyCount());
+    }
+
+    private static final float DT = 1f / 60f;
+
     private static SimEnemy enemy(GameSimulator simulator, String enemyId) {
         return simulator.getEnemies().stream()
                 .filter(enemy -> enemyId.equals(enemy.enemyId))
