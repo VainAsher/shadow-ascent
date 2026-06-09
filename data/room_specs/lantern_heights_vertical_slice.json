@@ -49,7 +49,9 @@
         {"type": "platform", "x": 980, "y": 180, "w": 160, "h": 15}
       ],
       "npc_anchors": [
+        {"npc_id": "OLD_MAN_RIKU", "role": "optional_npc", "x": 160, "y": 288, "patrol_min_x": 140, "patrol_max_x": 180},
         {"npc_id": "MERCHANT_RILU", "role": "merchant", "x": 350, "y": 288, "patrol_min_x": 330, "patrol_max_x": 370},
+        {"npc_id": "LANTERN_KID", "role": "optional_npc", "x": 450, "y": 288, "patrol_min_x": 430, "patrol_max_x": 470},
         {"npc_id": "INSTRUCTOR_TAI", "role": "teacher", "x": 520, "y": 288, "patrol_min_x": 500, "patrol_max_x": 540},
         {"npc_id": "SMITH_JENRO", "role": "smith", "x": 690, "y": 288, "patrol_min_x": 670, "patrol_max_x": 710},
         {"npc_id": "SAMSON", "role": "villager", "x": 860, "y": 288, "patrol_min_x": 840, "patrol_max_x": 880},
@@ -61,6 +63,7 @@
       "encounters": [],
       "transitions": [
         {"id": "gate_back_to_balcony", "type": "free_exit", "target_room_id": "lh_balcony_opening", "target_spawn_id": "spawn_from_hub", "min_x": 0, "max_x": 120},
+        {"id": "gate_to_training_dojo", "type": "free_exit", "target_room_id": "lh_training_dojo", "target_spawn_id": "spawn_from_hub", "min_x": 1460, "max_x": 1580},
         {"id": "gate_to_handoff_path", "type": "npc_handoff_gate", "target_room_id": "lh_handoff_path", "target_spawn_id": "spawn_from_social_hub", "min_x": 1860, "max_x": 1980, "required_flags": ["village_bonds"]}
       ]
     },
@@ -126,6 +129,68 @@
       "transitions": []
     },
     {
+      "id": "lh_training_dojo",
+      "display_name": "Lantern Heights Training Dojo",
+      "plateau_id": "LANTERN_HEIGHTS",
+      "area_id": "area_training_dojo",
+      "scene_role": "optional_side",
+      "route_order": 25,
+      "required_flags": ["opening_seen"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_hub", "x": 120, "y": 280},
+        {"id": "spawn_from_forge", "x": 1240, "y": 280}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 1400, "h": 30},
+        {"type": "platform", "x": 300, "y": 290, "w": 160, "h": 15},
+        {"type": "platform", "x": 620, "y": 240, "w": 160, "h": 15},
+        {"type": "platform", "x": 940, "y": 290, "w": 160, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "SAMSON", "role": "quest_giver", "x": 700, "y": 288, "patrol_min_x": 680, "patrol_max_x": 720}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "samson_training_ghost_1", "enemy_type": "slime", "x": 480, "y": 288}
+      ],
+      "encounters": ["samson_training_ghost"],
+      "transitions": [
+        {"id": "gate_back_to_hub_from_dojo", "type": "free_exit", "target_room_id": "lh_hub_social", "target_spawn_id": "spawn_balcony_entry", "min_x": 0, "max_x": 120},
+        {"id": "gate_to_lantern_forge", "type": "free_exit", "target_room_id": "lh_lantern_forge", "target_spawn_id": "spawn_from_dojo", "min_x": 1280, "max_x": 1400}
+      ]
+    },
+    {
+      "id": "lh_lantern_forge",
+      "display_name": "Lantern Heights Forge",
+      "plateau_id": "LANTERN_HEIGHTS",
+      "area_id": "area_lantern_forge",
+      "scene_role": "optional_side",
+      "route_order": 26,
+      "required_flags": ["opening_seen"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_dojo", "x": 120, "y": 280}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 1200, "h": 30},
+        {"type": "platform", "x": 280, "y": 300, "w": 140, "h": 15},
+        {"type": "platform", "x": 580, "y": 260, "w": 140, "h": 15},
+        {"type": "platform", "x": 880, "y": 300, "w": 140, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "MARCEL", "role": "quest_giver", "x": 640, "y": 288, "patrol_min_x": 620, "patrol_max_x": 660},
+        {"npc_id": "SMITH_JENRO", "role": "smith", "x": 480, "y": 288, "patrol_min_x": 460, "patrol_max_x": 500}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "forge_raider_1", "enemy_type": "goblin", "x": 340, "y": 288},
+        {"enemy_id": "forge_raider_2", "enemy_type": "goblin", "x": 900, "y": 288}
+      ],
+      "encounters": ["marcel_forge_defense"],
+      "transitions": [
+        {"id": "gate_back_to_dojo", "type": "free_exit", "target_room_id": "lh_training_dojo", "target_spawn_id": "spawn_from_forge", "min_x": 0, "max_x": 120}
+      ]
+    },
+    {
       "id": "lh_hub_isolation_night",
       "display_name": "Lantern Heights Empty Night",
       "plateau_id": "LANTERN_HEIGHTS",
@@ -152,5 +217,18 @@
       "transitions": []
     }
   ],
-  "encounter_definitions": []
+  "encounter_definitions": [
+    {
+      "id": "samson_training_ghost",
+      "clear_type": "enemy_ids",
+      "enemy_ids": ["samson_training_ghost_1"],
+      "set_flags": ["samson_q1_complete"]
+    },
+    {
+      "id": "marcel_forge_defense",
+      "clear_type": "enemy_ids",
+      "enemy_ids": ["forge_raider_1", "forge_raider_2"],
+      "set_flags": ["marcel_q1_complete"]
+    }
+  ]
 }

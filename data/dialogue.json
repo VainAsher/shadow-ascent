@@ -1009,6 +1009,19 @@
       "conditions": []
     },
     {
+      "id": "bark_lk_hope_01",
+      "speaker": "LANTERN_KID",
+      "text": "My lantern never goes out. Even in the dark it keeps glowing.",
+      "plateau": "LANTERN_HEIGHTS",
+      "beat_ref": [
+        "elastic",
+        "DEEPEN"
+      ],
+      "tags": ["hope", "lantern"],
+      "line_role": "elastic_bark",
+      "conditions": []
+    },
+    {
       "id": "bark_ss_pressure_01",
       "speaker": "VEIL_MAIDEN",
       "text": "Do not look back, Aen. They already chose to leave you.",

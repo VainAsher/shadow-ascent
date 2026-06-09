@@ -1,0 +1,438 @@
+{
+  "schema": "room_specs.v1",
+  "rooms": [
+    {
+      "id": "em_monastery_gate",
+      "display_name": "Old Road To Ember",
+      "plateau_id": "EMBER_MONASTERY",
+      "area_id": "area_old_road_to_ember",
+      "scene_role": "entry",
+      "route_order": 290,
+      "required_flags": ["old_road_opened", "glide_restored"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_entry", "x": 180, "y": 280},
+        {"id": "spawn_from_hall", "x": 1460, "y": 170}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2200, "h": 30},
+        {"type": "platform", "x": 260, "y": 300, "w": 180, "h": 15},
+        {"type": "platform", "x": 620, "y": 240, "w": 180, "h": 15},
+        {"type": "platform", "x": 980, "y": 180, "w": 200, "h": 15},
+        {"type": "platform", "x": 1380, "y": 120, "w": 220, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "BROTHER_KAI", "role": "guide", "x": 520, "y": 288, "patrol_min_x": 500, "patrol_max_x": 540},
+        {"npc_id": "AEN", "role": "story", "x": 760, "y": 228, "patrol_min_x": 740, "patrol_max_x": 780}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_to_courtyard",
+          "type": "npc_handoff_gate",
+          "target_room_id": "em_courtyard_hub",
+          "target_spawn_id": "spawn_from_gate",
+          "min_x": 1580,
+          "max_x": 1720,
+          "set_flags": ["entered_ember_monastery", "hearth_joined"]
+        }
+      ]
+    },
+    {
+      "id": "em_courtyard_hub",
+      "display_name": "Hearth Hall",
+      "plateau_id": "EMBER_MONASTERY",
+      "area_id": "area_hearth_hall",
+      "scene_role": "hub",
+      "route_order": 300,
+      "required_flags": ["entered_ember_monastery"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_gate", "x": 180, "y": 280},
+        {"id": "spawn_from_trial", "x": 640, "y": 180},
+        {"id": "spawn_from_hub", "x": 960, "y": 150},
+        {"id": "spawn_from_forge", "x": 1160, "y": 220},
+        {"id": "spawn_from_star_ink", "x": 1320, "y": 120},
+        {"id": "spawn_from_workshop", "x": 1500, "y": 210}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2600, "h": 30},
+        {"type": "platform", "x": 240, "y": 300, "w": 220, "h": 15},
+        {"type": "platform", "x": 620, "y": 220, "w": 220, "h": 15},
+        {"type": "platform", "x": 980, "y": 150, "w": 180, "h": 15},
+        {"type": "platform", "x": 1320, "y": 220, "w": 200, "h": 15},
+        {"type": "platform", "x": 1700, "y": 140, "w": 220, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "BROTHER_KAI", "role": "support", "x": 360, "y": 288, "patrol_min_x": 340, "patrol_max_x": 380},
+        {"npc_id": "BROTHER_LEN", "role": "support", "x": 560, "y": 288, "patrol_min_x": 540, "patrol_max_x": 580},
+        {"npc_id": "BROTHER_ASH", "role": "support", "x": 760, "y": 208, "patrol_min_x": 740, "patrol_max_x": 780},
+        {"npc_id": "AEN", "role": "story", "x": 1020, "y": 138, "patrol_min_x": 1000, "patrol_max_x": 1040}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "courtyard_to_gate",
+          "type": "free_exit",
+          "target_room_id": "em_monastery_gate",
+          "target_spawn_id": "spawn_from_hall",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "courtyard_to_hearth_trial",
+          "type": "mission_gate",
+          "target_room_id": "em_hearth_trial",
+          "target_spawn_id": "spawn_from_courtyard",
+          "min_x": 620,
+          "max_x": 780,
+          "min_y": 150,
+          "max_y": 250,
+          "required_flags": ["hearth_joined"],
+          "set_flags": ["air_dodge_restored", "grapple_restored"]
+        },
+        {
+          "id": "courtyard_to_brothers_return",
+          "type": "free_exit",
+          "target_room_id": "em_brothers_return",
+          "target_spawn_id": "spawn_from_courtyard",
+          "min_x": 920,
+          "max_x": 1080,
+          "min_y": 100,
+          "max_y": 190,
+          "required_flags": ["hearth_joined"],
+          "set_flags": ["samson_returned"]
+        },
+        {
+          "id": "courtyard_to_forge",
+          "type": "free_exit",
+          "target_room_id": "em_forge_sanctum",
+          "target_spawn_id": "spawn_from_courtyard",
+          "min_x": 1240,
+          "max_x": 1400,
+          "min_y": 170,
+          "max_y": 260,
+          "required_flags": ["hearth_joined"],
+          "set_flags": ["marcel_returned"]
+        },
+        {
+          "id": "courtyard_to_star_ink",
+          "type": "free_exit",
+          "target_room_id": "em_star_ink_garden",
+          "target_spawn_id": "spawn_from_courtyard",
+          "min_x": 1640,
+          "max_x": 1800,
+          "min_y": 90,
+          "max_y": 170,
+          "required_flags": ["wall_cling_mastered"],
+          "set_flags": ["skyroad_map_acquired"]
+        },
+        {
+          "id": "courtyard_to_workshop",
+          "type": "free_exit",
+          "target_room_id": "em_lantern_silk_workshop",
+          "target_spawn_id": "spawn_from_courtyard",
+          "min_x": 1880,
+          "max_x": 2040,
+          "min_y": 170,
+          "max_y": 250,
+          "required_flags": ["hearth_joined"],
+          "set_flags": ["beacon_lantern_prepared"]
+        }
+      ]
+    },
+    {
+      "id": "em_hearth_trial",
+      "display_name": "Hearth Of Brothers Trial",
+      "plateau_id": "EMBER_MONASTERY",
+      "area_id": "area_hearth_of_brothers_trial",
+      "scene_role": "trial",
+      "route_order": 310,
+      "required_flags": ["hearth_joined"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_courtyard", "x": 180, "y": 240}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2000, "h": 30},
+        {"type": "platform", "x": 260, "y": 280, "w": 180, "h": 15},
+        {"type": "platform", "x": 540, "y": 210, "w": 150, "h": 15},
+        {"type": "platform", "x": 860, "y": 140, "w": 180, "h": 15},
+        {"type": "platform", "x": 1220, "y": 210, "w": 180, "h": 15},
+        {"type": "platform", "x": 1560, "y": 120, "w": 180, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "BROTHER_KAI", "role": "mentor", "x": 420, "y": 268, "patrol_min_x": 400, "patrol_max_x": 440},
+        {"npc_id": "BROTHER_LEN", "role": "mentor", "x": 720, "y": 198, "patrol_min_x": 700, "patrol_max_x": 740},
+        {"npc_id": "AEN", "role": "story", "x": 1060, "y": 128, "patrol_min_x": 1040, "patrol_max_x": 1080}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "hearth_trial_guard_1", "enemy_type": "skeleton", "x": 1240, "y": 280},
+        {"enemy_id": "hearth_trial_guard_2", "enemy_type": "bat", "x": 1540, "y": 120}
+      ],
+      "encounters": ["em_hearth_clear"],
+      "transitions": [
+        {
+          "id": "trial_to_courtyard",
+          "type": "free_exit",
+          "target_room_id": "em_courtyard_hub",
+          "target_spawn_id": "spawn_from_trial",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "trial_to_roga_dojo",
+          "type": "encounter_gate",
+          "target_room_id": "em_roga_dojo",
+          "target_spawn_id": "spawn_from_trial",
+          "min_x": 1640,
+          "max_x": 1800,
+          "required_flags": ["grapple_restored"],
+          "set_flags": ["wall_cling_mastered"]
+        }
+      ]
+    },
+    {
+      "id": "em_roga_dojo",
+      "display_name": "Roga Dojo",
+      "plateau_id": "EMBER_MONASTERY",
+      "area_id": "area_roga_dojo",
+      "scene_role": "training",
+      "route_order": 320,
+      "required_flags": ["grapple_restored"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_trial", "x": 200, "y": 260}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2100, "h": 30},
+        {"type": "platform", "x": 240, "y": 300, "w": 180, "h": 15},
+        {"type": "platform", "x": 520, "y": 230, "w": 150, "h": 15},
+        {"type": "platform", "x": 840, "y": 160, "w": 160, "h": 15},
+        {"type": "platform", "x": 1160, "y": 230, "w": 180, "h": 15},
+        {"type": "platform", "x": 1500, "y": 120, "w": 180, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "MENTOR_ROGA", "role": "mentor", "x": 520, "y": 288, "patrol_min_x": 500, "patrol_max_x": 540},
+        {"npc_id": "AEN", "role": "story", "x": 900, "y": 148, "patrol_min_x": 880, "patrol_max_x": 920}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "dojo_to_courtyard",
+          "type": "free_exit",
+          "target_room_id": "em_courtyard_hub",
+          "target_spawn_id": "spawn_from_trial",
+          "min_x": 80,
+          "max_x": 220
+        }
+      ]
+    },
+    {
+      "id": "em_brothers_return",
+      "display_name": "Brothers Return",
+      "plateau_id": "EMBER_MONASTERY",
+      "area_id": "area_ember_monastery_hub",
+      "scene_role": "optional_return",
+      "route_order": 330,
+      "required_flags": ["hearth_joined"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_courtyard", "x": 180, "y": 220}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 1800, "h": 30},
+        {"type": "platform", "x": 260, "y": 260, "w": 180, "h": 15},
+        {"type": "platform", "x": 620, "y": 190, "w": 200, "h": 15},
+        {"type": "platform", "x": 1020, "y": 120, "w": 180, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "SAMSON", "role": "ally", "x": 520, "y": 248, "patrol_min_x": 500, "patrol_max_x": 540},
+        {"npc_id": "BROTHER_ASH", "role": "support", "x": 760, "y": 178, "patrol_min_x": 740, "patrol_max_x": 780}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "return_to_courtyard",
+          "type": "free_exit",
+          "target_room_id": "em_courtyard_hub",
+          "target_spawn_id": "spawn_from_hub",
+          "min_x": 80,
+          "max_x": 220
+        }
+      ]
+    },
+    {
+      "id": "em_forge_sanctum",
+      "display_name": "Ember Forge",
+      "plateau_id": "EMBER_MONASTERY",
+      "area_id": "area_ember_forge",
+      "scene_role": "optional_forge",
+      "route_order": 340,
+      "required_flags": ["hearth_joined"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_courtyard", "x": 180, "y": 280}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 1800, "h": 30},
+        {"type": "platform", "x": 260, "y": 300, "w": 180, "h": 15},
+        {"type": "platform", "x": 600, "y": 220, "w": 180, "h": 15},
+        {"type": "platform", "x": 980, "y": 140, "w": 200, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "MARCEL", "role": "smith", "x": 560, "y": 288, "patrol_min_x": 540, "patrol_max_x": 580}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "forge_to_courtyard",
+          "type": "free_exit",
+          "target_room_id": "em_courtyard_hub",
+          "target_spawn_id": "spawn_from_forge",
+          "min_x": 80,
+          "max_x": 220
+        }
+      ]
+    },
+    {
+      "id": "em_star_ink_garden",
+      "display_name": "Star Ink Garden",
+      "plateau_id": "EMBER_MONASTERY",
+      "area_id": "area_star_ink_garden",
+      "scene_role": "optional_traversal",
+      "route_order": 350,
+      "required_flags": ["wall_cling_mastered"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_courtyard", "x": 200, "y": 240}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2200, "h": 30},
+        {"type": "platform", "x": 220, "y": 280, "w": 140, "h": 15},
+        {"type": "platform", "x": 500, "y": 200, "w": 120, "h": 15},
+        {"type": "platform", "x": 760, "y": 120, "w": 120, "h": 15},
+        {"type": "platform", "x": 1040, "y": 200, "w": 140, "h": 15},
+        {"type": "platform", "x": 1360, "y": 120, "w": 140, "h": 15},
+        {"type": "platform", "x": 1700, "y": 200, "w": 180, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "SOPHIA", "role": "guide", "x": 820, "y": 108, "patrol_min_x": 800, "patrol_max_x": 840}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "star_ink_to_courtyard",
+          "type": "free_exit",
+          "target_room_id": "em_courtyard_hub",
+          "target_spawn_id": "spawn_from_star_ink",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "star_ink_to_departure",
+          "type": "mission_gate",
+          "target_room_id": "em_departure_arch",
+          "target_spawn_id": "spawn_from_garden",
+          "min_x": 1860,
+          "max_x": 2020,
+          "required_flags": ["skyroad_map_acquired"],
+          "set_flags": ["skyroad_opened"]
+        }
+      ]
+    },
+    {
+      "id": "em_lantern_silk_workshop",
+      "display_name": "Lantern Silk Workshop",
+      "plateau_id": "EMBER_MONASTERY",
+      "area_id": "area_lantern_silk_workshop",
+      "scene_role": "optional_crafting",
+      "route_order": 360,
+      "required_flags": ["hearth_joined"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_courtyard", "x": 200, "y": 280}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 1900, "h": 30},
+        {"type": "platform", "x": 260, "y": 300, "w": 180, "h": 15},
+        {"type": "platform", "x": 620, "y": 230, "w": 200, "h": 15},
+        {"type": "platform", "x": 1020, "y": 160, "w": 200, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "HAZEL", "role": "artisan", "x": 620, "y": 218, "patrol_min_x": 600, "patrol_max_x": 640}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "workshop_to_courtyard",
+          "type": "free_exit",
+          "target_room_id": "em_courtyard_hub",
+          "target_spawn_id": "spawn_from_workshop",
+          "min_x": 80,
+          "max_x": 220
+        }
+      ]
+    },
+    {
+      "id": "em_departure_arch",
+      "display_name": "Skyroad Gate",
+      "plateau_id": "EMBER_MONASTERY",
+      "area_id": "area_skyroad_gate",
+      "scene_role": "exit",
+      "route_order": 370,
+      "required_flags": ["wall_cling_mastered", "skyroad_map_acquired"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_garden", "x": 220, "y": 240}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2100, "h": 30},
+        {"type": "platform", "x": 240, "y": 280, "w": 160, "h": 15},
+        {"type": "platform", "x": 520, "y": 210, "w": 160, "h": 15},
+        {"type": "platform", "x": 820, "y": 140, "w": 180, "h": 15},
+        {"type": "platform", "x": 1180, "y": 210, "w": 180, "h": 15},
+        {"type": "platform", "x": 1520, "y": 120, "w": 200, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "BROTHER_LEN", "role": "support", "x": 560, "y": 198, "patrol_min_x": 540, "patrol_max_x": 580},
+        {"npc_id": "AEN", "role": "story", "x": 920, "y": 128, "patrol_min_x": 900, "patrol_max_x": 940}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "departure_to_star_ink",
+          "type": "free_exit",
+          "target_room_id": "em_star_ink_garden",
+          "target_spawn_id": "spawn_from_courtyard",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "departure_to_skyroad",
+          "type": "npc_handoff_gate",
+          "target_room_id": "ws_skybridge_start",
+          "target_spawn_id": "spawn_from_ember",
+          "min_x": 1600,
+          "max_x": 1760
+        }
+      ]
+    }
+  ],
+  "encounter_definitions": [
+    {
+      "id": "em_hearth_clear",
+      "clear_type": "enemy_ids",
+      "enemy_ids": ["hearth_trial_guard_1", "hearth_trial_guard_2"],
+      "set_flags": ["wall_cling_mastered"]
+    }
+  ]
+}

@@ -210,6 +210,20 @@
       "can_generate_elastic_neighbors": true
     },
     {
+      "id": "area_training_dojo",
+      "family": "lantern_village",
+      "source_beat": "beat_meet_villagers",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": true
+    },
+    {
+      "id": "area_lantern_forge",
+      "family": "lantern_village",
+      "source_beat": "beat_meet_villagers",
+      "authoring_status": "prototype_contract",
+      "can_generate_elastic_neighbors": false
+    },
+    {
       "id": "area_lantern_heights_hub_dimming",
       "family": "lantern_village",
       "source_beat": "beat_npc_withdrawal",
@@ -379,7 +393,7 @@
     },
     {
       "id": "area_lantern_silk_workshop",
-      "family": "lantern_village",
+      "family": "ember_monastery",
       "source_beat": "beat_hazel_beacon_lantern_setup",
       "authoring_status": "prototype_contract",
       "can_generate_elastic_neighbors": true
@@ -414,21 +428,21 @@
     },
     {
       "id": "area_mirror_summit_gate",
-      "family": "summit_shrine",
+      "family": "winding_skyroad",
       "source_beat": "beat_mirror_gate_opened",
       "authoring_status": "prototype_contract",
       "can_generate_elastic_neighbors": true
     },
     {
       "id": "area_mirror_summit_peak",
-      "family": "summit_shrine",
+      "family": "mirror_summit",
       "source_beat": "beat_hollow_reflection_intro",
       "authoring_status": "prototype_contract",
       "can_generate_elastic_neighbors": true
     },
     {
       "id": "area_hollow_reflection_arena",
-      "family": "hollow_depths",
+      "family": "mirror_summit",
       "source_beat": "beat_final_fight",
       "authoring_status": "prototype_contract",
       "can_generate_elastic_neighbors": true

@@ -1,0 +1,28 @@
+{
+  "schema": "room_specs.v1",
+  "rooms": [
+    {
+      "id": "fixture_hd_fallback",
+      "display_name": "Fixture Hollow Fallback",
+      "plateau_id": "HOLLOW_DEPTHS",
+      "area_id": "area_fixture_hollow_fallback",
+      "scene_role": "entry",
+      "route_order": 10,
+      "required_flags": ["act2_unlocked"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_entry", "x": 160, "y": 280}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 1800, "h": 30},
+        {"type": "platform", "x": 420, "y": 220, "w": 180, "h": 15},
+        {"type": "platform", "x": 900, "y": 150, "w": 160, "h": 15}
+      ],
+      "npc_anchors": [],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": []
+    }
+  ],
+  "encounter_definitions": []
+}

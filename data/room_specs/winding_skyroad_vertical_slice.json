@@ -1,0 +1,199 @@
+{
+  "schema": "room_specs.v1",
+  "rooms": [
+    {
+      "id": "ws_skybridge_start",
+      "display_name": "Skybridge Start",
+      "plateau_id": "WINDING_SKYROAD",
+      "area_id": "area_skyroad_base",
+      "scene_role": "entry",
+      "route_order": 380,
+      "required_flags": ["skyroad_opened"],
+      "set_flags": ["ascent_begun"],
+      "spawn_points": [
+        {"id": "spawn_from_ember", "x": 180, "y": 260},
+        {"id": "spawn_from_clouds", "x": 1360, "y": 110}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2500, "h": 30},
+        {"type": "platform", "x": 220, "y": 290, "w": 180, "h": 15},
+        {"type": "platform", "x": 520, "y": 230, "w": 180, "h": 15},
+        {"type": "platform", "x": 840, "y": 170, "w": 180, "h": 15},
+        {"type": "platform", "x": 1180, "y": 110, "w": 200, "h": 15},
+        {"type": "platform", "x": 1540, "y": 70, "w": 220, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "AEN", "role": "story", "x": 420, "y": 278, "patrol_min_x": 400, "patrol_max_x": 440}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "sky_goblin_1", "enemy_type": "goblin", "x": 860, "y": 280},
+        {"enemy_id": "sky_bat_1", "enemy_type": "bat", "x": 1160, "y": 120}
+      ],
+      "encounters": ["ws_skybridge_push"],
+      "transitions": [
+        {
+          "id": "gate_skybridge_to_clouds",
+          "type": "encounter_gate",
+          "target_room_id": "ws_cloud_crossing",
+          "target_spawn_id": "spawn_from_start",
+          "min_x": 1660,
+          "max_x": 1820,
+          "set_flags": ["ascent_begun"]
+        }
+      ]
+    },
+    {
+      "id": "ws_cloud_crossing",
+      "display_name": "Cloud Crossing",
+      "plateau_id": "WINDING_SKYROAD",
+      "area_id": "area_skyroad_base",
+      "scene_role": "traversal",
+      "route_order": 390,
+      "required_flags": ["ascent_begun"],
+      "set_flags": ["stars_accepted"],
+      "spawn_points": [
+        {"id": "spawn_from_start", "x": 180, "y": 180},
+        {"id": "spawn_from_star_fields", "x": 1640, "y": 160}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2800, "h": 30},
+        {"type": "platform", "x": 180, "y": 250, "w": 140, "h": 15},
+        {"type": "platform", "x": 460, "y": 170, "w": 120, "h": 15},
+        {"type": "platform", "x": 760, "y": 250, "w": 160, "h": 15},
+        {"type": "platform", "x": 1080, "y": 150, "w": 140, "h": 15},
+        {"type": "platform", "x": 1400, "y": 230, "w": 150, "h": 15},
+        {"type": "platform", "x": 1740, "y": 120, "w": 180, "h": 15},
+        {"type": "platform", "x": 2120, "y": 220, "w": 190, "h": 15}
+      ],
+      "npc_anchors": [],
+      "enemy_placements": [
+        {"enemy_id": "sky_bat_2", "enemy_type": "bat", "x": 620, "y": 150},
+        {"enemy_id": "sky_bat_3", "enemy_type": "bat", "x": 1480, "y": 210},
+        {"enemy_id": "sky_wolf_1", "enemy_type": "wolf", "x": 2180, "y": 280}
+      ],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_clouds_back",
+          "type": "free_exit",
+          "target_room_id": "ws_skybridge_start",
+          "target_spawn_id": "spawn_from_clouds",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "gate_clouds_to_stars",
+          "type": "free_exit",
+          "target_room_id": "ws_star_wind_fields",
+          "target_spawn_id": "spawn_from_clouds",
+          "min_x": 2280,
+          "max_x": 2440,
+          "min_y": 140,
+          "max_y": 260,
+          "set_flags": ["stars_accepted"]
+        }
+      ]
+    },
+    {
+      "id": "ws_star_wind_fields",
+      "display_name": "Star Wind Fields",
+      "plateau_id": "WINDING_SKYROAD",
+      "area_id": "area_star_wind_fields",
+      "scene_role": "narrative",
+      "route_order": 400,
+      "required_flags": ["stars_accepted"],
+      "set_flags": ["mirror_gate_opened"],
+      "spawn_points": [
+        {"id": "spawn_from_clouds", "x": 220, "y": 220},
+        {"id": "spawn_from_summit", "x": 1420, "y": 130}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2300, "h": 30},
+        {"type": "platform", "x": 240, "y": 260, "w": 160, "h": 15},
+        {"type": "platform", "x": 540, "y": 180, "w": 140, "h": 15},
+        {"type": "platform", "x": 860, "y": 110, "w": 180, "h": 15},
+        {"type": "platform", "x": 1200, "y": 180, "w": 150, "h": 15},
+        {"type": "platform", "x": 1540, "y": 110, "w": 180, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "YIN_STAR", "role": "memory", "x": 880, "y": 98, "patrol_min_x": 860, "patrol_max_x": 900},
+        {"npc_id": "YANG_STAR", "role": "memory", "x": 1220, "y": 168, "patrol_min_x": 1200, "patrol_max_x": 1240},
+        {"npc_id": "AEN", "role": "story", "x": 640, "y": 168, "patrol_min_x": 620, "patrol_max_x": 660}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "sky_bat_4", "enemy_type": "bat", "x": 1480, "y": 150}
+      ],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_stars_back",
+          "type": "free_exit",
+          "target_room_id": "ws_cloud_crossing",
+          "target_spawn_id": "spawn_from_star_fields",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "gate_stars_to_summit",
+          "type": "encounter_gate",
+          "target_room_id": "ws_summit_approach",
+          "target_spawn_id": "spawn_from_fields",
+          "min_x": 1660,
+          "max_x": 1820,
+          "set_flags": ["mirror_gate_opened"]
+        }
+      ]
+    },
+    {
+      "id": "ws_summit_approach",
+      "display_name": "Mirror Summit Gate",
+      "plateau_id": "WINDING_SKYROAD",
+      "area_id": "area_mirror_summit_gate",
+      "scene_role": "exit",
+      "route_order": 410,
+      "required_flags": ["mirror_gate_opened"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_fields", "x": 220, "y": 180}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2000, "h": 30},
+        {"type": "platform", "x": 220, "y": 250, "w": 150, "h": 15},
+        {"type": "platform", "x": 520, "y": 180, "w": 150, "h": 15},
+        {"type": "platform", "x": 860, "y": 110, "w": 180, "h": 15},
+        {"type": "platform", "x": 1240, "y": 180, "w": 180, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "AEN", "role": "story", "x": 860, "y": 98, "patrol_min_x": 840, "patrol_max_x": 880}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_summit_back",
+          "type": "free_exit",
+          "target_room_id": "ws_star_wind_fields",
+          "target_spawn_id": "spawn_from_summit",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "gate_summit_to_mirror",
+          "type": "npc_handoff_gate",
+          "target_room_id": "ms_mirror_gate",
+          "target_spawn_id": "spawn_from_skyroad",
+          "min_x": 1440,
+          "max_x": 1600
+        }
+      ]
+    }
+  ],
+  "encounter_definitions": [
+    {
+      "id": "ws_skybridge_push",
+      "clear_type": "enemy_ids",
+      "enemy_ids": ["sky_goblin_1", "sky_bat_1"],
+      "set_flags": ["ascent_begun"]
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "schema": "room_specs.v1",
+  "rooms": [
+    {
+      "id": "ms_mirror_gate",
+      "display_name": "Mirror Gate",
+      "plateau_id": "MIRROR_SUMMIT",
+      "area_id": "area_mirror_summit_gate",
+      "scene_role": "entry",
+      "route_order": 500,
+      "required_flags": ["mirror_gate_opened"],
+      "set_flags": ["mirror_approached"],
+      "spawn_points": [
+        {"id": "spawn_from_skyroad", "x": 220, "y": 260},
+        {"id": "spawn_from_peak", "x": 1320, "y": 190}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2200, "h": 30},
+        {"type": "platform", "x": 240, "y": 280, "w": 180, "h": 15},
+        {"type": "platform", "x": 560, "y": 220, "w": 160, "h": 15},
+        {"type": "platform", "x": 920, "y": 150, "w": 180, "h": 15},
+        {"type": "platform", "x": 1280, "y": 90, "w": 220, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "AEN", "role": "story", "x": 520, "y": 268, "patrol_min_x": 500, "patrol_max_x": 540}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_mirror_gate_to_peak",
+          "type": "free_exit",
+          "target_room_id": "ms_reflection_chamber",
+          "target_spawn_id": "spawn_from_gate",
+          "min_x": 1420,
+          "max_x": 1580,
+          "set_flags": ["mirror_approached"]
+        }
+      ]
+    },
+    {
+      "id": "ms_reflection_chamber",
+      "display_name": "Reflection Chamber",
+      "plateau_id": "MIRROR_SUMMIT",
+      "area_id": "area_mirror_summit_peak",
+      "scene_role": "confrontation",
+      "route_order": 510,
+      "required_flags": ["mirror_approached"],
+      "set_flags": ["reflection_fight_started"],
+      "spawn_points": [
+        {"id": "spawn_from_gate", "x": 220, "y": 220},
+        {"id": "spawn_from_arena", "x": 1260, "y": 220}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2200, "h": 30},
+        {"type": "platform", "x": 260, "y": 260, "w": 150, "h": 15},
+        {"type": "platform", "x": 520, "y": 180, "w": 140, "h": 15},
+        {"type": "platform", "x": 820, "y": 120, "w": 180, "h": 15},
+        {"type": "platform", "x": 1200, "y": 180, "w": 140, "h": 15},
+        {"type": "platform", "x": 1460, "y": 260, "w": 150, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "HOLLOW_REFLECTION", "role": "boss", "x": 860, "y": 108, "patrol_min_x": 840, "patrol_max_x": 880},
+        {"npc_id": "AEN", "role": "story", "x": 620, "y": 168, "patrol_min_x": 600, "patrol_max_x": 640}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "mirror_echo_1", "enemy_type": "skeleton", "x": 1240, "y": 280}
+      ],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_peak_back",
+          "type": "free_exit",
+          "target_room_id": "ms_mirror_gate",
+          "target_spawn_id": "spawn_from_peak",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "gate_peak_to_arena",
+          "type": "mission_gate",
+          "target_room_id": "ms_hollow_reflection_arena",
+          "target_spawn_id": "spawn_from_peak",
+          "min_x": 1500,
+          "max_x": 1660,
+          "set_flags": ["reflection_fight_started"]
+        }
+      ]
+    },
+    {
+      "id": "ms_hollow_reflection_arena",
+      "display_name": "Hollow Reflection Arena",
+      "plateau_id": "MIRROR_SUMMIT",
+      "area_id": "area_hollow_reflection_arena",
+      "scene_role": "boss",
+      "route_order": 520,
+      "required_flags": ["reflection_fight_started"],
+      "set_flags": ["release_accepted"],
+      "spawn_points": [
+        {"id": "spawn_from_peak", "x": 220, "y": 260},
+        {"id": "spawn_from_release", "x": 1260, "y": 220}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2200, "h": 30},
+        {"type": "platform", "x": 320, "y": 280, "w": 200, "h": 15},
+        {"type": "platform", "x": 760, "y": 180, "w": 220, "h": 15},
+        {"type": "platform", "x": 1240, "y": 280, "w": 200, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "HOLLOW_REFLECTION", "role": "boss", "x": 920, "y": 168, "patrol_min_x": 900, "patrol_max_x": 940},
+        {"npc_id": "AEN", "role": "story", "x": 440, "y": 268, "patrol_min_x": 420, "patrol_max_x": 460}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "hollow_reflection", "enemy_type": "skeleton", "x": 920, "y": 168}
+      ],
+      "encounters": ["ms_hollow_reflection_trial"],
+      "transitions": [
+        {
+          "id": "gate_arena_back",
+          "type": "free_exit",
+          "target_room_id": "ms_reflection_chamber",
+          "target_spawn_id": "spawn_from_arena",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "gate_arena_to_release",
+          "type": "encounter_gate",
+          "target_room_id": "ms_release_walk",
+          "target_spawn_id": "spawn_from_arena",
+          "min_x": 1460,
+          "max_x": 1620
+        }
+      ]
+    },
+    {
+      "id": "ms_release_walk",
+      "display_name": "Release Walk",
+      "plateau_id": "MIRROR_SUMMIT",
+      "area_id": "area_release_walk",
+      "scene_role": "resolution",
+      "route_order": 530,
+      "required_flags": ["release_accepted"],
+      "set_flags": ["beacon_cliff_unlocked"],
+      "spawn_points": [
+        {"id": "spawn_from_arena", "x": 220, "y": 220}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2400, "h": 30},
+        {"type": "platform", "x": 260, "y": 280, "w": 180, "h": 15},
+        {"type": "platform", "x": 640, "y": 220, "w": 200, "h": 15},
+        {"type": "platform", "x": 1080, "y": 150, "w": 200, "h": 15},
+        {"type": "platform", "x": 1580, "y": 220, "w": 220, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "AEN", "role": "story", "x": 720, "y": 208, "patrol_min_x": 700, "patrol_max_x": 740}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_release_to_beacon",
+          "type": "return_gate",
+          "target_room_id": "bc_cliff_ascent",
+          "target_spawn_id": "spawn_from_release",
+          "min_x": 1760,
+          "max_x": 1920,
+          "set_flags": ["beacon_cliff_unlocked"]
+        }
+      ]
+    }
+  ],
+  "encounter_definitions": [
+    {
+      "id": "ms_hollow_reflection_trial",
+      "clear_type": "enemy_ids",
+      "enemy_ids": ["hollow_reflection"],
+      "set_flags": ["reflection_released", "release_accepted"]
+    }
+  ]
+}

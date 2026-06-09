@@ -63,6 +63,9 @@ public final class GameDataContracts {
     private final Map<String, List<String>> criticalRoutesByPlateau;
     private final Map<String, BeatDefinition> beatsById;
     private final Map<String, List<BeatDefinition>> beatsByPlateau;
+    private final Map<String, String> routeHintsByMissionId;
+    private final Map<String, String> plateauByMissionId;
+    private final Set<String> mainlineMissionIds;
     private final Map<String, WorldRegionStateDefinition> worldRegionStatesById;
     private final Map<String, FactionStateDefinition> factionStatesById;
     private final Map<String, SettlementStateDefinition> settlementStatesById;
@@ -107,6 +110,9 @@ public final class GameDataContracts {
         this.criticalRoutesByPlateau = new LinkedHashMap<>();
         this.beatsById = new LinkedHashMap<>();
         this.beatsByPlateau = new LinkedHashMap<>();
+        this.routeHintsByMissionId = new LinkedHashMap<>();
+        this.plateauByMissionId = new LinkedHashMap<>();
+        this.mainlineMissionIds = new LinkedHashSet<>();
         this.worldRegionStatesById = new LinkedHashMap<>();
         this.factionStatesById = new LinkedHashMap<>();
         this.settlementStatesById = new LinkedHashMap<>();
@@ -216,6 +222,27 @@ public final class GameDataContracts {
             return Optional.empty();
         }
         return Optional.ofNullable(dialogueLinesById.get(dialogueId));
+    }
+
+    public Optional<String> routeHintForMission(String missionId) {
+        if (missionId == null || missionId.isBlank()) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(routeHintsByMissionId.get(missionId));
+    }
+
+    public boolean isMainlineMission(String missionId) {
+        if (missionId == null || missionId.isBlank()) {
+            return false;
+        }
+        return mainlineMissionIds.contains(missionId);
+    }
+
+    public Optional<String> plateauForMission(String missionId) {
+        if (missionId == null || missionId.isBlank()) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(plateauByMissionId.get(missionId));
     }
 
     public List<BeatDefinition> beatsForPlateau(String plateauId) {
@@ -461,6 +488,51 @@ public final class GameDataContracts {
                 validationIssues.add("Duplicate beat id: " + id);
             }
             beatsByPlateau.computeIfAbsent(normalize(beat.plateau()), ignored -> new ArrayList<>()).add(beat);
+        }
+
+        for (JsonNode mainlineNode : arrayNode(doc("quests"), "mainline_missions")) {
+            String missionId = text(mainlineNode, "id");
+            if (missionId.isEmpty()) {
+                continue;
+            }
+            String routeHint = text(mainlineNode, "route_hint");
+            if (!routeHint.isBlank()) {
+                routeHintsByMissionId.put(missionId, routeHint);
+            }
+            String plateau = normalize(text(mainlineNode, "plateau"));
+            if (!plateau.isBlank()) {
+                plateauByMissionId.put(missionId, plateau);
+            }
+            JsonNode mainline = mainlineNode.get("mainline");
+            if (mainline != null && mainline.asBoolean(false)) {
+                mainlineMissionIds.add(missionId);
+            }
+        }
+
+        JsonNode quests = doc("quests");
+        JsonNode chains = quests == null ? null : quests.get("chains");
+        if (chains != null && chains.isArray()) {
+            for (JsonNode chainNode : chains) {
+                JsonNode steps = chainNode.get("steps");
+                if (steps == null || !steps.isArray()) {
+                    continue;
+                }
+                for (JsonNode stepNode : steps) {
+                    String stepId = text(stepNode, "id");
+                    if (stepId.isBlank()) {
+                        continue;
+                    }
+                    String missionId = "sq_" + stepId;
+                    String routeHint = text(stepNode, "route_hint");
+                    if (!routeHint.isBlank()) {
+                        routeHintsByMissionId.put(missionId, routeHint);
+                    }
+                    String plateau = normalize(text(stepNode, "plateau"));
+                    if (!plateau.isBlank()) {
+                        plateauByMissionId.put(missionId, plateau);
+                    }
+                }
+            }
         }
 
         for (JsonNode regionNode : arrayNode(doc("world_state"), "regions")) {

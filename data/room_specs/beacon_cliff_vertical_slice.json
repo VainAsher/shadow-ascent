@@ -1,0 +1,218 @@
+{
+  "schema": "room_specs.v1",
+  "rooms": [
+    {
+      "id": "bc_cliff_ascent",
+      "display_name": "Beacon Cliff Approach",
+      "plateau_id": "BEACON_CLIFF",
+      "area_id": "area_beacon_cliff_approach",
+      "scene_role": "entry",
+      "route_order": 600,
+      "required_flags": ["beacon_cliff_unlocked"],
+      "set_flags": ["final_words_heard"],
+      "spawn_points": [
+        {"id": "spawn_from_release", "x": 220, "y": 260},
+        {"id": "spawn_from_overlook", "x": 1360, "y": 160}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2500, "h": 30},
+        {"type": "platform", "x": 220, "y": 300, "w": 180, "h": 15},
+        {"type": "platform", "x": 540, "y": 230, "w": 170, "h": 15},
+        {"type": "platform", "x": 880, "y": 160, "w": 180, "h": 15},
+        {"type": "platform", "x": 1240, "y": 100, "w": 220, "h": 15},
+        {"type": "platform", "x": 1660, "y": 160, "w": 180, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "AEN", "role": "story", "x": 480, "y": 288, "patrol_min_x": 460, "patrol_max_x": 500}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "beacon_wolf_1", "enemy_type": "wolf", "x": 980, "y": 280},
+        {"enemy_id": "beacon_bat_1", "enemy_type": "bat", "x": 1420, "y": 150}
+      ],
+      "encounters": ["bc_cliff_ascent_secure"],
+      "transitions": [
+        {
+          "id": "gate_cliff_to_overlook",
+          "type": "encounter_gate",
+          "target_room_id": "bc_final_npc_overlook",
+          "target_spawn_id": "spawn_from_cliff",
+          "min_x": 1740,
+          "max_x": 1900
+        }
+      ]
+    },
+    {
+      "id": "bc_final_npc_overlook",
+      "display_name": "Final NPC Overlook",
+      "plateau_id": "BEACON_CLIFF",
+      "area_id": "area_final_npc_overlook",
+      "scene_role": "closure",
+      "route_order": 610,
+      "required_flags": ["beacon_cliff_unlocked"],
+      "set_flags": ["final_words_heard"],
+      "spawn_points": [
+        {"id": "spawn_from_cliff", "x": 220, "y": 220},
+        {"id": "spawn_from_epilogue", "x": 1180, "y": 140}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2100, "h": 30},
+        {"type": "platform", "x": 220, "y": 260, "w": 180, "h": 15},
+        {"type": "platform", "x": 620, "y": 180, "w": 180, "h": 15},
+        {"type": "platform", "x": 1080, "y": 110, "w": 220, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "SAMSON", "role": "ally", "x": 420, "y": 248, "patrol_min_x": 400, "patrol_max_x": 440},
+        {"npc_id": "SOPHIA", "role": "ally", "x": 620, "y": 168, "patrol_min_x": 600, "patrol_max_x": 640},
+        {"npc_id": "MARCEL", "role": "ally", "x": 840, "y": 168, "patrol_min_x": 820, "patrol_max_x": 860},
+        {"npc_id": "HAZEL", "role": "ally", "x": 1120, "y": 98, "patrol_min_x": 1100, "patrol_max_x": 1140}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_overlook_back",
+          "type": "free_exit",
+          "target_room_id": "bc_cliff_ascent",
+          "target_spawn_id": "spawn_from_overlook",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "gate_overlook_to_beacon",
+          "type": "mission_gate",
+          "target_room_id": "bc_ancient_beacon",
+          "target_spawn_id": "spawn_from_overlook",
+          "min_x": 1260,
+          "max_x": 1420,
+          "set_flags": ["final_words_heard"]
+        }
+      ]
+    },
+    {
+      "id": "bc_ancient_beacon",
+      "display_name": "Ancient Beacon",
+      "plateau_id": "BEACON_CLIFF",
+      "area_id": "area_ancient_beacon",
+      "scene_role": "climax",
+      "route_order": 620,
+      "required_flags": ["final_words_heard"],
+      "set_flags": ["beacon_lit"],
+      "spawn_points": [
+        {"id": "spawn_from_overlook", "x": 220, "y": 220},
+        {"id": "spawn_from_twofold", "x": 1120, "y": 180}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2200, "h": 30},
+        {"type": "platform", "x": 260, "y": 260, "w": 180, "h": 15},
+        {"type": "platform", "x": 620, "y": 190, "w": 180, "h": 15},
+        {"type": "platform", "x": 1040, "y": 120, "w": 220, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "AEN", "role": "story", "x": 820, "y": 178, "patrol_min_x": 800, "patrol_max_x": 840}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_beacon_back",
+          "type": "free_exit",
+          "target_room_id": "bc_final_npc_overlook",
+          "target_spawn_id": "spawn_from_epilogue",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "gate_beacon_to_twofold",
+          "type": "return_gate",
+          "target_room_id": "bc_twofold_stars",
+          "target_spawn_id": "spawn_from_beacon",
+          "min_x": 1220,
+          "max_x": 1380,
+          "set_flags": ["beacon_lit"]
+        }
+      ]
+    },
+    {
+      "id": "bc_twofold_stars",
+      "display_name": "Twofold Stars",
+      "plateau_id": "BEACON_CLIFF",
+      "area_id": "area_twofold_stars",
+      "scene_role": "ending",
+      "route_order": 630,
+      "required_flags": ["beacon_lit"],
+      "set_flags": ["ending_complete"],
+      "spawn_points": [
+        {"id": "spawn_from_beacon", "x": 220, "y": 180},
+        {"id": "spawn_from_epilogue", "x": 1080, "y": 140}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 1900, "h": 30},
+        {"type": "platform", "x": 220, "y": 250, "w": 180, "h": 15},
+        {"type": "platform", "x": 620, "y": 160, "w": 200, "h": 15},
+        {"type": "platform", "x": 1060, "y": 90, "w": 220, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "YIN_STAR", "role": "memory", "x": 700, "y": 148, "patrol_min_x": 680, "patrol_max_x": 720},
+        {"npc_id": "YANG_STAR", "role": "memory", "x": 980, "y": 78, "patrol_min_x": 960, "patrol_max_x": 1000},
+        {"npc_id": "AEN", "role": "story", "x": 480, "y": 238, "patrol_min_x": 460, "patrol_max_x": 500}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_twofold_to_epilogue",
+          "type": "return_gate",
+          "target_room_id": "bc_epilogue_overlook",
+          "target_spawn_id": "spawn_from_twofold",
+          "min_x": 1160,
+          "max_x": 1320,
+          "set_flags": ["ending_complete"]
+        }
+      ]
+    },
+    {
+      "id": "bc_epilogue_overlook",
+      "display_name": "Epilogue Overlook",
+      "plateau_id": "BEACON_CLIFF",
+      "area_id": "area_final_npc_overlook",
+      "scene_role": "epilogue",
+      "route_order": 640,
+      "required_flags": ["ending_complete"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_twofold", "x": 220, "y": 220}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2100, "h": 30},
+        {"type": "platform", "x": 260, "y": 260, "w": 180, "h": 15},
+        {"type": "platform", "x": 660, "y": 180, "w": 180, "h": 15},
+        {"type": "platform", "x": 1080, "y": 110, "w": 220, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "SAMSON", "role": "ally", "x": 420, "y": 248, "patrol_min_x": 400, "patrol_max_x": 440},
+        {"npc_id": "OLD_MAN_RIKU", "role": "storykeeper", "x": 760, "y": 168, "patrol_min_x": 740, "patrol_max_x": 780},
+        {"npc_id": "AEN", "role": "story", "x": 1120, "y": 98, "patrol_min_x": 1100, "patrol_max_x": 1140}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_epilogue_back",
+          "type": "return_gate",
+          "target_room_id": "bc_twofold_stars",
+          "target_spawn_id": "spawn_from_epilogue",
+          "min_x": 80,
+          "max_x": 220
+        }
+      ]
+    }
+  ],
+  "encounter_definitions": [
+    {
+      "id": "bc_cliff_ascent_secure",
+      "clear_type": "enemy_ids",
+      "enemy_ids": ["beacon_wolf_1", "beacon_bat_1"],
+      "set_flags": ["final_words_heard"]
+    }
+  ]
+}

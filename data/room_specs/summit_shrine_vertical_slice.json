@@ -1,0 +1,159 @@
+{
+  "schema": "room_specs.v1",
+  "rooms": [
+    {
+      "id": "ss_shrine_approach",
+      "display_name": "Summit Shrine Approach",
+      "plateau_id": "SUMMIT_SHRINE",
+      "area_id": "area_summit_shrine_gate",
+      "scene_role": "entry",
+      "route_order": 10,
+      "required_flags": ["npc_withdrawal_started"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_entry", "x": 180, "y": 280}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 1800, "h": 30},
+        {"type": "platform", "x": 340, "y": 300, "w": 160, "h": 15},
+        {"type": "platform", "x": 680, "y": 230, "w": 180, "h": 15},
+        {"type": "platform", "x": 1040, "y": 160, "w": 220, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "AEN", "role": "story", "x": 520, "y": 288, "patrol_min_x": 500, "patrol_max_x": 540},
+        {"npc_id": "VEIL_MAIDEN", "role": "story", "x": 760, "y": 288, "patrol_min_x": 740, "patrol_max_x": 780}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_to_empty_hub",
+          "type": "npc_handoff_gate",
+          "target_room_id": "ss_empty_hub",
+          "target_spawn_id": "spawn_from_approach",
+          "min_x": 1600,
+          "max_x": 1720,
+          "set_flags": ["entered_summit"]
+        }
+      ]
+    },
+    {
+      "id": "ss_empty_hub",
+      "display_name": "Summit Shrine Empty Hub",
+      "plateau_id": "SUMMIT_SHRINE",
+      "area_id": "area_empty_lantern_heights_hub",
+      "scene_role": "isolation",
+      "route_order": 20,
+      "required_flags": ["entered_summit"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_approach", "x": 160, "y": 280}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 1700, "h": 30},
+        {"type": "platform", "x": 300, "y": 280, "w": 200, "h": 15},
+        {"type": "platform", "x": 700, "y": 220, "w": 180, "h": 15},
+        {"type": "platform", "x": 1080, "y": 180, "w": 180, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "AEN", "role": "story", "x": 520, "y": 288, "patrol_min_x": 500, "patrol_max_x": 540},
+        {"npc_id": "VEIL_MAIDEN", "role": "story", "x": 760, "y": 288, "patrol_min_x": 740, "patrol_max_x": 780}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_return_to_approach",
+          "type": "free_exit",
+          "target_room_id": "ss_shrine_approach",
+          "target_spawn_id": "spawn_entry",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "gate_to_arena",
+          "type": "mission_gate",
+          "target_room_id": "ss_summit_arena",
+          "target_spawn_id": "spawn_from_empty_hub",
+          "min_x": 1480,
+          "max_x": 1600,
+          "set_flags": ["empty_hub_only_maiden", "mask_truth_seen", "siren_fight_started"]
+        }
+      ]
+    },
+    {
+      "id": "ss_summit_arena",
+      "display_name": "Summit Shrine Arena",
+      "plateau_id": "SUMMIT_SHRINE",
+      "area_id": "area_summit_shrine_arena",
+      "scene_role": "boss",
+      "route_order": 30,
+      "required_flags": ["empty_hub_only_maiden"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_empty_hub", "x": 180, "y": 280}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2000, "h": 30},
+        {"type": "platform", "x": 420, "y": 280, "w": 180, "h": 15},
+        {"type": "platform", "x": 760, "y": 220, "w": 220, "h": 15},
+        {"type": "platform", "x": 1180, "y": 160, "w": 220, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "AEN", "role": "story", "x": 500, "y": 288, "patrol_min_x": 480, "patrol_max_x": 520},
+        {"npc_id": "SIREN_OF_MASKS", "role": "boss", "x": 980, "y": 288, "patrol_min_x": 960, "patrol_max_x": 1000},
+        {"npc_id": "YIN", "role": "spirit", "x": 720, "y": 248, "patrol_min_x": 700, "patrol_max_x": 740},
+        {"npc_id": "YANG", "role": "spirit", "x": 1240, "y": 188, "patrol_min_x": 1220, "patrol_max_x": 1260}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "ss_siren_masks_boss", "enemy_type": "boss_siren", "x": 980, "y": 288}
+      ],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_arena_back",
+          "type": "free_exit",
+          "target_room_id": "ss_empty_hub",
+          "target_spawn_id": "spawn_from_approach",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "gate_to_fall",
+          "type": "encounter_gate",
+          "target_room_id": "ss_summit_fall",
+          "target_spawn_id": "spawn_from_arena",
+          "min_x": 1840,
+          "max_x": 1960,
+          "set_flags": ["yin_yang_taken", "hollowed", "act2_unlocked"]
+        }
+      ]
+    },
+    {
+      "id": "ss_summit_fall",
+      "display_name": "Summit Shrine Fall",
+      "plateau_id": "SUMMIT_SHRINE",
+      "area_id": "area_summit_shrine_fall",
+      "scene_role": "transition",
+      "route_order": 40,
+      "required_flags": ["yin_yang_taken"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_arena", "x": 180, "y": 260}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 1600, "h": 30},
+        {"type": "platform", "x": 260, "y": 300, "w": 180, "h": 15},
+        {"type": "platform", "x": 620, "y": 220, "w": 180, "h": 15},
+        {"type": "platform", "x": 980, "y": 140, "w": 180, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "AEN", "role": "story", "x": 520, "y": 288, "patrol_min_x": 500, "patrol_max_x": 540}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": []
+    }
+  ],
+  "encounter_definitions": []
+}

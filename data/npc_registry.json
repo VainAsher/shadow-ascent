@@ -345,6 +345,34 @@
       "dialogue_tags": []
     },
     {
+      "id": "OLD_MAN_RIKU",
+      "display_name": "Old Man Riku",
+      "allowed_roles": [
+        "lore_keeper",
+        "optional_npc"
+      ],
+      "eligible_plateaus": [
+        "LANTERN_HEIGHTS",
+        "EMBER_MONASTERY",
+        "BEACON_CLIFF"
+      ],
+      "notes": "Storykeeper. Unlocks lore tablets when brought relics. Optional discoverable NPC — must not block mainline progression.",
+      "dialogue_tags": ["lore", "tablet", "relic"]
+    },
+    {
+      "id": "LANTERN_KID",
+      "display_name": "Lantern Kid",
+      "allowed_roles": [
+        "optional_npc"
+      ],
+      "eligible_plateaus": [
+        "LANTERN_HEIGHTS",
+        "EMBER_MONASTERY"
+      ],
+      "notes": "Early hub presence in Lantern Heights. Appears later as a hopeful echo in the Monastery. No quest chain required.",
+      "dialogue_tags": ["hope", "lantern"]
+    },
+    {
       "id": "BROTHER_KAI",
       "display_name": "Brother Kai",
       "allowed_roles": [
@@ -445,34 +473,6 @@
         "HOLLOW_DEPTHS"
       ],
       "notes": "Indifferent-system confrontation encounter.",
-      "dialogue_tags": []
-    },
-    {
-      "id": "OLD_MAN_RIKU",
-      "display_name": "Old Man Riku",
-      "allowed_roles": [
-        "storykeeper"
-      ],
-      "eligible_plateaus": [
-        "LANTERN_HEIGHTS",
-        "EMBER_MONASTERY",
-        "BEACON_CLIFF"
-      ],
-      "notes": "Lore tablet unlocks.",
-      "dialogue_tags": []
-    },
-    {
-      "id": "LANTERN_KID",
-      "display_name": "Lantern Kid",
-      "allowed_roles": [
-        "minor_npc",
-        "hopeful_echo"
-      ],
-      "eligible_plateaus": [
-        "LANTERN_HEIGHTS",
-        "EMBER_MONASTERY"
-      ],
-      "notes": "Early and hopeful echo.",
       "dialogue_tags": []
     },
     {

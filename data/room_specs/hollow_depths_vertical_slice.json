@@ -1,0 +1,460 @@
+{
+  "schema": "room_specs.v1",
+  "rooms": [
+    {
+      "id": "hd_abyssal_approach",
+      "display_name": "Hollow Camp",
+      "plateau_id": "HOLLOW_DEPTHS",
+      "area_id": "area_hollow_depths_camp",
+      "scene_role": "entry",
+      "route_order": 200,
+      "required_flags": ["act2_unlocked"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_entry", "x": 140, "y": 300},
+        {"id": "spawn_from_caves", "x": 1180, "y": 220}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2200, "h": 30},
+        {"type": "platform", "x": 260, "y": 300, "w": 200, "h": 15},
+        {"type": "platform", "x": 620, "y": 240, "w": 180, "h": 15},
+        {"type": "platform", "x": 980, "y": 180, "w": 180, "h": 15},
+        {"type": "platform", "x": 1380, "y": 120, "w": 220, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "SHADE_HERMIT", "role": "mentor", "x": 360, "y": 288, "patrol_min_x": 340, "patrol_max_x": 380},
+        {"npc_id": "AEN", "role": "story", "x": 560, "y": 288, "patrol_min_x": 540, "patrol_max_x": 580}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "goblin_1", "enemy_type": "goblin", "x": 760, "y": 280},
+        {"enemy_id": "bat_1", "enemy_type": "bat", "x": 1020, "y": 210}
+      ],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_hollow_camp_descent",
+          "type": "free_exit",
+          "target_room_id": "hd_cavern_descent",
+          "target_spawn_id": "spawn_from_approach",
+          "min_x": 1500,
+          "max_x": 1680,
+          "set_flags": ["awoke_in_depths"]
+        }
+      ]
+    },
+    {
+      "id": "hd_cavern_descent",
+      "display_name": "Hollow Caves",
+      "plateau_id": "HOLLOW_DEPTHS",
+      "area_id": "area_hollow_depths_caves",
+      "scene_role": "corridor",
+      "route_order": 210,
+      "required_flags": ["awoke_in_depths"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_approach", "x": 180, "y": 300},
+        {"id": "spawn_from_echo", "x": 980, "y": 210},
+        {"id": "spawn_from_weightbound", "x": 1240, "y": 220}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2400, "h": 30},
+        {"type": "platform", "x": 260, "y": 290, "w": 180, "h": 15},
+        {"type": "platform", "x": 560, "y": 230, "w": 180, "h": 15},
+        {"type": "platform", "x": 860, "y": 160, "w": 160, "h": 15},
+        {"type": "platform", "x": 1180, "y": 230, "w": 200, "h": 15},
+        {"type": "platform", "x": 1560, "y": 150, "w": 220, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "SHADE_HERMIT", "role": "mentor", "x": 420, "y": 288, "patrol_min_x": 400, "patrol_max_x": 440},
+        {"npc_id": "LISTENING_ELDER", "role": "story", "x": 760, "y": 228, "patrol_min_x": 740, "patrol_max_x": 780}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "slime_1", "enemy_type": "slime", "x": 680, "y": 300},
+        {"enemy_id": "bat_1", "enemy_type": "bat", "x": 930, "y": 205},
+        {"enemy_id": "goblin_2", "enemy_type": "goblin", "x": 1460, "y": 280}
+      ],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_hollow_caves_return",
+          "type": "free_exit",
+          "target_room_id": "hd_abyssal_approach",
+          "target_spawn_id": "spawn_from_caves",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "gate_hollow_echo_branch",
+          "type": "free_exit",
+          "target_room_id": "hd_echo_gallery_a",
+          "target_spawn_id": "spawn_from_caves",
+          "min_x": 900,
+          "max_x": 1040,
+          "min_y": 140,
+          "max_y": 250,
+          "set_flags": ["echoes_encountered"]
+        },
+        {
+          "id": "gate_hollow_caves_weight",
+          "type": "mission_gate",
+          "target_room_id": "hd_weightbound_mines",
+          "target_spawn_id": "spawn_from_caves",
+          "min_x": 1520,
+          "max_x": 1660,
+          "set_flags": ["hollow_weight_understood"]
+        }
+      ]
+    },
+    {
+      "id": "hd_echo_gallery_a",
+      "display_name": "Echo Galleries",
+      "plateau_id": "HOLLOW_DEPTHS",
+      "area_id": "area_echo_galleries",
+      "scene_role": "optional_memory",
+      "route_order": 220,
+      "required_flags": ["awoke_in_depths"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_caves", "x": 180, "y": 210}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 1800, "h": 30},
+        {"type": "platform", "x": 240, "y": 260, "w": 150, "h": 15},
+        {"type": "platform", "x": 520, "y": 180, "w": 140, "h": 15},
+        {"type": "platform", "x": 820, "y": 260, "w": 180, "h": 15},
+        {"type": "platform", "x": 1120, "y": 170, "w": 150, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "SAMSON_ECHO", "role": "echo", "x": 540, "y": 148, "patrol_min_x": 520, "patrol_max_x": 560},
+        {"npc_id": "SOPHIA_ECHO", "role": "echo", "x": 1140, "y": 138, "patrol_min_x": 1120, "patrol_max_x": 1160}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "bat_2", "enemy_type": "bat", "x": 580, "y": 180},
+        {"enemy_id": "bat_3", "enemy_type": "bat", "x": 1040, "y": 170},
+        {"enemy_id": "slime_2", "enemy_type": "slime", "x": 860, "y": 300}
+      ],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_echo_return",
+          "type": "free_exit",
+          "target_room_id": "hd_cavern_descent",
+          "target_spawn_id": "spawn_from_echo",
+          "min_x": 80,
+          "max_x": 220
+        }
+      ]
+    },
+    {
+      "id": "hd_weightbound_mines",
+      "display_name": "Weightbound Mines",
+      "plateau_id": "HOLLOW_DEPTHS",
+      "area_id": "area_weightbound_mines_arena",
+      "scene_role": "boss",
+      "route_order": 230,
+      "required_flags": ["hollow_weight_understood"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_caves", "x": 200, "y": 280},
+        {"id": "spawn_from_first_sparks", "x": 1140, "y": 220}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2000, "h": 30},
+        {"type": "platform", "x": 460, "y": 300, "w": 260, "h": 18},
+        {"type": "platform", "x": 980, "y": 300, "w": 260, "h": 18},
+        {"type": "platform", "x": 1420, "y": 220, "w": 180, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "SHADE_HERMIT", "role": "mentor", "x": 280, "y": 288, "patrol_min_x": 260, "patrol_max_x": 300},
+        {"npc_id": "WEIGHTBOUND_OGRE", "role": "boss", "x": 860, "y": 270, "patrol_min_x": 840, "patrol_max_x": 880}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "weightbound_ogre", "enemy_type": "ogre", "x": 860, "y": 270}
+      ],
+      "encounters": ["hd_weightbound_trial"],
+      "transitions": [
+        {
+          "id": "gate_weightbound_return",
+          "type": "free_exit",
+          "target_room_id": "hd_cavern_descent",
+          "target_spawn_id": "spawn_from_weightbound",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "gate_weightbound_first_sparks",
+          "type": "encounter_gate",
+          "target_room_id": "hd_first_sparks",
+          "target_spawn_id": "spawn_from_weightbound",
+          "min_x": 1340,
+          "max_x": 1520,
+          "set_flags": ["weightbound_ogre_defeated"]
+        }
+      ]
+    },
+    {
+      "id": "hd_first_sparks",
+      "display_name": "First Sparks",
+      "plateau_id": "HOLLOW_DEPTHS",
+      "area_id": "area_hollow_hub_first_sparks",
+      "scene_role": "recovery",
+      "route_order": 240,
+      "required_flags": ["weightbound_ogre_defeated"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_weightbound", "x": 180, "y": 280},
+        {"id": "spawn_from_shatter", "x": 1140, "y": 150}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 1900, "h": 30},
+        {"type": "platform", "x": 260, "y": 290, "w": 220, "h": 15},
+        {"type": "platform", "x": 620, "y": 220, "w": 180, "h": 15},
+        {"type": "platform", "x": 980, "y": 150, "w": 140, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "SMITH_MONK", "role": "mentor", "x": 460, "y": 288, "patrol_min_x": 440, "patrol_max_x": 480},
+        {"npc_id": "AEN", "role": "story", "x": 700, "y": 218, "patrol_min_x": 680, "patrol_max_x": 720}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "wolf_1", "enemy_type": "wolf", "x": 980, "y": 280}
+      ],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_first_sparks_return",
+          "type": "free_exit",
+          "target_room_id": "hd_weightbound_mines",
+          "target_spawn_id": "spawn_from_first_sparks",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "gate_first_sparks_shatter",
+          "type": "mission_gate",
+          "target_room_id": "hd_shattermoth_grove",
+          "target_spawn_id": "spawn_from_first_sparks",
+          "min_x": 1260,
+          "max_x": 1440,
+          "set_flags": ["dash_restored"]
+        }
+      ]
+    },
+    {
+      "id": "hd_shattermoth_grove",
+      "display_name": "Shatter Moth Nest",
+      "plateau_id": "HOLLOW_DEPTHS",
+      "area_id": "area_shatter_moth_nest",
+      "scene_role": "boss",
+      "route_order": 250,
+      "required_flags": ["dash_restored"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_first_sparks", "x": 200, "y": 280},
+        {"id": "spawn_from_fractured", "x": 1100, "y": 220}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 1900, "h": 30},
+        {"type": "platform", "x": 280, "y": 280, "w": 130, "h": 15},
+        {"type": "platform", "x": 520, "y": 210, "w": 120, "h": 15},
+        {"type": "platform", "x": 740, "y": 250, "w": 160, "h": 15},
+        {"type": "platform", "x": 1040, "y": 160, "w": 140, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "SHADE_HERMIT", "role": "mentor", "x": 320, "y": 288, "patrol_min_x": 300, "patrol_max_x": 340},
+        {"npc_id": "SHATTER_MOTH_QUEEN", "role": "boss", "x": 980, "y": 248, "patrol_min_x": 960, "patrol_max_x": 1000}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "bat_4", "enemy_type": "bat", "x": 620, "y": 170},
+        {"enemy_id": "shatter_moth_queen", "enemy_type": "bat", "x": 980, "y": 160}
+      ],
+      "encounters": ["hd_shatter_queen"],
+      "transitions": [
+        {
+          "id": "gate_shatter_return",
+          "type": "free_exit",
+          "target_room_id": "hd_first_sparks",
+          "target_spawn_id": "spawn_from_shatter",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "gate_shatter_fractured",
+          "type": "encounter_gate",
+          "target_room_id": "hd_fractured_contact",
+          "target_spawn_id": "spawn_from_shatter",
+          "min_x": 1280,
+          "max_x": 1460,
+          "set_flags": ["shatter_moth_defeated"]
+        }
+      ]
+    },
+    {
+      "id": "hd_fractured_contact",
+      "display_name": "Fractured Contact",
+      "plateau_id": "HOLLOW_DEPTHS",
+      "area_id": "area_fractured_contact_high_winds",
+      "scene_role": "traversal_unlock",
+      "route_order": 260,
+      "required_flags": ["shatter_moth_defeated"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_shatter", "x": 180, "y": 280},
+        {"id": "spawn_from_stone", "x": 1280, "y": 120}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2200, "h": 30},
+        {"type": "platform", "x": 220, "y": 270, "w": 120, "h": 15},
+        {"type": "platform", "x": 460, "y": 190, "w": 100, "h": 15},
+        {"type": "platform", "x": 700, "y": 110, "w": 100, "h": 15},
+        {"type": "platform", "x": 980, "y": 220, "w": 120, "h": 15},
+        {"type": "platform", "x": 1260, "y": 120, "w": 120, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "AEN", "role": "story", "x": 520, "y": 178, "patrol_min_x": 500, "patrol_max_x": 540}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "bat_5", "enemy_type": "bat", "x": 760, "y": 170},
+        {"enemy_id": "wolf_2", "enemy_type": "wolf", "x": 1160, "y": 280}
+      ],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_fractured_return",
+          "type": "free_exit",
+          "target_room_id": "hd_shattermoth_grove",
+          "target_spawn_id": "spawn_from_fractured",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "gate_fractured_stone",
+          "type": "mission_gate",
+          "target_room_id": "hd_stone_tribunal",
+          "target_spawn_id": "spawn_from_fractured",
+          "min_x": 1420,
+          "max_x": 1600,
+          "set_flags": ["double_jump_restored"]
+        }
+      ]
+    },
+    {
+      "id": "hd_stone_tribunal",
+      "display_name": "Stone Judge Maze",
+      "plateau_id": "HOLLOW_DEPTHS",
+      "area_id": "area_stone_judge_maze",
+      "scene_role": "boss",
+      "route_order": 270,
+      "required_flags": ["double_jump_restored"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_fractured", "x": 200, "y": 280},
+        {"id": "spawn_from_abyssal", "x": 1120, "y": 220}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2000, "h": 30},
+        {"type": "platform", "x": 260, "y": 290, "w": 160, "h": 15},
+        {"type": "platform", "x": 540, "y": 210, "w": 120, "h": 15},
+        {"type": "platform", "x": 820, "y": 290, "w": 160, "h": 15},
+        {"type": "platform", "x": 1120, "y": 210, "w": 140, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "ADVOCATE", "role": "story", "x": 360, "y": 288, "patrol_min_x": 340, "patrol_max_x": 380},
+        {"npc_id": "STONE_JUDGE", "role": "boss", "x": 980, "y": 288, "patrol_min_x": 960, "patrol_max_x": 1000}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "skeleton_1", "enemy_type": "skeleton", "x": 760, "y": 275},
+        {"enemy_id": "stone_judge", "enemy_type": "skeleton", "x": 980, "y": 275}
+      ],
+      "encounters": ["hd_stone_verdict"],
+      "transitions": [
+        {
+          "id": "gate_stone_return",
+          "type": "free_exit",
+          "target_room_id": "hd_fractured_contact",
+          "target_spawn_id": "spawn_from_stone",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "gate_stone_abyssal",
+          "type": "encounter_gate",
+          "target_room_id": "hd_abyssal_gate",
+          "target_spawn_id": "spawn_from_stone",
+          "min_x": 1320,
+          "max_x": 1500,
+          "set_flags": ["stone_judge_defeated"]
+        }
+      ]
+    },
+    {
+      "id": "hd_abyssal_gate",
+      "display_name": "Abyssal Gate",
+      "plateau_id": "HOLLOW_DEPTHS",
+      "area_id": "area_abyssal_gate",
+      "scene_role": "exit",
+      "route_order": 280,
+      "required_flags": ["stone_judge_defeated"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_stone", "x": 220, "y": 280}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 2200, "h": 30},
+        {"type": "platform", "x": 260, "y": 280, "w": 180, "h": 15},
+        {"type": "platform", "x": 600, "y": 210, "w": 180, "h": 15},
+        {"type": "platform", "x": 960, "y": 140, "w": 220, "h": 15},
+        {"type": "platform", "x": 1340, "y": 70, "w": 180, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "SHADE_HERMIT", "role": "mentor", "x": 440, "y": 288, "patrol_min_x": 420, "patrol_max_x": 460},
+        {"npc_id": "AEN", "role": "story", "x": 760, "y": 208, "patrol_min_x": 740, "patrol_max_x": 780},
+        {"npc_id": "YIN_MEMORY", "role": "memory", "x": 1140, "y": 108, "patrol_min_x": 1120, "patrol_max_x": 1160},
+        {"npc_id": "YANG_MEMORY", "role": "memory", "x": 1480, "y": 38, "patrol_min_x": 1460, "patrol_max_x": 1500}
+      ],
+      "enemy_placements": [
+        {"enemy_id": "wolf_3", "enemy_type": "wolf", "x": 920, "y": 280},
+        {"enemy_id": "bat_6", "enemy_type": "bat", "x": 1180, "y": 170}
+      ],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_abyssal_return",
+          "type": "free_exit",
+          "target_room_id": "hd_stone_tribunal",
+          "target_spawn_id": "spawn_from_abyssal",
+          "min_x": 80,
+          "max_x": 220
+        },
+        {
+          "id": "gate_abyssal_to_ember",
+          "type": "npc_handoff_gate",
+          "target_room_id": "em_monastery_gate",
+          "target_spawn_id": "spawn_entry",
+          "min_x": 1500,
+          "max_x": 1680,
+          "set_flags": ["glide_restored", "old_road_opened", "hollow_depths_explored"]
+        }
+      ]
+    }
+  ],
+  "encounter_definitions": [
+    {
+      "id": "hd_weightbound_trial",
+      "clear_type": "enemy_ids",
+      "enemy_ids": ["weightbound_ogre"],
+      "set_flags": ["weightbound_ogre_defeated"]
+    },
+    {
+      "id": "hd_shatter_queen",
+      "clear_type": "enemy_ids",
+      "enemy_ids": ["shatter_moth_queen"],
+      "set_flags": ["shatter_moth_defeated"]
+    },
+    {
+      "id": "hd_stone_verdict",
+      "clear_type": "enemy_ids",
+      "enemy_ids": ["stone_judge"],
+      "set_flags": ["stone_judge_defeated"]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "room_specs.v1",
+  "rooms": [
+    {
+      "id": "lh_fixture_annex",
+      "display_name": "Lantern Heights Fixture Annex",
+      "plateau_id": "LANTERN_HEIGHTS",
+      "area_id": "area_lantern_heights_hub",
+      "scene_role": "optional_side",
+      "route_order": 19,
+      "required_flags": ["opening_seen", "fixture_annex_unlocked"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_main", "x": 160, "y": 280}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 1200, "h": 30},
+        {"type": "platform", "x": 320, "y": 260, "w": 180, "h": 15}
+      ],
+      "npc_anchors": [
+        {"npc_id": "LANTERN_KID", "role": "optional_npc", "x": 420, "y": 288, "patrol_min_x": 400, "patrol_max_x": 440}
+      ],
+      "enemy_placements": [],
+      "encounters": [],
+      "transitions": [
+        {
+          "id": "gate_back_to_social_hub_from_fixture",
+          "type": "free_exit",
+          "target_room_id": "lh_hub_social",
+          "target_spawn_id": "spawn_balcony_entry",
+          "min_x": 1040,
+          "max_x": 1160
+        }
+      ]
+    }
+  ],
+  "encounter_definitions": []
+}

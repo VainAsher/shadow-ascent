@@ -52,6 +52,56 @@
     "beacon_lit",
     "ending_complete"
   ],
+  "mainline_missions": [
+    {
+      "id": "village_bonds",
+      "plateau": "LANTERN_HEIGHTS",
+      "mainline": true,
+      "route_hint": "Speak to {next_villager}"
+    },
+    {
+      "id": "dojo_practice",
+      "plateau": "LANTERN_HEIGHTS",
+      "mainline": true,
+      "route_hint": "Speak to Instructor Tai in {area_label}"
+    },
+    {
+      "id": "veil_request",
+      "plateau": "LANTERN_HEIGHTS",
+      "mainline": true,
+      "route_hint": "Speak to Veil Maiden in {area_label}"
+    },
+    {
+      "id": "mistwood_beast",
+      "plateau": "LANTERN_HEIGHTS",
+      "mainline": true,
+      "route_hint": "Push east toward the mission route"
+    },
+    {
+      "id": "hollow_descent",
+      "plateau": "HOLLOW_DEPTHS",
+      "mainline": true,
+      "route_hint": "Cross toward Hollow Depths objectives"
+    },
+    {
+      "id": "lantern_restoration",
+      "plateau": "HOLLOW_DEPTHS",
+      "mainline": true,
+      "route_hint": "Collect lantern pieces, then restore them"
+    },
+    {
+      "id": "monastery_arrival",
+      "plateau": "EMBER_MONASTERY",
+      "mainline": true,
+      "route_hint": "Climb toward the Ember Monastery gate"
+    },
+    {
+      "id": "yin_yang_balance",
+      "plateau": "EMBER_MONASTERY",
+      "mainline": true,
+      "route_hint": "Return to Sophia and follow the skyroad lead"
+    }
+  ],
   "chains": [
     {
       "id": "quest_samson_spear_at_your_back",
@@ -64,6 +114,7 @@
           "plateau": "LANTERN_HEIGHTS",
           "hook": "Samson challenges Aen to a friendly duel.",
           "objective": "Enter a small dojo room and defeat Samson's training ghost in a timed combat challenge.",
+          "route_hint": "Spar with Samson in the training hall",
           "area_pool": [
             "area_training_dojo",
             "elastic_lh_training_loop"
@@ -160,6 +211,7 @@
           "plateau": "LANTERN_HEIGHTS",
           "hook": "Sophia asks Aen to collect fragments of old maps in early missions.",
           "objective": "Find 3–5 Map Shards in early missions.",
+          "route_hint": "Chart lantern points for Sophia",
           "area_pool": [
             "area_lantern_heights_hub",
             "area_mistwood_path",
@@ -251,6 +303,7 @@
           "plateau": "LANTERN_HEIGHTS",
           "hook": "Marcel asks Aen to guard the forge while he and Jenro gather materials.",
           "objective": "Defend the forge from enemy waves.",
+          "route_hint": "Guard the forge with Marcel",
           "area_pool": [
             "area_training_dojo",
             "area_lantern_forge"
@@ -337,6 +390,7 @@
           "plateau": "LANTERN_HEIGHTS",
           "hook": "Hazel offers to weave protective lantern cloth.",
           "objective": "Gather soft materials from low-threat creatures/plants.",
+          "route_hint": "Help Hazel tend the lanterns",
           "area_pool": [
             "area_lantern_heights_hub",
             "elastic_lh_social_errand"
@@ -424,6 +478,41 @@
           "sets_flags": [
             "beacon_lantern_prepared",
             "hazel_q3_complete"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quest_fixture_lantern_kid_test_errand",
+      "npc": "LANTERN_KID",
+      "title": "Fixture Test Errand",
+      "steps": [
+        {
+          "id": "fixture_q1_test_errand",
+          "act": "ACT_0",
+          "plateau": "LANTERN_HEIGHTS",
+          "required_flags": [
+            "village_bonds"
+          ],
+          "hook": "Lantern Kid asks for a simple delivery to prove fixture side-beat authoring stays generic.",
+          "objective": "Carry a practice lantern note through the hub and report back.",
+          "route_hint": "Help Lantern Kid with the practice errand",
+          "area_pool": [
+            "area_lantern_heights_hub"
+          ],
+          "reward": "fixture_token",
+          "reward_effects": [
+            {
+              "type": "ITEM_UNLOCK",
+              "magnitude": 1,
+              "payload": {
+                "id": "fixture_q1_note_item",
+                "item_key": "fixture_note"
+              }
+            }
+          ],
+          "sets_flags": [
+            "fixture_q1_complete"
           ]
         }
       ]

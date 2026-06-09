@@ -61,7 +61,35 @@
       "transitions": [
         {"id": "gate_back_to_entry_upper", "type": "free_exit", "target_room_id": "mistwood_entry", "target_spawn_id": "spawn_upper_from_encounter", "min_x": 820, "max_x": 1040, "min_y": 150, "max_y": 240},
         {"id": "gate_back_to_entry", "type": "free_exit", "target_room_id": "mistwood_entry", "target_spawn_id": "spawn_from_encounter", "min_x": 0, "max_x": 120},
+        {"id": "gate_to_afterglow_pass", "type": "encounter_gate", "target_room_id": "mistwood_afterglow_pass", "target_spawn_id": "spawn_from_first_encounter", "min_x": 1440, "max_x": 1580, "set_flags": ["mistwood_annex_opened"]},
         {"id": "gate_return_to_hub", "type": "return_gate", "target_room_id": "lh_hub_return_changed", "target_spawn_id": "spawn_from_mistwood_return", "min_x": 1660, "max_x": 1780, "set_flags": ["npc_withdrawal_started"]}
+      ]
+    },
+    {
+      "id": "mistwood_afterglow_pass",
+      "display_name": "Mistwood Afterglow Pass",
+      "plateau_id": "LANTERN_HEIGHTS",
+      "area_id": "area_mistwood_path",
+      "scene_role": "post_encounter_depth",
+      "route_order": 46,
+      "required_flags": ["veil_request_accepted", "mistwood_annex_opened"],
+      "set_flags": [],
+      "spawn_points": [
+        {"id": "spawn_from_first_encounter", "x": 120, "y": 280}
+      ],
+      "geometry": [
+        {"type": "floor", "x": 0, "y": 360, "w": 1800, "h": 30},
+        {"type": "platform", "x": 360, "y": 280, "w": 180, "h": 15},
+        {"type": "platform", "x": 760, "y": 220, "w": 180, "h": 15},
+        {"type": "platform", "x": 1120, "y": 260, "w": 180, "h": 15}
+      ],
+      "npc_anchors": [],
+      "enemy_placements": [
+        {"enemy_id": "mistwood_afterglow_bat_1", "enemy_type": "bat", "x": 860, "y": 205}
+      ],
+      "encounters": [],
+      "transitions": [
+        {"id": "gate_back_to_first_encounter", "type": "free_exit", "target_room_id": "mistwood_first_encounter", "target_spawn_id": "spawn_from_entry", "min_x": 0, "max_x": 120}
       ]
     }
   ],
