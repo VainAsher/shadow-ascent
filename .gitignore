@@ -19,3 +19,12 @@ logs/
 
 # P3 generated sprite sheet (rebuilt by packSprites task)
 assets/sprites/packed/
+
+# Eclipse/IDE copied output
+java/client/bin/
+
+# RunGame scratch saves and logs
+save/runGame_*.sav
+save/runGame_*.sav.runtime.properties
+tmp_runGame_*.log
+regression_tmp.txt
