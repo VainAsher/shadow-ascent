@@ -345,3 +345,12 @@ PARTIAL
 
 ### Recommended Next Step
 Fix `CLAUDE.md` milestone table immediately — M3 staleness has reached its **22nd consecutive audit cycle** with zero fixes applied. In a single targeted edit: change M3 from `Active — V3 save envelope + checksum guard done; full exit criteria TBD` to `Complete (2026-05-08)`, change M4 from `Queued` to `Complete (2026-05-15)`, and update the `as of` date to 2026-06-14. These two lines are the highest-impact staleness fix in the project and require under five minutes to apply.
+
+### Fixes Applied (2026-06-14)
+All findings resolved in commit `6a2abbc`:
+- **CLAUDE.md**: M3 → `Complete (2026-05-08)`, M4 → `Complete (2026-05-15)`, `as of` date → 2026-06-14.
+- **docs/ROADMAP.md**: M4 header → `` `completed` ``; M6 regression count → 54/54.
+- **docs/IMPLEMENTATION_BACKLOG.md**: Section 7 M5 header → `(completed)`.
+- **docs/guides/DEVELOPER_WORKFLOW.md**: Regression count → 54; extraction list adds `HudRenderer`, `StoryManager`, `MissionUiCoordinator`; CI trigger block corrected to all-tasks-on-every-push.
+- **docs/MIGRATION_MAP.md**: Orphan `queued` SimPlayer row removed; `InputHandler`, `RoomGeometry`, `SaveLoad` Wave 5 entries added.
+- **docs/CURRENT_STATE.md**: `last_updated` advanced to 2026-06-14.
