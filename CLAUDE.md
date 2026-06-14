@@ -86,15 +86,15 @@ Full gate (what CI runs):
 - Migration matrix: `SaveMigrationMatrix.java`
 - When adding `SAVE_V4` fields: implement a concrete migrator in the matrix before shipping
 
-## Current Milestone State (as of 2026-05-08)
+## Current Milestone State (as of 2026-06-14)
 
 | Milestone | Status |
 |---|---|
 | M0 Foundation | Complete |
 | M1 Act I QA Gate | Complete (2026-05-07) |
 | M2 Campaign Spine | Complete (2026-05-07) |
-| M3 Stability/Release | Active — V3 save envelope + checksum guard done; full exit criteria TBD |
-| M4 Campaign Content Scale | Queued |
+| M3 Stability/Release | Complete (2026-05-08) |
+| M4 Campaign Content Scale | Complete (2026-05-15) |
 | M5 World Simulation Foundation | Complete (2026-05-07) |
 | M6 Open-World Runtime Expansion | Active (2026-05-08) |
 

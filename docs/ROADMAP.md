@@ -99,7 +99,7 @@ Delivered in this lane:
 - `testSaveChecksumGuard` (4 sub-tests) and `testSaveV3OverlayPersistence` in regression harness.
 - Formal release gate checklist defined and all 12 criteria confirmed green (`docs/M3_RELEASE_GATE.md`).
 
-### M4 — Campaign Completion and Content Scale (`active`)
+### M4 — Campaign Completion and Content Scale (`completed`)
 
 Target:
 
@@ -171,7 +171,7 @@ Delivered in this lane (2026-05-08):
 - M6 authored region templates: 3 new section templates (`lantern_region_hub`, `lantern_hub`, `hollow_dungeon`); template count 10→13; all stub-geometry WARN lines eliminated.
 - Co-op session scaffolding: `requestRevive` + `tickCoopProximity` + `COOP_REVIVE`/`PLAYER_PROXIMITY` events in `GameSimulator`.
 - GameSimulator full feature set: enemy damage loop, boss pattern dispatch, shuriken flight, moving platforms + portals, echo recorder integration.
-- Regression harness: 49/49 PASS (was 28/28 at M6 start).
+- Regression harness: 54/54 PASS (was 28/28 at M6 start).
 
 ## Architecture Tracks
 
