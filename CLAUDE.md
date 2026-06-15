@@ -86,7 +86,7 @@ Full gate (what CI runs):
 - Migration matrix: `SaveMigrationMatrix.java`
 - When adding `SAVE_V4` fields: implement a concrete migrator in the matrix before shipping
 
-## Current Milestone State (as of 2026-06-14)
+## Current Milestone State (as of 2026-06-15)
 
 | Milestone | Status |
 |---|---|
@@ -115,9 +115,9 @@ Full production stack and phase plan: `docs/planning/PRODUCTION_STACK_AND_LONG_T
 
 ## Key File Warnings
 
-**`PlaytestClient.java` (~80KB)** — Swing QA harness. Wave 4/5 subsystem extractions complete (CombatSubsystem, TraversalSubsystem, UISubsystem, MinimapRenderer). Do not add new feature code; the LibGDX client is the path forward. See `docs/planning/PRODUCTION_STACK_AND_LONG_TERM_PLAN.md`.
+**`PlaytestClient.java` (~80KB)** — Swing QA harness. Wave 4/5 subsystem extractions complete (CombatSubsystem, TraversalSubsystem, UISubsystem, MinimapRenderer, HudRenderer, StoryManager, MissionUiCoordinator). Do not add new feature code; the LibGDX client is the path forward. See `docs/planning/PRODUCTION_STACK_AND_LONG_TERM_PLAN.md`.
 
-**`RegressionTest.java` (~100KB, 49 tests)** — regression harness. When adding new test cases, review logic for correctness, not just structure. New test sections follow existing labelled-section pattern.
+**`RegressionTest.java` (~100KB, 54 tests)** — regression harness. When adding new test cases, review logic for correctness, not just structure. New test sections follow existing labelled-section pattern.
 
 **`GameDataContracts.java` (~37KB)** — contract loader/validator. The runtime source of truth for data lookups. Additions here must maintain backward compatibility with existing contract consumers.
 

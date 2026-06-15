@@ -2,7 +2,7 @@
 doc_type: roadmap
 status: living
 owner: core-team
-last_updated: 2026-05-14
+last_updated: 2026-06-15
 version_anchor: 0.0.1
 ---
 # Shadow Ascent Clean Start Roadmap
@@ -196,7 +196,7 @@ Delivered in this lane (2026-05-08):
 ### Next open items
 
 - ~~M3 exit criteria.~~ Closed 2026-05-08 — gate doc at `docs/M3_RELEASE_GATE.md`; M3 promoted to complete.
-- M4 campaign content remains active: authored `SUMMIT_SHRINE` and `HOLLOW_DEPTHS` are landed, while `EMBER_MONASTERY` through `BEACON_CLIFF` still need broader runtime-facing authored coverage and validation gates.
+- ~~M4 campaign content.~~ Closed 2026-05-15 — M4 promoted to complete; all authored areas through `BEACON_CLIFF` delivered and validated.
 - ~~M6 remaining: authored chunk-streaming geometry.~~ Resolved 2026-05-08. Region fragment JSONs carry world-space tile geometry; `RegionLoader` sources static tiles from fragment data.
 - ~~M6 remaining: echo puzzle evaluation logic.~~ Resolved 2026-05-09. `EchoPuzzleSolution` + `EchoPuzzleEvaluator` in `core.simulation`; first authored puzzle room in PlaytestClient Room 4.
 - ~~M6 remaining: mutation visibility evidence.~~ Resolved 2026-05-08. `overlayStatusLine` in HUD; `MUTATION_OVERLAY_SAVE`/`LOAD` evidence lines; `refreshOverlayHud()` wired.
@@ -206,4 +206,4 @@ Delivered in this lane (2026-05-08):
 - **P3 asset pipeline** — complete 2026-05-10. Deterministic `packSprites` task, generated placeholder atlas, `TextureAtlas` loading in `ShadowAscentGame`, and atlas-backed `SpriteWorldRenderer` are all landed and client-test-backed.
 - **P4 HUD + overlay port** — complete 2026-05-13. `runGame` now has a persistent HUD, docked toggleable minimap, shared modal lifecycle, first-pass inventory/shop/crafting overlays, dialogue interaction, pause/save/load flow, title/new-game/continue routing, audio event-key resolution, and explicit HUD interaction hints driven directly from the production-client runtime.
 - **Next LibGDX production-client follow-up**: keep the lane bounded to authored geometry, animation/state fidelity, and deeper production-client interaction polish that can be validated in `runGame` without turning into full art migration.
-- **Current M4 follow-up**: finish the `HOLLOW_DEPTHS` runtime-facing slice first by deepening authored bootstrap, NPC placement, combat readability, and mission surfacing in `runGame`, then use that path as the pattern for `EMBER_MONASTERY`.
+- ~~**M4 follow-up**: `HOLLOW_DEPTHS` authored runtime deepening and `EMBER_MONASTERY` expansion.~~ Complete 2026-05-15 — M4 exit criteria met.
