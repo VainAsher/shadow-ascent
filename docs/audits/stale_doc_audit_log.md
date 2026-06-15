@@ -1,41 +1,5 @@
 # Shadow Ascent — Stale Doc Audit Log
 
-## Audit 2026-05-31
-
-### Verdict
-PARTIAL
-
-### Key Findings
-
-1. **CLAUDE.md (canonical context)** — **STALE (13th consecutive cycle)**: M3 milestone still reads `Active — V3 save envelope + checksum guard done; full exit criteria TBD`. All three corroborating sources (`docs/CURRENT_STATE.md`, `docs/ROADMAP.md`, `docs/M3_RELEASE_GATE.md`) confirm M3 closed 2026-05-08. No substantive code commits since 2026-05-14 (only audit/briefing log commits). This has not been fixed across thirteen consecutive audit cycles. This file is loaded on every session start — the mismatch corrupts every session's milestone context.
-
-2. **docs/CURRENT_STATE.md** — **STALE (persistent from 2026-05-15)**: `last_updated: 2026-05-09`. Three P1 client decomposition classes added in commit `df9f762` (`InputHandler.java`, `RoomGeometry.java`, `SaveLoad.java`) remain absent from the "What Is Implemented" section. All three files confirmed present at `java/client/src/main/java/com/shadowascent/client/`. Verification evidence gate timestamp is 2026-05-08; no updated gate run recorded since P1 wiring landed.
-
-3. **docs/ROADMAP.md** — **STALE (3 items, all persistent from 2026-05-14)**:
-   - M4 section header tag: `` `active` `` — CLAUDE.md (`Queued`), `CURRENT_STATE.md`, and the backlog `[AUTHORING DECISION REQUIRED]` block all classify M4 as queued/blocked on SUMMIT_SHRINE authoring decisions.
-   - "Next open items" P1 LibGDX entry still lists `StubWorldRenderer` + `GameInputProcessor` wiring as pending; both files confirmed present at `java/client/src/main/java/com/shadowascent/client/rendering/StubWorldRenderer.java` and `.../client/input/GameInputProcessor.java`.
-   - M6 "Delivered" section records "Regression harness: 49/49 PASS"; current harness runs 53 sections per `CURRENT_STATE.md` verification evidence and backlog entries.
-
-4. **docs/MIGRATION_MAP.md** — **STALE (2 items, persistent from 2026-05-14)**:
-   - Wave 4 row (~line 81): `SimPlayer.java` status `queued` targeting `core/.../sim/SimPlayer.java` — orphan row never removed when import completed; correct `done` row at ~line 91 targets `core/.../simulation/SimPlayer.java`.
-   - Wave 5 table missing entries for `InputHandler.java`, `RoomGeometry.java`, `SaveLoad.java` added in commit `df9f762`.
-
-5. **docs/IMPLEMENTATION_BACKLOG.md** — **STALE (2 section headers, persistent from 2026-05-14)**:
-   - Section 7 header: "M5 Systemic World Simulation Foundation (active)" — M5 complete since 2026-05-07; all tasks marked `[x]`.
-   - Section 8 header: "M6 Open-World Runtime Expansion (queued)" — M6 is active per CLAUDE.md and ROADMAP; all tasks inside are already `[x]`.
-
-6. **docs/guides/DEVELOPER_WORKFLOW.md** — **STALE (3 items, all persistent from prior cycles)**:
-   - Line ~215: `` `RegressionTest.java (~100KB, 49 tests)` `` — current harness runs 53 sections per `CURRENT_STATE.md` verification evidence.
-   - Wave 4/5 extraction list `(CombatSubsystem, TraversalSubsystem, UISubsystem, MinimapRenderer)` omits three Wave 5 phase-2 extractions completed 2026-05-09: `HudRenderer`, `StoryManager`, `MissionUiCoordinator`.
-   - CI section claims `runWorldSimulationDiagnostics` runs only "on merge"; all gate tasks (`runDataContractDiagnostics`, `runWorldgenDiagnostics`, `runWorldSimulationDiagnostics`, `runRegressionTests`) run on every `push` and `pull_request` trigger — not split by merge.
-
-7. **Missing references** — None: all Gradle tasks (`runRegressionTests`, `runDataContractDiagnostics`, `runWorldgenDiagnostics`, `runWorldSimulationDiagnostics`, `runRegionalStreamingDiagnostics`, `runPlayableClient`, `runGame`) present in `build.gradle.kts`. All referenced class names confirmed under `java/`. All data files exist under `data/`. Referenced docs (`M3_RELEASE_GATE.md`, `ACT_I_QA_ROUTE.md`, `NORTH_STAR_EXECUTION_MATRIX.md`, `DOC_MAINTENANCE_PLAN.md`, `planning/PRODUCTION_STACK_AND_LONG_TERM_PLAN.md`, `guides/CODEX_CLI_SETUP.md`) all exist.
-
-### Recommended Next Step
-Fix `CLAUDE.md` milestone table now — M3 staleness has reached its 13th consecutive audit cycle with zero fixes applied. Change M3 from `Active — V3 save envelope + checksum guard done; full exit criteria TBD` to `Complete (2026-05-08)`, update the `as of` date to 2026-05-31, and resolve the M4 active/queued discrepancy (`ROADMAP.md` says `active`; `CLAUDE.md`, `CURRENT_STATE.md`, and backlog say queued/blocked). These two edits on CLAUDE.md are the highest-impact fix in the project — the file is read on every session start and wrong milestone state corrupts every planning decision made from it.
-
----
-
 ## Audit 2026-06-02
 
 ### Verdict
@@ -354,3 +318,33 @@ All findings resolved in commit `6a2abbc`:
 - **docs/guides/DEVELOPER_WORKFLOW.md**: Regression count → 54; extraction list adds `HudRenderer`, `StoryManager`, `MissionUiCoordinator`; CI trigger block corrected to all-tasks-on-every-push.
 - **docs/MIGRATION_MAP.md**: Orphan `queued` SimPlayer row removed; `InputHandler`, `RoomGeometry`, `SaveLoad` Wave 5 entries added.
 - **docs/CURRENT_STATE.md**: `last_updated` advanced to 2026-06-14.
+
+---
+
+## Audit 2026-06-15
+
+### Verdict
+PARTIAL
+
+### Key Findings
+
+1. **CLAUDE.md (canonical context)** — **PARTIALLY RESOLVED / 2 items persist**: The long-running M3/M4 milestone staleness was resolved by commit `6a2abbc` (2026-06-14) — M3 now reads `Complete (2026-05-08)` and M4 reads `Complete (2026-05-15)`. Two items remain stale:
+   - `RegressionTest.java (~100KB, 49 tests)` — actual count confirmed as 54 per `CURRENT_STATE.md` P2 gate evidence and `DEVELOPER_WORKFLOW.md` (which was correctly updated to 54 on 2026-06-14); CLAUDE.md was not updated.
+   - `PlaytestClient.java` "Key File Warnings" subsystem extraction list still reads `(CombatSubsystem, TraversalSubsystem, UISubsystem, MinimapRenderer)` — `HudRenderer`, `StoryManager`, and `MissionUiCoordinator` (all completed 2026-05-09) are absent. `DEVELOPER_WORKFLOW.md` was correctly updated on 2026-06-14 but CLAUDE.md was not.
+
+2. **docs/CURRENT_STATE.md** — **ACCURATE** (as of 2026-06-14 commit `6a2abbc`): `last_updated` advanced to 2026-06-14; four 2026-06-09 code commits now documented. No new non-doc commits since 2026-06-14.
+
+3. **docs/ROADMAP.md** — **STALE (2 items)**:
+   - "Next open items" section still reads "M4 campaign content remains active: authored `SUMMIT_SHRINE` and `HOLLOW_DEPTHS` are landed, while `EMBER_MONASTERY` through `BEACON_CLIFF` still need broader runtime-facing authored coverage and validation gates." — contradicts M4 `completed` status set on the same 2026-06-14 commit.
+   - "Current M4 follow-up" open item still describes in-progress M4 work despite M4 being complete per `CURRENT_STATE.md`, `IMPLEMENTATION_BACKLOG.md` section 0, and `docs/MILESTONE_GATE_M4_FULL.md`.
+
+4. **docs/MIGRATION_MAP.md** — **ACCURATE**: Orphan `queued` SimPlayer row removed; `InputHandler`, `RoomGeometry`, `SaveLoad` Wave 5 entries confirmed added in 2026-06-14 commit. No remaining stale entries.
+
+5. **docs/IMPLEMENTATION_BACKLOG.md** — **ACCURATE**: Section 7 M5 header now reads `(completed)`; Section 8 M6 header reads `(active)`. No remaining stale items.
+
+6. **docs/guides/DEVELOPER_WORKFLOW.md** — **ACCURATE**: Regression count updated to 54; extraction list now includes `HudRenderer`, `StoryManager`, `MissionUiCoordinator`; CI trigger block corrected to all-tasks-on-every-push. No remaining stale items.
+
+7. **Missing references** — None: all Gradle tasks (`runRegressionTests`, `runDataContractDiagnostics`, `runWorldgenDiagnostics`, `runWorldSimulationDiagnostics`, `runRegionalStreamingDiagnostics`, `runPlayableClient`, `runGame`, `packSprites`) confirmed present. All referenced class names confirmed under `java/`. All data files exist under `data/`. All referenced docs (`M3_RELEASE_GATE.md`, `MILESTONE_GATE_M4_FULL.md`, `MILESTONE_A_GATE.md`, `ACT_I_QA_ROUTE.md`, `NORTH_STAR_EXECUTION_MATRIX.md`, `DOC_MAINTENANCE_PLAN.md`, `planning/PRODUCTION_STACK_AND_LONG_TERM_PLAN.md`, `guides/CODEX_CLI_SETUP.md`) confirmed present.
+
+### Recommended Next Step
+Fix the two remaining stale items in `CLAUDE.md`: change `RegressionTest.java (~100KB, 49 tests)` to `54 tests`, and add `HudRenderer`, `StoryManager`, `MissionUiCoordinator` to the PlaytestClient wave 4/5 extraction list in the "Key File Warnings" section. Then remove the stale "M4 campaign content remains active" and "Current M4 follow-up" entries from `docs/ROADMAP.md` "Next open items" — these contradict the M4 `completed` tag set on the same commit.
