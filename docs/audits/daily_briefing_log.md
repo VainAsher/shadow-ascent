@@ -1,26 +1,5 @@
 # Shadow Ascent — Daily Briefing Log
 
-
-## Daily Focus — 2026-05-29
-
-**Active milestones:**
-- M3 Stability/Release — Complete (2026-05-08); all 12 gate criteria green; gate doc at `docs/M3_RELEASE_GATE.md`. (CLAUDE.md table still reads "Active" — minor sync pending.)
-- M6 Open-World Runtime Expansion — Active; all tracked M6 backlog items checked off; no open implementation tasks remain.
-- M4 Campaign Content Scale — Queued; hard-blocked on SUMMIT_SHRINE authoring decision.
-
-**Most important next task:** `[AUTHORING DECISION REQUIRED] M4 Authored Act I Plateau Content — SUMMIT_SHRINE plateau` has no narrative beats, eligible NPCs, or Act I spine connections defined. This is the gate for every M4 content item (authored act coverage, optional plateau content, worldgen validation gates). Developer must decide: (1) which quests/beats belong to SUMMIT_SHRINE, (2) which NPCs are eligible, (3) how it connects LANTERN_HEIGHTS → HOLLOW_DEPTHS. See `data/plateaus.json`.
-
-**Open blockers:**
-- SUMMIT_SHRINE authoring decision: developer narrative input required before any M4 code work can begin.
-- CLAUDE.md milestone table: M3 row should read "Complete (2026-05-08)" to match `CURRENT_STATE.md`.
-
-**Recent completions:**
-- `3000abf` chore: nightly stale-doc audit 2026-05-25
-- `0c1ee64` chore: nightly stale-doc audit 2026-05-24
-- `8ba690d` chore: daily briefing 2026-05-23
-*(No code changes since LibGDX scaffold + Wave 5 extractions landed 2026-05-09)*
-
-
 ## Daily Focus — 2026-05-30
 
 **Active milestones:**
@@ -255,3 +234,20 @@
 - `8ce6497` docs(audits): note 2026-06-14 staleness fixes applied
 - `6a2abbc` docs: resolve 22-cycle stale-doc audit findings
 *(No substantive code changes since LibGDX authored-runtime deepening 2026-05-14)*
+
+
+## Daily Focus — 2026-06-17
+
+**Active milestones:**
+- M6 Open-World Runtime Expansion — Active; all tracked M6 backlog items checked off; next work is campaign fidelity/polish and elastic content integration in `runGame`
+- M4 Campaign Content Scale — Complete (2026-05-15); all 8 plateau families room-spec staged; gate doc at `docs/MILESTONE_GATE_M4_FULL.md`
+- M3 Stability/Release — Complete (2026-05-08); gate doc at `docs/M3_RELEASE_GATE.md`
+
+**Most important next task:** `[ ] Move the active delivery lane to post-M4 campaign fidelity/polish and M6 elastic/runtime opportunity integration` (backlog §0). M4 is complete and `runGame` is the live QA surface; the next concrete work is deepening authored area density, NPC/mission fidelity, and elastic chunk integration in `runGame` without expanding into full art migration. See `CURRENT_STATE.md` "Next Actions" item #8.
+
+**Open blockers:** None — all M4 and M6 backlog tasks are checked; SUMMIT_SHRINE authoring decision resolved (2026-05-09). Standing doc task: `[ ] Archive superseded claims instead of silently overwriting history` (backlog §5). No code commits have landed since 2026-05-14; only automated audit/briefing chores since.
+
+**Recent completions:**
+- `0e96260` docs: fix remaining stale items from 2026-06-15 audit
+- `40e3ad2` chore: nightly stale-doc audit 2026-06-15
+- `e7c5a54` chore: daily briefing 2026-06-15
