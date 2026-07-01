@@ -1,38 +1,5 @@
 # Shadow Ascent — Stale Doc Audit Log
 
-## Audit 2026-06-09
-
-### Verdict
-PARTIAL
-
-### Key Findings
-
-1. **CLAUDE.md (canonical context)** — **STALE (19th consecutive cycle)**: M3 milestone still reads `Active — V3 save envelope + checksum guard done; full exit criteria TBD`. This contradicts `docs/CURRENT_STATE.md`, `docs/ROADMAP.md`, and `docs/M3_RELEASE_GATE.md`, all of which confirm M3 closed 2026-05-08. Additionally, M4 reads `Queued` — now clearly wrong: `docs/CURRENT_STATE.md` (updated by `b90eeba`, 2026-06-09) explicitly states "M4 campaign completion/content scale: complete (2026-05-15)" with gate evidence at `docs/MILESTONE_GATE_M4_FULL.md`, and `docs/IMPLEMENTATION_BACKLOG.md` section 0 header reads "M4 / completed". CLAUDE.md is loaded on every session start; both wrong milestone entries corrupt every planning decision made from it.
-
-2. **docs/CURRENT_STATE.md** — **PARTIALLY RESOLVED / NEW STALENESS**: `b90eeba` (2026-06-09) updated this file — `last_updated` advanced from 2026-05-09 to 2026-05-15, and `InputHandler.java`/`RoomGeometry.java`/`SaveLoad.java` entries were added (prior cycles' finding resolved). However, four substantive code commits landed on 2026-06-09 that are not yet documented here: `d004f19 feat(data): add M4 campaign catalogs and room specs`, `a94c096 feat(core): extend mission story and regression runtime`, `dea2d41 feat(client): wire authored world routing and interactions`, `17da791 test(runtime): add Act I route campaign and world coverage`. The `last_updated: 2026-05-15` frontmatter does not reflect these same-day changes.
-
-3. **docs/ROADMAP.md** — **STALE (2 items)**:
-   - M4 section header tag: `` `active` `` — CURRENT_STATE.md (updated today) and IMPLEMENTATION_BACKLOG.md section 0 both classify M4 as complete (2026-05-15). Should be `` `completed` ``.
-   - M6 "Delivered" section records "Regression harness: 49/49 PASS"; current harness runs 53+ sections per CURRENT_STATE.md verification evidence (54/54 at P2, then 53/53 at Wave 5 phase-2).
-
-4. **docs/MIGRATION_MAP.md** — **STALE (2 items, persistent from 2026-05-14)**:
-   - Wave 4 line 81: `SimPlayer.java` status `queued` targeting `core/.../sim/SimPlayer.java` — orphan row never removed; correct `done` row at line 91 targets `core/.../simulation/SimPlayer.java`.
-   - Wave 5 table still missing entries for `InputHandler.java`, `RoomGeometry.java`, `SaveLoad.java` (all confirmed present at `java/client/src/main/java/com/shadowascent/client/`).
-
-5. **docs/IMPLEMENTATION_BACKLOG.md** — **PARTIALLY RESOLVED / 1 item remains**: `b90eeba` resolved the Section 8 "(queued)" finding — it now correctly reads "(active)" for M6. Section 7 header "M5 Systemic World Simulation Foundation (active)" remains stale — M5 has been complete since 2026-05-07 and all tasks are marked `[x]`; the header should read "(completed)".
-
-6. **docs/guides/DEVELOPER_WORKFLOW.md** — **STALE (3 items, all persistent from prior cycles)**:
-   - Line 215: `` `RegressionTest.java (~100KB, 49 tests)` `` — actual harness runs 53+ sections per CURRENT_STATE.md verification evidence.
-   - Wave 4/5 extraction list `(CombatSubsystem, TraversalSubsystem, UISubsystem, MinimapRenderer)` omits three Wave 5 phase-2 extractions completed 2026-05-09: `HudRenderer`, `StoryManager`, `MissionUiCoordinator`.
-   - CI section claims `runWorldSimulationDiagnostics` runs only "on merge"; all gate tasks run on every `push` and `pull_request` trigger — not split by merge.
-
-7. **Missing references** — None: all Gradle tasks (`runRegressionTests`, `runDataContractDiagnostics`, `runWorldgenDiagnostics`, `runWorldSimulationDiagnostics`, `runRegionalStreamingDiagnostics`, `runPlayableClient`, `runGame`, `packSprites`) confirmed present in `build.gradle.kts`. All referenced class names (`DesktopLauncher`, `ShadowAscentGame`, `GameInputProcessor`, `StubWorldRenderer`, `HudRenderer`, `StoryManager`, `MissionUiCoordinator`, `InputHandler`, `RoomGeometry`, `SaveLoad`) confirmed under `java/`. All data files exist under `data/`. All referenced docs (`M3_RELEASE_GATE.md`, `MILESTONE_GATE_M4_FULL.md`, `MILESTONE_A_GATE.md`, `ACT_I_QA_ROUTE.md`, `NORTH_STAR_EXECUTION_MATRIX.md`, `DOC_MAINTENANCE_PLAN.md`, `planning/PRODUCTION_STACK_AND_LONG_TERM_PLAN.md`, `guides/CODEX_CLI_SETUP.md`) confirmed present.
-
-### Recommended Next Step
-Fix `CLAUDE.md` milestone table immediately — M3 staleness is now at **19 consecutive audit cycles** with zero fixes applied. In a single targeted edit: change M3 from `Active — V3 save envelope + checksum guard done; full exit criteria TBD` to `Complete (2026-05-08)`, change M4 from `Queued` to `Complete (2026-05-15)` (matching CURRENT_STATE.md evidence), and update the `as of` date to 2026-06-09. These two lines are the highest-impact staleness fix in the project.
-
----
-
 ## Audit 2026-06-11
 
 ### Verdict
@@ -327,3 +294,29 @@ PARTIAL
 
 ### Recommended Next Step
 Fix `CLAUDE.md` milestone table immediately — M3 staleness has reached its **28th consecutive audit cycle** with zero fixes applied. In a single targeted edit: change M3 from `Active — V3 save envelope + checksum guard done; full exit criteria TBD` to `Complete (2026-05-08)`, change M4 from `Queued` to `Complete (2026-05-15)`, and update the `as of` date to 2026-06-27. These two lines are the highest-impact staleness fix in the project and require under five minutes to apply.
+
+---
+
+## Audit 2026-07-01
+
+### Verdict
+PARTIAL
+
+### Key Findings
+
+1. **CLAUDE.md (canonical context)** — **ACCURATE (resolved)**: All prior stale claims now fixed — M3 reads `Complete (2026-05-08)`, M4 reads `Complete (2026-05-15)`, test count updated to 54, Wave 5 phase-2 extractions (`HudRenderer`, `StoryManager`, `MissionUiCoordinator`) added to subsystem list, `as of` date advanced to 2026-06-15. 31-cycle staleness streak closed. `git diff --stat HEAD~5 HEAD` shows only `docs/audits/` changes in the last 5 commits — no new code-introduced staleness.
+
+2. **docs/CURRENT_STATE.md** — **STALE (1 item, new)**: `last_updated: 2026-06-14` frontmatter does not cover four 2026-06-09 code commits (`d004f19 feat(data): add M4 campaign catalogs and room specs`, `a94c096 feat(core): extend mission story and regression runtime`, `dea2d41 feat(client): wire authored world routing and interactions`, `17da791 test(runtime): add Act I route campaign and world coverage`). Test classes `FullCampaignRouteEndToEndTest`, `RunGameFlowSmokeTest`, `RunGameMissionInteractionTest`, `RunGameAreaTransitionTest`, `PostClimaxStatePersistenceTest`, `EmberMonasteryOptionalContentTest`, `HollowDepthsOptionalContentTest`, `EmberMonasteryVerticalSliceBootstrapTest`, `HollowDepthsVerticalSliceBootstrapTest` confirmed present under `java/client/src/test/`. `data/room_specs/*.json` files (`act_i_authoring_fixture.json`, `beacon_cliff_vertical_slice.json`, `ember_monastery_vertical_slice.json`, `hollow_depths_vertical_slice.json`, `lantern_heights_vertical_slice.json`) confirmed present but absent from "What Is Implemented" section.
+
+3. **docs/ROADMAP.md** — **ACCURATE**: M4 section header now `` `completed` ``; M6 active. All milestone statuses match CLAUDE.md.
+
+4. **docs/MIGRATION_MAP.md** — **ACCURATE**: Wave 4 `SimPlayer.java` orphan row removed; Wave 5 `InputHandler.java`, `RoomGeometry.java`, `SaveLoad.java` entries added with `done (2026-05-09)` status. All referenced donor classes confirmed present at expected paths.
+
+5. **docs/IMPLEMENTATION_BACKLOG.md** — **ACCURATE**: Section 7 header now reads "(completed)"; all M5 tasks marked `[x]`; M6 section remains "(active)" as expected.
+
+6. **docs/guides/DEVELOPER_WORKFLOW.md** — **ACCURATE**: Test count now "54 tests"; full Wave 5 phase-2 extraction list (`CombatSubsystem`, `TraversalSubsystem`, `UISubsystem`, `MinimapRenderer`, `HudRenderer`, `StoryManager`, `MissionUiCoordinator`) present; CI section updated to "On every push and PR" (no "on merge" split).
+
+7. **Missing references** — None: all Gradle tasks (`runRegressionTests`, `runDataContractDiagnostics`, `runWorldgenDiagnostics`, `runWorldSimulationDiagnostics`, `runRegionalStreamingDiagnostics`, `runPlayableClient`, `runGame`, `packSprites`) confirmed in `build.gradle.kts`. All referenced class names (`EchoPuzzleSolution`, `EchoPuzzleEvaluator`, `RegionManifest`, `RegionLoader`, `MutationOverlay`, `WorldSimulationTick`, `QuestEcologyEngine`, `CollisionWorld`, `SaveMigrationMatrix`, `DesktopLauncher`, `ShadowAscentGame`, `HubScreen`, `HudRenderer`, `StoryManager`, `MissionUiCoordinator`, `InputHandler`, `RoomGeometry`, `SaveLoad`, `GameInputProcessor`, `SpriteWorldRenderer`, `HudOverlayRenderer`, `HudOverlayState`, `MinimapOverlayRenderer`, `ModalOverlayManager`, `AudioManager`, `TitleScreen`, `AuthoringWorldBootstrap`, `ContractMissionTemplateCatalog`) confirmed under `java/`. All data files confirmed under `data/`. All referenced docs confirmed present.
+
+### Recommended Next Step
+Update `docs/CURRENT_STATE.md` to cover the four 2026-06-09 code commits — add the nine new test classes and five `data/room_specs/*.json` vertical slice files to "What Is Implemented", and update `last_updated` to 2026-07-01. This closes the only remaining staleness finding.
