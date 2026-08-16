@@ -78,7 +78,6 @@ This map defines **exact first imports** from donor repos into `shadow_ascent_cl
 
 | Source Repo | Source Path | Target Module/Path | Purpose | Effort | Risk | Status |
 |---|---|---|---|---|---|---|
-| old | `java/shadowascent/src/main/java/com/indieniinja/sim/SimPlayer.java` | `java/core/.../sim/SimPlayer.java` | movement/combat actor model | L | High | queued |
 | old | `java/shadowascent/src/main/java/com/indieniinja/sim/EnemyAIState.java` | `java/core/.../simulation/EnemyAIState.java` | enemy AI state enum | S | Low | done |
 | old | `java/shadowascent/src/main/java/com/indieniinja/sim/EnemyAwarenessState.java` | `java/core/.../simulation/EnemyAwarenessState.java` | enemy awareness tier enum | S | Low | done |
 | old | `java/shadowascent/src/main/java/com/indieniinja/sim/SimEnemy.java` | `java/core/.../simulation/SimEnemy.java` | server-side enemy entity model | S | Low | done |
@@ -134,6 +133,9 @@ This map defines **exact first imports** from donor repos into `shadow_ascent_cl
 | clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/HubScreen.java` | LibGDX Screen; owns OrthographicCamera, delta-capped tick loop, camera lerp-follow | S | Low | done (2026-05-09) |
 | clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/rendering/StubWorldRenderer.java` | P1 entity renderer as ShapeRenderer rectangles; accepts Matrix4 projection matrix | S | Low | done (2026-05-09) |
 | clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/input/GameInputProcessor.java` | LibGDX InputAdapter; routes WASD/Space/Shift/F/E/I to InputCommand per frame | S | Low | done (2026-05-09) |
+| clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/InputHandler.java` | key-binding owner: pressedKeys Set + 16 queue flags; replaces GamePanel.configureKeyBindings | S | Low | done (2026-05-09) |
+| clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/RoomGeometry.java` | static room boundary constants + resolveRegionIdForX helper | S | Low | done (2026-05-09) |
+| clean-start (new) | n/a | `java/client/src/main/java/com/shadowascent/client/SaveLoad.java` | persistence I/O encapsulation: buildOverlaysB64 / save / load + LoadResult record | S | Low | done (2026-05-09) |
 
 ## Wave 6 — M6 Open-World Runtime (new)
 

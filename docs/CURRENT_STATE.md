@@ -2,7 +2,7 @@
 doc_type: current_state
 status: living
 owner: core-team
-last_updated: 2026-05-15
+last_updated: 2026-06-14
 version_anchor: 0.0.1
 ---
 # Current State

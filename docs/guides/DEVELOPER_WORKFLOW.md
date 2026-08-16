@@ -212,8 +212,8 @@ Use Claude Code for:
 - **Migration wave planning** — Before importing anything from `indie-ninja-adventures` or the integrated package, Claude Code should review the donor class against existing clean-start interfaces and produce a bounded slice spec. See `docs/MIGRATION_MAP.md`.
 - **Cross-contract narrative authoring** — When adding a new plateau or quest chain, Claude Code reasons across `plateaus.json`, `narrative_beats.json`, `story_flags.json`, and `chunk_grammar.json` simultaneously to catch tag leakage and flag conflicts before they're authored.
 - **M6 open-world runtime expansion** — Regional streaming (`RegionManifest`, `RegionLoader`, `MutationOverlay`) is complete as of 2026-05-08. Active M6 work is open-world runtime on top of that foundation — Claude Code owns the design.
-- **Regression logic review** — `RegressionTest.java` (~100KB, 49 tests) does serious work. Claude Code reviews new test cases for logical correctness, not just structural conformance.
-- **PlaytestClient.java QA harness** — ~80KB Swing harness. Wave 4/5 subsystem extractions complete (CombatSubsystem, TraversalSubsystem, UISubsystem, MinimapRenderer). No new feature code goes here; Claude Code governs what is extracted vs. left in place.
+- **Regression logic review** — `RegressionTest.java` (~100KB, 54 tests) does serious work. Claude Code reviews new test cases for logical correctness, not just structural conformance.
+- **PlaytestClient.java QA harness** — ~80KB Swing harness. Wave 4/5 subsystem extractions complete (CombatSubsystem, TraversalSubsystem, UISubsystem, MinimapRenderer, HudRenderer, StoryManager, MissionUiCoordinator). No new feature code goes here; Claude Code governs what is extracted vs. left in place.
 - **Bug diagnosis** — Paste the relevant files and error. Copilot guesses; Claude Code traces the actual code.
 
 ### GitHub Copilot
@@ -278,7 +278,7 @@ Step 7  Codex CLI       Run contract diagnostics:
 
 ## Workflow 2 — PlaytestClient.java QA Harness Maintenance
 
-`PlaytestClient.java` is ~80KB. Wave 4/5 subsystem extractions are complete: CombatSubsystem, TraversalSubsystem, UISubsystem, MinimapRenderer. Do not add new feature code to it — the LibGDX client is the shipping path. Only touch PlaytestClient when a regression test requires it or a QA harness improvement is needed.
+`PlaytestClient.java` is ~80KB. Wave 4/5 subsystem extractions are complete: CombatSubsystem, TraversalSubsystem, UISubsystem, MinimapRenderer, HudRenderer, StoryManager, MissionUiCoordinator. Do not add new feature code to it — the LibGDX client is the shipping path. Only touch PlaytestClient when a regression test requires it or a QA harness improvement is needed.
 
 ```
 Step 1  Claude Code     Identify the specific QA harness gap or regression requirement
@@ -393,8 +393,9 @@ End-of-session review   Claude Code:
 The GitHub Actions workflow (`ci.yml`) runs the full gate on every push:
 
 ```
-On every PR:    runRegressionTests + runDataContractDiagnostics + runWorldgenDiagnostics
-On merge:       + runWorldSimulationDiagnostics
+On every push and PR:    clean :core:compileJava :client:compileJava :server:compileJava
+                         runDataContractDiagnostics runWorldgenDiagnostics
+                         runWorldSimulationDiagnostics runRegressionTests
 ```
 
 Contract validation runs in `FAIL_FAST` mode on CI. This means CI is doing continuous architectural validation without manual effort. Do not disable `FAIL_FAST` on CI without a documented reason in the PR.

@@ -190,7 +190,7 @@ Reference: `docs/MIGRATION_MAP.md`
 - [x] Expand encounter behavior from hit-count clears to telegraphed attack/state patterns.
 - [x] Add player-consequence loop for encounters (damage/fail-state/reset flow) to complete first combat QA lane.
 
-## 7) M5 Systemic World Simulation Foundation (active)
+## 7) M5 Systemic World Simulation Foundation (completed)
 
 Reference: `docs/NORTH_STAR_EXECUTION_MATRIX.md`
 
