@@ -1,6 +1,5 @@
 # Shadow Ascent — Daily Briefing Log
 
-
 ## Daily Focus — 2026-06-16
 
 **Active milestones:**
@@ -233,7 +232,7 @@
 - `e95304f` chore: nightly stale-doc audit 2026-08-13
 *(No dev code commits since M4 completion on 2026-05-15)*
 
-## Daily Focus — 2026-08-17
+## Daily Focus — 2026-08-18
 
 **Active milestones:**
 - M6 Open-World Runtime Expansion — Active; all tracked backlog items checked off; next work is campaign fidelity/polish and elastic content integration in `runGame`
@@ -246,7 +245,7 @@
 **Open blockers:** None explicit. Standing doc task: `[ ] Archive superseded claims instead of silently overwriting history` (Backlog §5). Note: `CURRENT_STATE.md` last updated 2026-05-15 (~14 weeks stale); `CLAUDE.md` milestone table still lists M3 as "Active" rather than "Complete".
 
 **Recent completions:**
+- `002e48f` chore: nightly stale-doc audit 2026-08-17
 - `751658f` chore: daily briefing 2026-08-14
 - `adaf4b2` chore: nightly stale-doc audit 2026-08-12
-- `c187138` chore: nightly stale-doc audit 2026-08-11
 *(No dev code commits since M4 completion on 2026-05-15)*
