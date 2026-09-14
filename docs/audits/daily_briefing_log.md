@@ -1,24 +1,6 @@
 # Shadow Ascent — Daily Briefing Log
 
 
-## Daily Focus — 2026-06-05
-
-**Active milestones:**
-- M3 Stability/Release — Complete (2026-05-08); all 12 gate criteria green; gate doc at `docs/M3_RELEASE_GATE.md`
-- M6 Open-World Runtime Expansion — Active; all tracked backlog tasks checked off; no open M6 items remain
-- M4 Campaign Content Scale — Queued; hard-blocked on SUMMIT_SHRINE authoring decision
-
-**Most important next task:** `[AUTHORING DECISION REQUIRED] M4 Authored Act I Plateau Content — SUMMIT_SHRINE plateau` has no narrative beats, eligible NPCs, or Act I spine connections defined. This is the gate for all M4 content work (authored act coverage, optional plateau content, worldgen validation gates). Developer must decide: (1) which quests/beats belong to SUMMIT_SHRINE, (2) which NPCs are eligible, (3) how it connects LANTERN_HEIGHTS → HOLLOW_DEPTHS. See `data/plateaus.json`.
-
-**Open blockers:**
-- SUMMIT_SHRINE authoring decision: developer narrative input required before any M4 code work begins.
-
-**Recent completions:**
-- `29cf496` chore: nightly stale-doc audit 2026-06-04
-- `195e118` chore: nightly stale-doc audit 2026-06-03
-- `e54d4a0` chore: nightly stale-doc audit 2026-06-02
-
-
 ## Daily Focus — 2026-06-06
 
 **Active milestones:**
@@ -249,3 +231,21 @@
 - `c1df762` chore: nightly stale-doc audit 2026-08-28
 - `c9a5e88` chore: daily briefing 2026-08-21
 *(No dev code commits since M4 completion on 2026-05-15)*
+
+## Daily Focus — 2026-09-14
+
+**Active milestones:**
+- M3 Stability/Release — Complete (2026-05-08); all 12 gate criteria green; gate doc at `docs/M3_RELEASE_GATE.md`
+- M4 Campaign Content Scale — Complete (2026-05-15); all plateau families room-spec staged; gate evidence at `docs/MILESTONE_GATE_M4_FULL.md`
+- M6 Open-World Runtime Expansion — Active; all tracked backlog tasks checked off; forward work is campaign fidelity/polish and elastic content integration
+
+**Most important next task:** Migrate the active delivery lane to post-M4 campaign fidelity/polish and M6 elastic/runtime opportunity integration (Section 0, backlog). This is the single unchecked action item blocking forward progress: all prior milestones are verified complete, and M6 runtime infrastructure is in place — the next concrete step is deepening authored production-client geometry, placement, and state fidelity in `runGame` per `CURRENT_STATE.md` Next Action #8.
+
+**Open blockers:**
+- Pre-existing `Campaign Continuity` regression failure tracked separately (noted in M4a gate, not caused by M4a scope — needs root-cause and fix)
+- CLAUDE.md milestone table is stale: still shows M3 as Active and M4 as Queued; both are complete per `docs/CURRENT_STATE.md`
+
+**Recent completions:**
+- `2a81861` chore: nightly stale-doc audit 2026-09-06
+- `32bd9da` chore: daily briefing 2026-09-05
+- `7d4be5d` chore: nightly stale-doc audit 2026-09-02
