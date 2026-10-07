@@ -1,22 +1,4 @@
 # Shadow Ascent — Daily Briefing Log
-## Daily Focus — 2026-09-21
-
-**Active milestones:**
-- M3 Stability/Release — Complete (2026-05-08); gate doc at `docs/M3_RELEASE_GATE.md`
-- M4 Campaign Content Scale — Complete (2026-05-15); all 8 plateau families room-spec staged; gate doc at `docs/MILESTONE_GATE_M4_FULL.md`
-- M5 World Simulation Foundation — Complete (2026-05-07); all exit criteria met
-- M6 Open-World Runtime Expansion — Active; all tracked backlog items checked off; next work is campaign fidelity/polish and elastic content integration in `runGame`
-
-**Most important next task:** `[ ] Move the active delivery lane to post-M4 campaign fidelity/polish and M6 elastic/runtime opportunity integration` (Backlog §0). M4 is complete and `runGame` is the live QA surface, but no substantive code has landed since 2026-05-15 (~19 weeks). Concrete next step: deepen authored `runGame` area geometry, NPC placement, and interaction fidelity per `CURRENT_STATE.md` Next Actions item 8.
-
-**Open blockers:** Pre-existing `Campaign Continuity` regression failure tracked separately (noted in M4a gate; not caused by M4a scope — needs root-cause and fix). Standing doc task: `[ ] Archive superseded claims instead of silently overwriting history` (Backlog §5). Note: `CURRENT_STATE.md` last updated 2026-05-15 (~19 weeks stale); `CLAUDE.md` milestone table still lists M3 as "Active" rather than "Complete".
-
-**Recent completions:**
-- `160f430` chore: nightly stale-doc audit 2026-09-20
-- `892b59a` chore: daily briefing 2026-09-20
-- `04cd540` chore: daily briefing 2026-09-19
-*(No dev code commits since M4 completion on 2026-05-15)*
-
 ## Daily Focus — 2026-09-22
 
 **Active milestones:**
@@ -35,6 +17,7 @@
 - `160f430` chore: nightly stale-doc audit 2026-09-20
 *(No dev code commits since M4 completion on 2026-05-15)*
 
+
 ## Daily Focus — 2026-09-23
 
 **Active milestones:**
@@ -52,6 +35,7 @@
 - `7763da7` chore: daily briefing 2026-09-22
 - `e92d640` chore: nightly stale-doc audit 2026-09-21
 *(No dev code commits since M4 completion on 2026-05-15)*
+
 ## Daily Focus — 2026-09-24
 
 **Active milestones:**
@@ -69,6 +53,7 @@
 - `3192a55` chore: daily briefing 2026-09-23
 - `cbff4d3` chore: nightly stale-doc audit 2026-09-22
 *(No dev code commits since M4 completion on 2026-05-15)*
+
 
 ## Daily Focus — 2026-09-25
 
@@ -88,6 +73,7 @@
 - `3e6f30e` chore: nightly stale-doc audit 2026-09-23
 *(No dev code commits since M4 completion on 2026-05-15)*
 
+
 ## Daily Focus — 2026-09-26
 
 **Active milestones:**
@@ -105,6 +91,7 @@
 - `74805fd` chore: daily briefing 2026-09-25
 - `b356e92` chore: nightly stale-doc audit 2026-09-24
 *(No dev code commits since M4 completion on 2026-05-15)*
+
 
 ## Daily Focus — 2026-09-27
 
@@ -124,6 +111,7 @@
 - `82722b7` chore: nightly stale-doc audit 2026-09-25
 *(No dev code commits since M4 completion on 2026-05-15)*
 
+
 ## Daily Focus — 2026-09-28
 
 **Active milestones:**
@@ -141,6 +129,7 @@
 - `74efc89` chore: daily briefing 2026-09-27
 - `706101d` chore: nightly stale-doc audit 2026-09-26
 *(No dev code commits since M4 completion on 2026-05-15)*
+
 
 ## Daily Focus — 2026-09-29
 
@@ -160,6 +149,7 @@
 - `adb781c` chore: nightly stale-doc audit 2026-09-27
 *(No dev code commits since M4 completion on 2026-05-15)*
 
+
 ## Daily Focus — 2026-10-01
 
 **Active milestones:**
@@ -177,6 +167,7 @@
 - `c4f2b29` chore: nightly stale-doc audit 2026-09-29
 - `26581c9` chore: daily briefing 2026-09-29
 *(No dev code commits since M4 completion on 2026-05-15)*
+
 ## Daily Focus — 2026-10-02
 
 **Active milestones:**
@@ -192,6 +183,7 @@
 - `fdafd2c` chore: nightly stale-doc audit 2026-10-01
 - `06a456a` chore: daily briefing 2026-10-01
 - `55b7c1e` chore: nightly stale-doc audit 2026-09-30
+
 
 ## Daily Focus — 2026-10-03
 
@@ -210,6 +202,7 @@
 - `fdafd2c` chore: nightly stale-doc audit 2026-10-01
 - `06a456a` chore: daily briefing 2026-10-01
 *(No dev code commits since M4 completion on 2026-05-15)*
+
 ## Daily Focus — 2026-10-04
 
 **Active milestones:**
@@ -227,6 +220,7 @@
 - `406cdf6` chore: daily briefing 2026-10-03
 - `dde58ad` chore: daily briefing 2026-10-02
 *(No dev code commits since M4 completion on 2026-05-15)*
+
 ## Daily Focus — 2026-10-06
 
 **Active milestones:**
@@ -243,4 +237,22 @@
 - `f4fced6` chore: nightly stale-doc audit 2026-10-05
 - `682554d` chore: daily briefing 2026-10-04
 - `a053712` chore: nightly stale-doc audit 2026-10-03
+*(No dev code commits since M4 completion on 2026-05-15)*
+
+## Daily Focus — 2026-10-07
+
+**Active milestones:**
+- M3 Stability/Release — Complete (2026-05-08); gate doc at `docs/M3_RELEASE_GATE.md`
+- M4 Campaign Content Scale — Complete (2026-05-15); all 8 plateau families room-spec staged; gate doc at `docs/MILESTONE_GATE_M4_FULL.md`
+- M5 World Simulation Foundation — Complete (2026-05-07); all exit criteria met
+- M6 Open-World Runtime Expansion — Active; all tracked backlog items checked off; next substantive work is campaign fidelity/polish and elastic content integration in `runGame`
+
+**Most important next task:** `[ ] Move the active delivery lane to post-M4 campaign fidelity/polish and M6 elastic/runtime opportunity integration` (Backlog §0). M4 is complete and `runGame` is the live QA surface, but no dev code has landed since 2026-05-15 (~21 weeks). Concrete next step: deepen authored `runGame` area geometry, NPC placement, and interaction fidelity per `CURRENT_STATE.md` Next Actions item 8.
+
+**Open blockers:** Pre-existing `Campaign Continuity` regression failure tracked separately (noted in M4a gate; needs root-cause and fix). Standing doc task: `[ ] Archive superseded claims instead of silently overwriting history` (Backlog §5). Note: `CURRENT_STATE.md` last updated 2026-05-15 (~21 weeks stale); `CLAUDE.md` milestone table still lists M3/M4 as "Active"/"Queued" rather than "Complete".
+
+**Recent completions:**
+- `0d82d4a` chore: nightly stale-doc audit 2026-10-06
+- `4c8aec5` chore: daily briefing 2026-10-06
+- `f4fced6` chore: nightly stale-doc audit 2026-10-05
 *(No dev code commits since M4 completion on 2026-05-15)*
