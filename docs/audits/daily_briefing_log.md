@@ -1,21 +1,4 @@
 # Shadow Ascent — Daily Briefing Log
-## Daily Focus — 2026-10-02
-
-**Active milestones:**
-- M3 Stability/Release: Complete — V3 save envelope + checksum guard shipped; gate evidence in `docs/M3_RELEASE_GATE.md`
-- M4 Campaign Content Scale: Complete (2026-05-15) — full campaign spine runtime playable; gate evidence in `docs/MILESTONE_GATE_M4_FULL.md`
-- M6 Open-World Runtime Expansion: Active — regional streaming, mutation overlays, co-op AABB separation, LibGDX production client (title/pause/save/audio) all landed; delivery focus is M6 elastic/runtime deepening
-
-**Most important next task:** Pivot the active delivery lane to post-M4 campaign fidelity/polish and M6 elastic/runtime opportunity integration (backlog workstream 0, line 25). M4 is complete and M6 is active — the next concrete step is scoping the first M6-depth task (authored region expansion, quest ecology deepening, or LibGDX gameplay-loop hardening).
-
-**Open blockers:** None — no AUTHORING DECISION REQUIRED or BLOCKED labels in open items. Docs archival rule (workstream 5) is a standing debt but not a release blocker.
-
-**Recent completions:**
-- `fdafd2c` chore: nightly stale-doc audit 2026-10-01
-- `06a456a` chore: daily briefing 2026-10-01
-- `55b7c1e` chore: nightly stale-doc audit 2026-09-30
-
-
 ## Daily Focus — 2026-10-03
 
 **Active milestones:**
@@ -242,3 +225,20 @@
 - `5d82715` chore: daily briefing 2026-11-06
 - `354cb62` chore: nightly stale-doc audit 2026-11-05
 *(No dev code commits since M4 completion on 2026-05-15)*
+## Daily Focus — 2026-11-08
+
+**Active milestones:**
+- M3 Stability/Release — Complete (2026-05-08); gate doc at `docs/M3_RELEASE_GATE.md`
+- M4 Campaign Content Scale — Complete (2026-05-15); all 8 plateau families room-spec staged; gate doc at `docs/MILESTONE_GATE_M4_FULL.md`
+- M5 World Simulation Foundation — Complete (2026-05-07); all exit criteria met
+- M6 Open-World Runtime Expansion — Active; all tracked backlog items checked off; next substantive work is campaign fidelity/polish and elastic content integration in `runGame`
+
+**Most important next task:** `[ ] Move the active delivery lane to post-M4 campaign fidelity/polish and M6 elastic/runtime opportunity integration` (Backlog §0). `runGame` is the live QA surface but no dev code has landed since 2026-05-15 (~26 weeks). Concrete next step per `CURRENT_STATE.md` Next Actions item 8: deepen authored `runGame` area geometry, NPC placement, and interaction fidelity.
+
+**Open blockers:** Pre-existing `Campaign Continuity` regression failure tracked separately (M4a gate note; needs root-cause). Standing doc task: `[ ] Archive superseded claims instead of silently overwriting history` (Backlog §5). `CURRENT_STATE.md` last updated 2026-05-15 (~26 weeks stale); `CLAUDE.md` milestone table still lists M3 as "Active" rather than "Complete" — both need a doc refresh pass.
+
+**Recent completions:**
+- `5ca7804` chore: nightly stale-doc audit 2026-11-07
+- `b5b86a8` chore: daily briefing 2026-11-07
+- `da2b16e` chore: nightly stale-doc audit 2026-11-06
+
