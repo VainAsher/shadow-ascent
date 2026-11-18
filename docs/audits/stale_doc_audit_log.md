@@ -1,33 +1,6 @@
 # Shadow Ascent — Stale Doc Audit Log
 
 
-## Audit 2026-08-18
-
-### Verdict
-PARTIAL
-
-### Key Findings
-
-1. **CLAUDE.md (canonical context)** — **STALE (53rd consecutive cycle)**: M3 still reads `Active — V3 save envelope + checksum guard done; full exit criteria TBD`; M4 still reads `Queued`. Both confirmed wrong: all key milestone docs confirm M3 closed 2026-05-08 and M4 completed 2026-05-15. No new code-introduced staleness since the 2026-08-17 audit. This is the **53rd consecutive nightly audit** to report this unfixed.
-
-2. **docs/CURRENT_STATE.md** — **STALE (2 items, persistent)**: `last_updated: 2026-05-15` frontmatter stale; `data/room_specs/*.json` files undocumented; "Next Actions" M4 item un-struck-through.
-
-3. **docs/ROADMAP.md** — **STALE**: M4 header tag `` `active` `` should be `` `completed` ``; M6 regression count 49/49 stale (54/54 confirmed).
-
-4. **docs/MIGRATION_MAP.md** — **STALE**: Wave 4 orphan `queued` SimPlayer row; Wave 5 missing InputHandler/RoomGeometry/SaveLoad entries.
-
-5. **docs/IMPLEMENTATION_BACKLOG.md** — **STALE**: Section 7 header "(active)" should be "(completed)".
-
-6. **docs/guides/DEVELOPER_WORKFLOW.md** — **STALE**: 49-test count stale; Wave 5 phase-2 extractions missing; CI merge-only claim for runWorldSimulationDiagnostics wrong.
-
-7. **Missing references** — None: all Gradle tasks, class names, data files, and docs confirmed present.
-
-### Recommended Next Step
-Fix `CLAUDE.md` milestone table immediately — **53rd consecutive audit cycle** with no fix applied. At 53 cycles unfixed, this is the single most impactful open action in the project.
-
----
-
-
 ## Audit 2026-08-28
 
 ### Verdict
@@ -245,6 +218,7 @@ PARTIAL
 Fix `CLAUDE.md` milestone table — **72nd consecutive audit cycle** without correction. Single targeted edit: change M3 from `Active — V3 save envelope + checksum guard done; full exit criteria TBD` to `Complete (2026-05-08)`; change M4 from `Queued` to `Complete (2026-05-15)`; update the `as of` date. Every session reads wrong milestone state as its planning baseline until this is applied.
 
 ---
+
 ## Audit 2026-10-31
 
 ### Verdict
@@ -275,3 +249,36 @@ PARTIAL
 
 ### Recommended Next Step
 Fix `CLAUDE.md` milestone table immediately — **80th consecutive audit cycle** with no fix applied. Single targeted edit: change M3 from `Active — V3 save envelope + checksum guard done; full exit criteria TBD` to `Complete (2026-05-08)`; change M4 from `Queued` to `Complete (2026-05-15)`; update the `as of` date to 2026-10-31. Every session that starts without this fix reads wrong milestone state as its planning context. At 80 cycles unfixed, this remains the single highest-impact open action in the project.
+
+---
+
+## Audit 2026-11-18
+
+### Verdict
+PARTIAL
+
+### Key Findings
+
+1. **CLAUDE.md (canonical context)** — **STALE (95th consecutive cycle)**: M3 still reads `Active — V3 save envelope + checksum guard done; full exit criteria TBD`; M4 still reads `Queued`; `as of` date still reads `2026-05-08`. All three claims confirmed wrong: `docs/CURRENT_STATE.md` confirms M3 complete 2026-05-08 (gate: `docs/M3_RELEASE_GATE.md`) and M4 complete 2026-05-15 (gate: `docs/MILESTONE_GATE_M4_FULL.md`). `git diff --stat HEAD~5 HEAD` shows only `docs/audits/` changes in the last 5 commits — no new code-introduced staleness. CLAUDE.md is the first context anchor for every session; stale milestone rows corrupt every planning conversation. This is the **95th consecutive nightly audit** to report this unfixed.
+
+2. **docs/CURRENT_STATE.md** — **STALE (2 items, persistent)**: `last_updated: 2026-05-15` frontmatter not updated since M4 completion. "Next Actions" item 2 (M4 campaign content) remains un-struck-through, contradicting "Open Issues" (M4 resolved 2026-05-15) and Product State table (M4 complete 2026-05-15).
+
+3. **docs/ROADMAP.md** — **STALE (2 items, persistent)**:
+   - M4 section header tag: `` `active` `` — `CURRENT_STATE.md` and `IMPLEMENTATION_BACKLOG.md` section 0 confirm M4 complete (2026-05-15); gate evidence at `docs/MILESTONE_GATE_M4_FULL.md`. Should be `` `completed` ``.
+   - M6 "Delivered in this lane" records "Regression harness: 49/49 PASS"; `CURRENT_STATE.md` P2 gate evidence confirms 54/54 sections.
+
+4. **docs/MIGRATION_MAP.md** — **STALE (2 items, persistent)**:
+   - Wave 4 table row (line 81): `SimPlayer.java` status `queued` targeting `core/.../sim/SimPlayer.java` — orphan stale row; correct `done` row at line 91 targets `core/.../simulation/SimPlayer.java` (confirmed present).
+   - Wave 5 table missing entries for `InputHandler.java`, `RoomGeometry.java`, `SaveLoad.java` — all three extracted 2026-05-09, confirmed present at `java/client/src/main/java/com/shadowascent/client/`.
+
+5. **docs/IMPLEMENTATION_BACKLOG.md** — **STALE (1 item, persistent)**: Section 7 header reads "M5 Systemic World Simulation Foundation (active)"; M5 complete since 2026-05-07; all tasks `[x]`. Should read "(completed)".
+
+6. **docs/guides/DEVELOPER_WORKFLOW.md** — **STALE (3 items, persistent)**:
+   - `RegressionTest.java (~100KB, 49 tests)` — `CURRENT_STATE.md` P2 gate evidence confirms 54/54 regression sections; count of 49 is stale.
+   - Wave 4/5 extraction list `(CombatSubsystem, TraversalSubsystem, UISubsystem, MinimapRenderer)` omits `HudRenderer`, `StoryManager`, `MissionUiCoordinator` — all extracted 2026-05-09, confirmed present under `java/client/`.
+   - CI section claims `runWorldSimulationDiagnostics` runs only "on merge"; task confirmed present in root `build.gradle.kts` with no conditional split.
+
+7. **Missing references** — None. All Gradle tasks (`runRegressionTests`, `runDataContractDiagnostics`, `runWorldgenDiagnostics`, `runWorldSimulationDiagnostics`, `runRegionalStreamingDiagnostics`, `runPlayableClient`, `runGame`, `packSprites`) confirmed in `build.gradle.kts`. All referenced Java classes (`SimPlayer`, `GameSimulator`, `QuestEcologyEngine`, `RegionLoader`) confirmed under `java/`. All 13 worldgen section templates confirmed under `data/worldgen/sections/`. All gate docs (`docs/M3_RELEASE_GATE.md`, `docs/MILESTONE_GATE_M4_FULL.md`, `docs/MILESTONE_A_GATE.md`, `docs/ACT_I_QA_ROUTE.md`, `docs/NORTH_STAR_EXECUTION_MATRIX.md`) confirmed present.
+
+### Recommended Next Step
+Fix `CLAUDE.md` milestone table immediately — **95th consecutive audit cycle** with no fix applied. Single targeted edit: change M3 from `Active — V3 save envelope + checksum guard done; full exit criteria TBD` to `Complete (2026-05-08)`; change M4 from `Queued` to `Complete (2026-05-15)`; update `as of` date to `2026-11-18`. Every session that starts without this fix inherits stale milestone state as its canonical planning anchor.
