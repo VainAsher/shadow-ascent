@@ -1,21 +1,4 @@
 # Shadow Ascent — Daily Briefing Log
-## Daily Focus — 2026-11-03
-
-**Active milestones:**
-- M3 Stability/Release — Complete (2026-05-08); gate doc at `docs/M3_RELEASE_GATE.md`
-- M4 Campaign Content Scale — Complete (2026-05-15); all 8 plateau families room-spec staged; gate doc at `docs/MILESTONE_GATE_M4_FULL.md`
-- M5 World Simulation Foundation — Complete (2026-05-07); all exit criteria met
-- M6 Open-World Runtime Expansion — Active; all tracked backlog items checked off; next work is campaign fidelity/polish and elastic content integration in `runGame`
-
-**Most important next task:** `[ ] Move the active delivery lane to post-M4 campaign fidelity/polish and M6 elastic/runtime opportunity integration` (Backlog §0). M4 is complete and `runGame` is the live QA surface, but no dev code has landed since 2026-05-15 (~25 weeks). Concrete next step: deepen authored `runGame` area geometry, NPC placement, and interaction fidelity per `CURRENT_STATE.md` Next Actions item 8.
-
-**Open blockers:** Pre-existing `Campaign Continuity` regression failure tracked separately (noted in M4a gate; needs root-cause and fix). Standing doc task: `[ ] Archive superseded claims instead of silently overwriting history` (Backlog §5). Note: `CURRENT_STATE.md` last updated 2026-05-15 (~25 weeks stale); `CLAUDE.md` milestone table still lists M3/M4 as "Active"/"Queued" rather than "Complete".
-
-**Recent completions:**
-- `0370d68` chore: nightly stale-doc audit 2026-11-02
-- `da50d5f` chore: daily briefing 2026-11-02
-- `e716129` chore: nightly stale-doc audit 2026-11-01
-*(No dev code commits since M4 completion on 2026-05-15)*
 ## Daily Focus — 2026-11-05
 
 **Active milestones:**
@@ -233,4 +216,21 @@
 - `83852f6` chore: daily briefing 2026-11-18
 - `765953c` chore: nightly stale-doc audit 2026-11-17
 - `cac1709` chore: daily briefing 2026-11-17
+*(No dev code commits since M4 completion on 2026-05-15)*
+## Daily Focus — 2026-11-21
+
+**Active milestones:**
+- M3 Stability/Release — Complete (2026-05-08); gate doc: `docs/M3_RELEASE_GATE.md` (CLAUDE.md still lists as "Active" — stale)
+- M4 Campaign Content Scale — Complete (2026-05-15); all 8 plateau families room-spec staged; gate doc: `docs/MILESTONE_GATE_M4_FULL.md`
+- M5 World Simulation Foundation — Complete (2026-05-07); all three exit criteria met
+- M6 Open-World Runtime Expansion — Active; all tracked backlog items checked off; campaign fidelity/polish is the remaining open work
+
+**Most important next task:** `[ ] Move the active delivery lane to post-M4 campaign fidelity/polish and M6 elastic/runtime opportunity integration` (Backlog §0). `runGame` is the primary QA surface, all milestone code tasks are checked off, but no dev code has landed since 2026-05-15 (~6 months). Concrete entry point: deepen `runGame` authored area geometry, NPC placement, and authored-beat interaction fidelity per `CURRENT_STATE.md` Next Actions #8.
+
+**Open blockers:** Pre-existing `Campaign Continuity` regression failure (noted in M4a gate; root cause unresolved — investigate before next campaign content push). `[ ] Archive superseded claims instead of silently overwriting history` (Backlog §5) remains open. `CLAUDE.md` milestone table still shows M3 as "Active" and M4 as "Queued" (stale — should be updated to Complete).
+
+**Recent completions:**
+- `897f748` chore: nightly stale-doc audit 2026-11-20
+- `12ea99d` chore: daily briefing 2026-11-20
+- `83852f6` chore: daily briefing 2026-11-18
 *(No dev code commits since M4 completion on 2026-05-15)*
